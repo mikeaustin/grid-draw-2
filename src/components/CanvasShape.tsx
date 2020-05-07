@@ -16,7 +16,7 @@ class Ellipse3 extends View {
 }
 
 const shapeRegistry = {
-  'GridDraw.Ellipse': {
+  'GridDraw.Shape.Ellipse': {
     render: ({
       position: [x, y],
       opacity,
@@ -34,7 +34,7 @@ const shapeRegistry = {
       );
     }
   },
-  'GridDraw.Rect': {
+  'GridDraw.Shape.Rect': {
     render: ({
       position: [x, y],
       opacity,
@@ -52,7 +52,7 @@ const shapeRegistry = {
       );
     }
   },
-  'GridDraw.Ellipse2': {
+  'GridDraw.Shape.Ellipse2': {
     render: ({
       position: [x, y],
     }) => {
@@ -77,7 +77,7 @@ const shapeRegistry = {
       );
     }
   },
-  'GridDraw.Group': {
+  'GridDraw.Shape.Group': {
     render: ({ position, opacity, ...props }) => {
       const groupProps = {
         style: {

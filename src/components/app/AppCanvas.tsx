@@ -20,8 +20,13 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }) => {
     dispatch({ type: 'set-shape-position', payload: { shapeId, position } });
   };
 
-  const handleSelectShape = (shapeId, element) => {
-    dispatch({ type: 'select-shape', payload: { shapeId, element } });
+  const handleSelectShape = (shapeId) => {
+    dispatch({
+      type: 'SELECT_SHAPE',
+      payload: {
+        shapeId,
+      }
+    });
   };
 
   //
@@ -59,7 +64,7 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }) => {
     dispatch({
       type: 'ADD_SHAPE',
       payload: {
-        shape: state.currentTool.shape,
+        type: state.currentTool.type,
         position: [locationX, locationY]
       }
     });

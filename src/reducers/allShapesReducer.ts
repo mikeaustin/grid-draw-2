@@ -31,12 +31,12 @@ const initialState: State = {
     showGrid: true,
   },
   allShapes: {
-    0: { id: 0, type: 'GridDraw.Group', position: [0, 0], opacity: 1.0, childIds: [1, 2, 3] },
-    1: { id: 1, type: 'GridDraw.Ellipse', position: [100, 100], opacity: 0.75, childIds: [] },
-    2: { id: 2, type: 'GridDraw.Ellipse', position: [250, 100], opacity: 0.5, childIds: [] },
-    3: { id: 3, type: 'GridDraw.Group', position: [400, 100], opacity: 0.25, childIds: [4, 5] },
-    4: { id: 4, type: 'GridDraw.Ellipse', position: [0, 0], opacity: 1.0, childIds: [] },
-    5: { id: 5, type: 'GridDraw.Ellipse', position: [0, 150], opacity: 0.5, childIds: [] },
+    0: { id: 0, type: 'GridDraw.Shape.Group', position: [0, 0], opacity: 1.0, childIds: [1, 2, 3] },
+    1: { id: 1, type: 'GridDraw.Shape.Ellipse', position: [100, 100], opacity: 0.75, childIds: [] },
+    2: { id: 2, type: 'GridDraw.Shape.Ellipse', position: [250, 100], opacity: 0.5, childIds: [] },
+    3: { id: 3, type: 'GridDraw.Shape.Group', position: [400, 100], opacity: 0.25, childIds: [4, 5] },
+    4: { id: 4, type: 'GridDraw.Shape.Ellipse', position: [0, 0], opacity: 1.0, childIds: [] },
+    5: { id: 5, type: 'GridDraw.Shape.Ellipse', position: [0, 150], opacity: 0.5, childIds: [] },
   }
 };
 
@@ -98,10 +98,10 @@ const stateReducer = (state: State, action): State => {
       return {
         ...state,
         nextShapeId: state.nextShapeId + 1,
-        allShapes: addShape(state.allShapes, payload.shape, state.nextShapeId, position),
+        allShapes: addShape(state.allShapes, payload.type, state.nextShapeId, position),
       };
     }
-    case 'select-tool':
+    case 'SELECT_TOOL':
       return {
         ...state,
         currentTool: payload,
@@ -116,7 +116,7 @@ const stateReducer = (state: State, action): State => {
           [option]: !state.options[option]
         }
       };
-    case 'select-shape':
+    case 'SELECT_SHAPE':
       const { shapeId } = payload;
 
       return {

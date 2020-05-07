@@ -2,6 +2,7 @@
   "name": "grid-draw-2",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@react-native-community/slider": "^3.0.0-rc.2",
     "@testing-library/jest-dom": "^4.2.4",

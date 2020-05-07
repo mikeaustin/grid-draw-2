@@ -14,13 +14,13 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
 
   return (
     <Toolbar onButtonPress={handleButtonPress}>
-      <Toolbar.Group title="Tools" name="select-tool" selectedValue={currentTool}>
+      <Toolbar.Group title="Tools" name="SELECT_TOOL" selectedValue={currentTool}>
         <Toolbar.Button icon="037-cursor" value={{ tool: 'GridDraw.Tools.Move' }} />
         {/* <Toolbar.Button icon="008-resize" /> */}
       </Toolbar.Group>
-      <Toolbar.Group title="Shapes" name="select-tool" selectedValue={currentTool}>
-        <Toolbar.Button icon="009-rectangle" value={{ tool: 'Create', shape: 'GridDraw.Rect' }} />
-        <Toolbar.Button icon="025-ellipse" value={{ tool: 'Create', shape: 'GridDraw.Ellipse' }} />
+      <Toolbar.Group title="Shapes" name="SELECT_TOOL" selectedValue={currentTool}>
+        <Toolbar.Button icon="009-rectangle" value={{ tool: 'Create', type: 'GridDraw.Shape.Rect' }} />
+        <Toolbar.Button icon="025-ellipse" value={{ tool: 'Create', type: 'GridDraw.Shape.Ellipse' }} />
         {/* <Toolbar.Button icon="001-star" />
         <Toolbar.Button icon="007-pen-tool" /> */}
       </Toolbar.Group>

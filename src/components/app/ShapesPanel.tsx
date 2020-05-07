@@ -29,15 +29,20 @@ const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch,
 const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, dispatch, onUpdateShape }) => {
   const shape = allShapes[shapeId];
 
-  const handleSelectShape = (shapeId, element) => {
+  const handleSelectShape = (shapeId) => {
     onUpdateShape(shapeId, {});
 
-    dispatch({ type: 'select-shape', payload: { shapeId, element } });
+    dispatch({
+      type: 'SELECT_SHAPE',
+      payload: {
+        shapeId,
+      }
+    });
   };
 
   return (
     <View>
-      <TouchableWithoutFeedback key={shape.id} onPressIn={() => handleSelectShape(shape.id, null)}>
+      <TouchableWithoutFeedback key={shape.id} onPressIn={() => handleSelectShape(shape.id)}>
         <View
           style={{
             paddingVertical: 6,
