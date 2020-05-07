@@ -17,16 +17,19 @@ const styles = StyleSheet.create({
 
 function App() {
   const [state, dispatch] = useReducer(stateReducer, initialState);
-  const [data, setData] = useState({});
+  const [selectedShape, setSelectedShape] = useState(null);
 
   const stateView = useMemo(() => ({ ...state }), [state]);
 
-  const handleShapeUpdate = useCallback((data) => {
-    setData(data);
-  }, []);
+  const handleShapeUpdate = useCallback((shapeId, newSelectedShape) => {
+    setSelectedShape({
+      ...state.allShapes[shapeId],
+      ...newSelectedShape
+    });
+  }, [state.allShapes]);
 
   return (
-    <ShapeContext.Provider value={data}>
+    <ShapeContext.Provider value={selectedShape}>
       <View style={styles.app}>
         <MainToolbar currentTool={state.currentTool} state={state} dispatch={dispatch} />
         <View style={{ flex: 1, flexDirection: 'row' }}>
@@ -41,8 +44,8 @@ function App() {
           <PropertiesPanel
             allShapes={state.allShapes}
             selectedShapeId={state.selectedShapeIds[0]}
-            selectedShapeElement={state.selectedShapeElements[0]}
             dispatch={dispatch}
+            onShapeUpdate={handleShapeUpdate}
           />
         </View>
       </View >

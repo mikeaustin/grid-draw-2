@@ -3,6 +3,8 @@ import { View } from 'react-native-web';
 import { G, Ellipse, Rect } from 'react-native-svg';
 import JsxParser from 'react-jsx-parser';
 
+import ShapeContext from '../ShapeContext';
+
 const Ellipse2 = ({ ...props }) => {
   return <View accessibilityLabel="ellipse" {...props} />;
 };
@@ -104,7 +106,6 @@ const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPositi
     event.preventDefault();
 
     const tap = !(Date.now() - lastTap.current < 300);
-
     lastTap.current = Date.now();
 
     return tap;
@@ -119,35 +120,20 @@ const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPositi
 
     setFirstPosition([event.nativeEvent.pageX, event.nativeEvent.pageY]);
     onSelectShape(shape.id, target.current);
+
+    onShapeUpdate(shape.id, {});
   };
 
   const handleResponderMove = event => {
-    if (target.current) {
-      onShapeUpdate({
-        position: [
-          shape.position[0] + event.nativeEvent.pageX - firstPosition[0],
-          shape.position[1] + event.nativeEvent.pageX - firstPosition[1],
-        ]
-      });
-
-      if (shape.type === 'GridDraw.Group') {
-        target.current.setAttribute('transform', `
-          translate(
-            ${shape.position[0] + event.nativeEvent.pageX - firstPosition[0]},
-            ${shape.position[1] + event.nativeEvent.pageY - firstPosition[1]}
-          )
-        `);
-      } else {
-        target.current.setAttribute('cx', `${shape.position[0] + event.nativeEvent.pageX - firstPosition[0]}`);
-        target.current.setAttribute('cy', `${shape.position[1] + event.nativeEvent.pageY - firstPosition[1]}`);
-      }
-    }
+    onShapeUpdate(shape.id, {
+      position: [
+        shape.position[0] + event.nativeEvent.pageX - firstPosition[0],
+        shape.position[1] + event.nativeEvent.pageY - firstPosition[1],
+      ]
+    });
   };
 
   const handleResponseRelease = event => {
-    target.current?.setAttribute('x', '');
-    target.current?.setAttribute('y', '');
-
     onSetPosition(shape.id, [
       shape.position[0] + (event.nativeEvent.pageX - firstPosition[0]),
       shape.position[1] + (event.nativeEvent.pageY - firstPosition[1]),
@@ -174,28 +160,34 @@ const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPositi
   const Component = shapeRegistry[shape.type].render;
 
   return (
-    <Component position={shape.position} opacity={shape.opacity} {...shapeProps}>
-      {shape.childIds.map(childId => {
-        const shape = allShapes[childId];
-        const selected = selectedShapeIds.includes(childId);
+    <ShapeContext.Consumer>
+      {selectedShape => (
+        <Component
+          position={selected ? selectedShape.position : shape.position}
+          opacity={selected ? selectedShape.opacity : shape.opacity}
+          {...shapeProps}
+        >
+          {shape.childIds.map(childId => {
+            const shape = allShapes[childId];
+            const selected = selectedShapeIds.includes(childId);
 
-        return (
-          <CanvasShape
-            key={childId}
-            shape={shape}
-            selected={selected}
-            allShapes={allShapes}
-            selectedShapeIds={selectedShapeIds}
-            onSetPosition={onSetPosition}
-            onSelectShape={onSelectShape}
-            onShapeUpdate={onShapeUpdate}
-          />
-        );
-      })}
-    </Component>
+            return (
+              <CanvasShape
+                key={childId}
+                shape={shape}
+                selected={selected}
+                allShapes={allShapes}
+                selectedShapeIds={selectedShapeIds}
+                onSetPosition={onSetPosition}
+                onSelectShape={onSelectShape}
+                onShapeUpdate={onShapeUpdate}
+              />
+            );
+          })}
+        </Component>
+      )}
+    </ShapeContext.Consumer>
   );
-
-  // return shapeRegistry[type].render({ position, opacity, ...shapeProps });
 };
 
 export default React.memo(CanvasShape);
