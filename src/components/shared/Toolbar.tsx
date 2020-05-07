@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useRef, useMemo, SyntheticEvent, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
 
 import Spacer from '../shared/Spacer';
@@ -130,4 +130,4 @@ const Button = ({ icon, value, selected, onDispatch }: ButtonProps) => {
 Toolbar.Group = Group;
 Toolbar.Button = Button;
 
-export default Toolbar;
+export default React.memo(Toolbar);

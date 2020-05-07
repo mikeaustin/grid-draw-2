@@ -5,9 +5,9 @@ type _State = {
   },
   nextShapeId: number,
   selectedShapeIds: number[],
-  selectedShapeElements: (SVGElement | null)[],
   options: {
-    showRuler: boolean;
+    showRuler: boolean,
+    showGrid;
   },
   allShapes: {
     [shapeId: string]: {
@@ -26,9 +26,9 @@ const initialState: State = {
   },
   nextShapeId: 10,
   selectedShapeIds: [],
-  selectedShapeElements: [],
   options: {
-    showRuler: true
+    showRuler: true,
+    showGrid: true,
   },
   allShapes: {
     0: { id: 0, type: 'GridDraw.Group', position: [0, 0], opacity: 1.0, childIds: [1, 2, 3] },
@@ -117,12 +117,11 @@ const stateReducer = (state: State, action): State => {
         }
       };
     case 'select-shape':
-      const { shapeId, element } = payload;
+      const { shapeId } = payload;
 
       return {
         ...state,
         selectedShapeIds: [shapeId],
-        selectedShapeElements: [element],
       };
     default:
       return {

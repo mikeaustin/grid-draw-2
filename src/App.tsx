@@ -1,5 +1,5 @@
-import React, { useState, useReducer, useCallback, useRef, useMemo, SyntheticEvent, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
+import React, { useState, useReducer, useCallback, useMemo } from 'react';
+import { StyleSheet, View } from 'react-native-web';
 
 import { initialState, stateReducer } from './reducers/allShapesReducer';
 import ShapeContext from './ShapeContext';
@@ -37,10 +37,13 @@ function App() {
             allShapes={state.allShapes}
             selectedShapeIds={state.selectedShapeIds}
             dispatch={dispatch}
+            onUpdateShape={handleShapeUpdate}
           />
+          <View style={{ background: '#d0d0d0', minWidth: 1 }} />
           <AppCanvas state={state} dispatch={dispatch} onShapeUpdate={handleShapeUpdate} />
           <View style={{ background: '#d0d0d0', minWidth: 1 }} />
           <AppCanvas state={state} dispatch={dispatch} scale={0.5} onShapeUpdate={handleShapeUpdate} />
+          <View style={{ background: '#d0d0d0', minWidth: 1 }} />
           <PropertiesPanel
             allShapes={state.allShapes}
             selectedShapeId={state.selectedShapeIds[0]}

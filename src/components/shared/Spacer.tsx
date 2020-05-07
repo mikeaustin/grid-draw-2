@@ -1,5 +1,5 @@
-import React, { useState, useReducer, useRef, useMemo, SyntheticEvent, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
+import React from 'react';
+import { View } from 'react-native-web';
 
 const Spacer = () => {
   return (

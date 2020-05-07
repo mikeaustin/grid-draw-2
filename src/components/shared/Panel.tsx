@@ -1,12 +1,9 @@
-import React, { useState, useReducer, useRef, useMemo, SyntheticEvent, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, ScrollView } from 'react-native-web';
 
 const styles = StyleSheet.create({
   panel: {
     width: 256, backgroundColor: '#f3f3f3',
-    borderWidth: 1,
-    borderColor: 'hsl(0, 0%, 80%)',
-    margin: -1,
   },
   title: {
     paddingHorizontal: 15,
@@ -29,7 +26,6 @@ const Panel = ({ title, children, ...props }) => {
       </ScrollView>
     </View>
   );
-
 };
 
-export default Panel;
+export default React.memo(Panel);

@@ -1,8 +1,9 @@
-import React, { useState, useReducer, useRef, useMemo, SyntheticEvent, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
+import React from 'react';
+import { StyleSheet } from 'react-native-web';
 import { Svg, G, Rect, Text as SvgText } from 'react-native-svg';
 
 import CanvasShape from '../CanvasShape';
+import Grid from '../shared/Grid';
 import Ruler from '../shared/Ruler';
 
 const styles = StyleSheet.create({
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
 });
 
 const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }) => {
-  console.log('AppCanvas()');
+  console.log('AppCanvas()', { scale });
 
   const handleSetPosition = (shapeId, position) => {
     dispatch({ type: 'set-shape-position', payload: { shapeId, position } });
@@ -26,7 +27,7 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }) => {
   //
 
   const handleStartShouldSetResponderCapture = event => {
-    console.log('handleStartShouldSetResponderCapture', state.currentTool);
+    console.log('AppCanvas.handleStartShouldSetResponderCapture()');
     event.preventDefault();
 
     return state.currentTool.tool !== 'GridDraw.Tools.Move';
@@ -40,14 +41,14 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }) => {
   };
 
   const handleStartShouldSetResponder = event => {
-    console.log('handleStartShouldSetResponder', state.currentTool);
+    console.log('AppCanvas.handleStartShouldSetResponder()');
     // event.preventDefault();
 
     return state.currentTool.tool !== 'GridDraw.Tools.Move';
   };
 
   const handleResponderGrant = (event: any) => {
-    console.log('handleResponderGrant', state.currentTool);
+    console.log('AppCanvas.handleResponderGrant()', state.currentTool);
     const rect = event.currentTarget.getBoundingClientRect();
 
     const [locationX, locationY] = [
@@ -78,9 +79,12 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }) => {
   return (
     <Svg {...svgProps}>
       <G
-        transform={state.options.showRuler ? `scale(${scale}, ${scale}) translate(30, 30)` : ''}
+        transform={`${state.options.showRuler ? `translate(30, 30)` : ''} scale(${scale}, ${scale})`}
         {...canvasProps}
       >
+        {state.options.showGrid && (
+          <Grid />
+        )}
         {state.allShapes[0].childIds.map(shapeId => {
           const shape = state.allShapes[shapeId];
 
@@ -100,10 +104,10 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }) => {
       </G>
       {state.options.showRuler && (
         <G>
-          <Ruler />
+          <Ruler scale={scale} />
           <Rect width="30" height="30" fill="#e8e8e8" />
           <SvgText x={9} y={18} {...{ fontSize: 12 }} >px</SvgText>
-          <Ruler vertical />
+          <Ruler scale={scale} vertical />
         </G>
       )}
     </Svg>

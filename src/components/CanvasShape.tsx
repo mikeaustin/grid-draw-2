@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useRef, useMemo, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { View } from 'react-native-web';
 import { G, Ellipse, Rect } from 'react-native-svg';
 import JsxParser from 'react-jsx-parser';
@@ -42,8 +42,8 @@ const shapeRegistry = {
     }) => {
       return (
         <Rect
-          x={x}
-          y={y}
+          x={x - 50}
+          y={y - 50}
           width={100}
           height={100}
           opacity={opacity}
@@ -84,6 +84,7 @@ const shapeRegistry = {
           pointerEvents: 'visiblePainted'
         }
       };
+
       return (
         <G
           x={position[0]}
@@ -100,7 +101,6 @@ const shapeRegistry = {
 const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPosition, onSelectShape, onShapeUpdate }) => {
   const [firstPosition, setFirstPosition] = useState<number[]>([0, 0]);
   const lastTap = useRef<number>(Date.now());
-  const target = useRef<SVGElement | null>(null);
 
   const handleStartShouldSetResponder = event => {
     event.preventDefault();
@@ -112,14 +112,8 @@ const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPositi
   };
 
   const handleResponderGrant = (event: any) => {
-    if (shape.type === 'GridDraw.Group') {
-      target.current = event.target.parentElement;
-    } else {
-      target.current = event.target;
-    }
-
     setFirstPosition([event.nativeEvent.pageX, event.nativeEvent.pageY]);
-    onSelectShape(shape.id, target.current);
+    onSelectShape(shape.id);
 
     onShapeUpdate(shape.id, {});
   };
@@ -149,14 +143,6 @@ const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPositi
     onResponderRelease: handleResponseRelease,
   };
 
-  if (selected) {
-    target.current?.setAttribute('stroke', 'hsl(210, 90%, 55%)');
-    target.current?.setAttribute('stroke-width', '3');
-  } else {
-    target.current?.setAttribute('stroke', '');
-    target.current?.setAttribute('stroke-width', '');
-  }
-
   const Component = shapeRegistry[shape.type].render;
 
   return (
@@ -165,6 +151,8 @@ const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPositi
         <Component
           position={selected ? selectedShape.position : shape.position}
           opacity={selected ? selectedShape.opacity : shape.opacity}
+          stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
+          strokeWidth={selected ? 5 : undefined}
           {...shapeProps}
         >
           {shape.childIds.map(childId => {

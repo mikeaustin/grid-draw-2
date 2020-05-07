@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Text, TextInput, Image, TouchableWithoutFeedback } from 'react-native-web';
+import { StyleSheet, View, Text, TextInput } from 'react-native-web';
 
 import Panel from '../shared/Panel';
 import ShapeContext from '../../ShapeContext';
@@ -29,7 +29,7 @@ const Slider = ({ value: defaultValue, onValueChange, onSlidingComplete, ...prop
       style={{ flex: 1, marginTop: 12.5, marginBottom: 12.5 }}
       onChange={handleOnChange}
       onMouseUp={handleMouseUp}
-      {...props}
+    // {...props}
     />
   );
 };
@@ -88,10 +88,9 @@ const PropertiesPanel = ({ selectedShapeId, allShapes, dispatch, onShapeUpdate }
         <ShapeContext.Consumer>
           {selectedShape => (
             <>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Slider
-                  value={allShapes[selectedShapeId]?.opacity}
-                  style={{ flex: 1 }}
+                  value={selectedShape ? selectedShape.opacity : 0}
                   onValueChange={handleSliderChange}
                   onSlidingComplete={handleSlidingComplete}
                 />

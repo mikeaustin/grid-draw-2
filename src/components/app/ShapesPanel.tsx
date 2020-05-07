@@ -1,9 +1,9 @@
-import React, { useState, useReducer, useRef, useMemo, SyntheticEvent, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native-web';
 
 import Panel from '../shared/Panel';
 
-const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch, ...props }) => {
+const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch, onUpdateShape, ...props }) => {
   return (
     <View {...props}>
       {childIds.slice().reverse().map(childId => {
@@ -18,6 +18,7 @@ const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch,
             selected={selected}
             depth={depth}
             dispatch={dispatch}
+            onUpdateShape={onUpdateShape}
           />
         );
       })}
@@ -25,10 +26,12 @@ const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch,
   );
 };
 
-const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, dispatch }) => {
+const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, dispatch, onUpdateShape }) => {
   const shape = allShapes[shapeId];
 
   const handleSelectShape = (shapeId, element) => {
+    onUpdateShape(shapeId, {});
+
     dispatch({ type: 'select-shape', payload: { shapeId, element } });
   };
 
@@ -54,20 +57,13 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
         selectedShapeIds={selectedShapeIds}
         depth={depth + 1}
         dispatch={dispatch}
+        onUpdateShape={onUpdateShape}
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  panel: {
-    width: 256, backgroundColor: '#f3f3f3',
-    borderRightWidth: 1,
-    borderColor: 'hsl(0, 0%, 80%)',
-  }
-});
-
-const ShapesPanel = ({ allShapes, selectedShapeIds, dispatch }) => {
+const ShapesPanel = ({ allShapes, selectedShapeIds, dispatch, onUpdateShape }) => {
   console.log('ShapesPanel()');
 
   return (
@@ -79,6 +75,7 @@ const ShapesPanel = ({ allShapes, selectedShapeIds, dispatch }) => {
         depth={0}
         dispatch={dispatch}
         style={{ paddingVertical: 8 }}
+        onUpdateShape={onUpdateShape}
       />
     </Panel>
   );

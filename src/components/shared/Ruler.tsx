@@ -3,11 +3,28 @@ import { Text, G, Line, Rect } from 'react-native-svg';
 
 const textProps = {
   style: {
-    fontSize: 12
+    fontSize: 10
   }
 };
 
-const Ruler = ({ vertical }: { vertical?: boolean; }) => {
+const lineEndForIndex = index => {
+  switch (true) {
+    case index % 10 === 0:
+      return 5;
+    case index % 5 === 0:
+      return 17;
+    default:
+      return 23;
+  }
+};
+
+type RulerProps = {
+  vertical?: boolean,
+  scale?: number;
+};
+
+const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
+  console.log(scale);
   if (vertical) {
     return (
       <G transform={vertical ? 'translate(30, 0) rotate(90)' : ''}>
@@ -15,14 +32,14 @@ const Ruler = ({ vertical }: { vertical?: boolean; }) => {
         {Array.from({ length: 101 }, (_, index) => (
           <React.Fragment key={index}>
             <Line
-              x1={index * 10 + 30.5}
-              y1={30 - (index % 5 === 0 ? (index % 10 === 0 ? 0 : 10) : 20)}
-              x2={index * 10 + 30.5}
+              x1={(index * 10) * scale + 30.5}
+              y1={30 - lineEndForIndex(index)}
+              x2={(index * 10) * scale + 30.5}
               y2={0}
               stroke="hsl(0, 0%, 80%)"
             />
             {index % 10 === 0 && (
-              <Text x={index * 10 + 35} y={30 - 14 + 8} {...textProps}>{index * 10}</Text>
+              <Text x={(index * 10) * scale + 35} y={30 - 12 + 7} {...textProps}>{index * 10}</Text>
             )}
           </React.Fragment>
         ))}
@@ -43,14 +60,14 @@ const Ruler = ({ vertical }: { vertical?: boolean; }) => {
       {Array.from({ length: 101 }, (_, index) => (
         <React.Fragment key={index}>
           <Line
-            x1={index * 10 + 30.5}
-            y1={index % 5 === 0 ? (index % 10 === 0 ? 0 : 10) : 20}
-            x2={index * 10 + 30.5}
+            x1={(index * 10) * scale + 30.5}
+            y1={lineEndForIndex(index)}
+            x2={(index * 10) * scale + 30.5}
             y2={30}
             stroke="hsl(0, 0%, 80%)"
           />
           {index % 10 === 0 && (
-            <Text x={index * 10 + 35} y={14} {...textProps}>{index * 10}</Text>
+            <Text x={(index * 10) * scale + 35} y={12} {...textProps}>{index * 10}</Text>
           )}
         </React.Fragment>
       ))}
@@ -65,4 +82,4 @@ const Ruler = ({ vertical }: { vertical?: boolean; }) => {
   );
 };
 
-export default Ruler;
+export default React.memo(Ruler);
