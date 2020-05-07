@@ -130,4 +130,4 @@ const Button = ({ icon, value, selected, onDispatch }: ButtonProps) => {
 Toolbar.Group = Group;
 Toolbar.Button = Button;
 
-export default React.memo(Toolbar);
+export default Toolbar;
