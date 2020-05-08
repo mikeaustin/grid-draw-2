@@ -44,6 +44,19 @@ const allShapesReducer = (allShapes: State['allShapes'], action) => {
   const { type, payload } = action;
 
   switch (type) {
+    case 'SET_SHAPE_PROPERTY': {
+      const { shapeId, property, index, value } = payload;
+
+      console.log('SET_SHAPE_PROPERTY', shapeId, property, index, value);
+
+      return {
+        ...allShapes,
+        [shapeId]: {
+          ...allShapes[shapeId],
+          [property]: [value, allShapes[shapeId][property][1]],
+        }
+      };
+    }
     case 'set-shape-position': {
       const { shapeId, position } = payload;
 

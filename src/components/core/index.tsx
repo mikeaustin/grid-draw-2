@@ -1,30 +1,57 @@
 import React from 'react';
-import { View } from 'react-native-web';
+import { StyleSheet, View } from 'react-native-web';
 
-const Spacer = () => {
+const Spacer = ({ size = 'small' }) => {
+  const styles = StyleSheet.create({
+    small: {
+      minWidth: 5,
+      minHeight: 5,
+    },
+    medium: {
+      minWidth: 10,
+      minHeight: 10,
+    },
+  });
   return (
-    <View style={{ minWidth: 5, minHeight: 5 }} />
+    <View style={styles[size]} />
   );
 };
 
-const Divider = () => {
+type DividerProps = {
+  spacerSize?: string,
+};
+
+const Divider = ({ spacerSize = 'small' }: DividerProps) => {
   return (
     <>
-      <Spacer />
-      < View style={{ background: '#e0e0e0', minWidth: 1, minHeight: 1 }} />
-      < Spacer />
+      <Spacer size={spacerSize} />
+      <View style={{ background: '#e0e0e0', minWidth: 1, minHeight: 1 }} />
+      <Spacer size={spacerSize} />
     </>
   );
 };
 
-const List = ({ divider, children }) => {
-  const Separator = divider ? Divider : Spacer;
+type ListProps = {
+  horizontal?: boolean,
+  spacerSize?: string,
+  divider?: boolean,
+  children: React.ReactNode,
+};
+
+const styles = StyleSheet.create({
+  horizontal: {
+    flexDirection: 'row',
+  }
+});
+
+const List = ({ horizontal, spacerSize = 'small', divider, children }: ListProps) => {
+  const separator = divider ? <Divider spacerSize={spacerSize} /> : <Spacer size={spacerSize} />;
 
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={horizontal && styles.horizontal}>
       {React.Children.map(children, (child, index) => (
         <>
-          {index > 0 && <Separator />}
+          {index > 0 && separator}
           {child}
         </>
       ))}
