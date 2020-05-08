@@ -42,7 +42,7 @@ type FieldProps = {
 };
 
 const Field = React.memo(({ label, value, ...props }: FieldProps) => {
-  console.log('Field()', value);
+  // console.log('Field()', value);
 
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -53,28 +53,31 @@ const Field = React.memo(({ label, value, ...props }: FieldProps) => {
   );
 });
 
-type InputFieldProps = {
-  label: string,
-  shape: any,
-  property: string,
-  index: number,
-  dispatch: Function,
-};
+const withProperty = (property, index) => Component => ({ shape, ...props }) => {
+  const value = shape[property][index];
 
-const withProperty = property => Component => ({ ...props }) => {
   return (
-    <Component property={property} {...props} />
+    <Component property={property} index={index} shapeId={shape.id} value={value} {...props} />
   );
 };
 
-const InputField = React.memo(({ label, shape, property, index, dispatch }: InputFieldProps) => {
-  console.log('InputField()', label);
+type InputFieldProps = {
+  label: string,
+  value: any,
+  property: string,
+  index: number,
+  shapeId: number,
+  dispatch: Function,
+};
 
-  const [value, setValue] = useState(shape ? shape[property][index] : 0);
+const InputField = React.memo(({ label, property, index, value: defaultValue, shapeId, dispatch }: InputFieldProps) => {
+  // console.log('InputField()', label);
+
+  const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
-    setValue(shape ? shape[property][index] : 0);
-  }, [shape && shape[property]]);
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const handleChangeText = useCallback((text) => setValue(text), []);
 
@@ -82,13 +85,13 @@ const InputField = React.memo(({ label, shape, property, index, dispatch }: Inpu
     dispatch({
       type: 'SET_SHAPE_PROPERTY',
       payload: {
-        shapeId: shape.id,
+        shapeId: shapeId,
         property,
         index,
         value: Number(event.nativeEvent.text)
       }
     });
-  }, [shape && shape[property]]);
+  }, [defaultValue]);
 
   return (
     <Field label={label} value={value} onChangeText={handleChangeText} onBlur={handleBlur} />
@@ -126,12 +129,22 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
                   onValueChange={handleSliderChange}
                   onSlidingComplete={handleSlidingComplete}
                 />
-                <Spacer />
+                <Spacer size="medium" />
                 <NumericInput value={selectedShape ? selectedShape.opacity : 0} />
               </View>
-              <Spacer />
-              <Field label="X" value={selectedShape ? selectedShape.position[0] : 0} />
-              <InputField label="X" shape={selectedShape} property="position" index={0} dispatch={dispatch} />
+              <Spacer size="medium" />
+              <View style={{ flexDirection: 'row' }}>
+                <Field label="X" value={selectedShape ? selectedShape.position[0] : 0} />
+                <Spacer size="medium" />
+                <InputField
+                  label="X"
+                  property="position"
+                  index={0}
+                  shapeId={selectedShapeId}
+                  value={selectedShape ? selectedShape.position[0] : 0}
+                  dispatch={dispatch}
+                />
+              </View>
             </>
           )}
         </ShapeContext.Consumer>
