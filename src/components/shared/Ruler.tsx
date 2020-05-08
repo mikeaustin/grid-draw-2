@@ -24,7 +24,6 @@ type RulerProps = {
 };
 
 const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
-  console.log(scale);
   if (vertical) {
     return (
       <G transform={vertical ? 'translate(30, 0) rotate(90)' : ''}>

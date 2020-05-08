@@ -1,7 +1,7 @@
-import React, { useState, useReducer, useCallback, useMemo } from 'react';
+import React, { useState, useReducer, useCallback, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
-import { initialState, stateReducer } from './reducers/allShapesReducer';
+import { State, initialState, stateReducer } from './reducers/allShapesReducer';
 import ShapeContext from './ShapeContext';
 
 import AppCanvas from './components/app/AppCanvas';
@@ -16,10 +16,20 @@ const styles = StyleSheet.create({
 });
 
 function App() {
+  console.log('App()');
+
   const [state, dispatch] = useReducer(stateReducer, initialState);
-  const [selectedShape, setSelectedShape] = useState(null);
+  const [selectedShape, setSelectedShape] = useState<State['allShapes'][0] | null>(null);
 
   const stateView = useMemo(() => ({ ...state }), [state]);
+
+  useEffect(() => {
+    const newSelectedShape = state.allShapes[state.selectedShapeIds[0]];
+
+    if (newSelectedShape) {
+      setSelectedShape(newSelectedShape);
+    }
+  }, [state.allShapes]);
 
   const handleShapeUpdate = useCallback((shapeId, newSelectedShape) => {
     setSelectedShape({
