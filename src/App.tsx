@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 });
 
 function App() {
-  console.log('App()');
+  // console.log('App()');
 
   const [state, dispatch] = useReducer(stateReducer, initialState);
   const [selectedShape, setSelectedShape] = useState<State['allShapes'][0] | null>(null);

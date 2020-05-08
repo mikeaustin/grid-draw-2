@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { View } from 'react-native-web';
 import { G, Ellipse, Rect } from 'react-native-svg';
 import JsxParser from 'react-jsx-parser';
@@ -98,7 +98,37 @@ const shapeRegistry = {
   }
 };
 
-const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPosition, onSelectShape, onShapeUpdate }) => {
+const withShapeContext = Component => ({ shape, selected, ...props }) => {
+  const selectedShape = useContext(ShapeContext);
+
+  return (
+    <Component selectedShape={selected ? selectedShape : shape} shape={shape} selected={selected} {...props} />
+  );
+};
+
+type CanvasShapeProps = {
+  selectedShape?: any,
+  shape: any,
+  selected: boolean,
+  allShapes: any,
+  selectedShapeIds: number[],
+  onSetPosition: Function,
+  onSelectShape: Function,
+  onShapeUpdate: Function,
+};
+
+const _CanvasShape = ({
+  selectedShape,
+  shape,
+  selected,
+  allShapes,
+  selectedShapeIds,
+  onSetPosition,
+  onSelectShape,
+  onShapeUpdate
+}: CanvasShapeProps) => {
+  // console.log('CanvasShape()', shape.id, selectedShape);
+
   const [firstPosition, setFirstPosition] = useState<number[]>([0, 0]);
   const lastTap = useRef<number>(Date.now());
 
@@ -146,36 +176,34 @@ const CanvasShape = ({ shape, selected, allShapes, selectedShapeIds, onSetPositi
   const Component = shapeRegistry[shape.type].render;
 
   return (
-    <ShapeContext.Consumer>
-      {selectedShape => (
-        <Component
-          position={selected ? selectedShape.position : shape.position}
-          opacity={selected ? selectedShape.opacity : shape.opacity}
-          stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
-          strokeWidth={selected ? 5 : undefined}
-          {...shapeProps}
-        >
-          {shape.childIds.map(childId => {
-            const shape = allShapes[childId];
-            const selected = selectedShapeIds.includes(childId);
+    <Component
+      position={selectedShape.position}
+      opacity={selectedShape.opacity}
+      stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
+      strokeWidth={selected ? 5 : undefined}
+      {...shapeProps}
+    >
+      {shape.childIds.map(childId => {
+        const shape = allShapes[childId];
+        const selected = selectedShapeIds.includes(childId);
 
-            return (
-              <CanvasShape
-                key={childId}
-                shape={shape}
-                selected={selected}
-                allShapes={allShapes}
-                selectedShapeIds={selectedShapeIds}
-                onSetPosition={onSetPosition}
-                onSelectShape={onSelectShape}
-                onShapeUpdate={onShapeUpdate}
-              />
-            );
-          })}
-        </Component>
-      )}
-    </ShapeContext.Consumer>
+        return (
+          <CanvasShape
+            key={childId}
+            shape={shape}
+            selected={selected}
+            allShapes={allShapes}
+            selectedShapeIds={selectedShapeIds}
+            onSetPosition={onSetPosition}
+            onSelectShape={onSelectShape}
+            onShapeUpdate={onShapeUpdate}
+          />
+        );
+      })}
+    </Component>
   );
 };
 
-export default React.memo(CanvasShape);
+const CanvasShape = withShapeContext(React.memo(_CanvasShape));
+
+export default CanvasShape;
