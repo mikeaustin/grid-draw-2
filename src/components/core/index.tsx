@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
 const Spacer = ({ size = 'small' }) => {
@@ -59,8 +59,38 @@ const List = ({ horizontal, spacerSize = 'small', divider, children }: ListProps
   );
 };
 
+const Slider = ({ value: defaultValue, onValueChange, onSlidingComplete, ...props }) => {
+  const [value, setValue] = useState(defaultValue || 0);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
+
+  const handleOnChange = event => {
+    setValue(event.target.value / 100);
+    onValueChange(event.target.value / 100);
+  };
+
+  const handleMouseUp = event => {
+    onSlidingComplete(value);
+  };
+
+  return (
+    <input
+      type="range"
+      min={0}
+      value={value * 100}
+      style={{ flex: 1, marginTop: 12.5, marginBottom: 12.5 }}
+      onChange={handleOnChange}
+      onMouseUp={handleMouseUp}
+      {...props}
+    />
+  );
+};
+
 export {
   Spacer,
   Divider,
   List,
+  Slider,
 };

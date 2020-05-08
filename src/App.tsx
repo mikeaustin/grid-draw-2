@@ -45,7 +45,6 @@ function App() {
           <AppCanvas state={state} dispatch={dispatch} scale={0.5} onShapeUpdate={handleShapeUpdate} />
           <View style={{ background: '#d0d0d0', minWidth: 1 }} />
           <PropertiesPanel
-            allShapes={state.allShapes}
             selectedShapeId={state.selectedShapeIds[0]}
             dispatch={dispatch}
             onShapeUpdate={handleShapeUpdate}

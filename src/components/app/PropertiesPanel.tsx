@@ -3,36 +3,7 @@ import { StyleSheet, View, Text, TextInput } from 'react-native-web';
 
 import Panel from '../shared/Panel';
 import ShapeContext from '../../ShapeContext';
-import { Spacer } from '../core';
-
-const Slider = ({ value: defaultValue, onValueChange, onSlidingComplete, ...props }) => {
-  const [value, setValue] = useState(defaultValue || 0);
-
-  useEffect(() => {
-    setValue(defaultValue);
-  }, [defaultValue]);
-
-  const handleOnChange = event => {
-    setValue(event.target.value / 100);
-    onValueChange(event.target.value / 100);
-  };
-
-  const handleMouseUp = event => {
-    onSlidingComplete(value);
-  };
-
-  return (
-    <input
-      type="range"
-      min={0}
-      value={value * 100}
-      style={{ flex: 1, marginTop: 12.5, marginBottom: 12.5 }}
-      onChange={handleOnChange}
-      onMouseUp={handleMouseUp}
-    // {...props}
-    />
-  );
-};
+import { Spacer, Slider } from '../core';
 
 const NumericInput = ({ value }) => {
   const styles = StyleSheet.create({
@@ -63,7 +34,23 @@ const NumericInput = ({ value }) => {
   );
 };
 
-const PropertiesPanel = ({ selectedShapeId, allShapes, dispatch, onShapeUpdate }) => {
+const Field = ({ label, value }) => {
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <Text>{label}</Text>
+      <Spacer />
+      <NumericInput value={value} />
+    </View>
+  );
+};
+
+const InputField = ({ label, shape, property, index }) => {
+  return (
+    <Field label={label} value={shape ? shape[property][index] : 0} />
+  );
+};
+
+const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
   console.log('PropertiesPanel()');
 
   const handleSliderChange = opacity => {
@@ -98,11 +85,8 @@ const PropertiesPanel = ({ selectedShapeId, allShapes, dispatch, onShapeUpdate }
                 <NumericInput value={selectedShape ? selectedShape.opacity : 0} />
               </View>
               <Spacer />
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text>X</Text>
-                <Spacer />
-                <NumericInput value={selectedShape ? selectedShape.position[0] : 0} />
-              </View>
+              <Field label="X" value={selectedShape ? selectedShape.position[0] : 0} />
+              <InputField label="X" shape={selectedShape} property="position" index={0} />
             </>
           )}
         </ShapeContext.Consumer>
