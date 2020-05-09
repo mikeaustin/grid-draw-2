@@ -37,6 +37,7 @@ const shapeRegistry = {
   'GridDraw.Shape.Rect': {
     render: ({
       position: [x, y],
+      angle,
       opacity,
       ...props
     }) => {
@@ -46,6 +47,7 @@ const shapeRegistry = {
           y={y - 50}
           width={100}
           height={100}
+          transform={`rotate(${angle} ${(x - 50) + 100 / 2} ${(y - 50) + 100 / 2})`}
           opacity={opacity}
           {...props}
         />
@@ -66,11 +68,11 @@ const shapeRegistry = {
           showWarnings={true}
           jsx={`
             <Ellipse
-              cx={x}
-              cy={y}
-              rx={rx}
-              ry={ry}
-              onPress={test}
+              cx={ x }
+              cy={ y }
+              rx={ rx }
+              ry={ ry }
+              onPress={ test }
             />
           `}
         />
@@ -177,8 +179,7 @@ const _CanvasShape = ({
 
   return (
     <Component
-      position={selectedShape.position}
-      opacity={selectedShape.opacity}
+      {...selectedShape}
       stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
       strokeWidth={selected ? 5 : undefined}
       {...shapeProps}
@@ -206,4 +207,4 @@ const _CanvasShape = ({
 
 const CanvasShape = withShapeContext(React.memo(_CanvasShape));
 
-export default CanvasShape;
+export default CanvasShape;;

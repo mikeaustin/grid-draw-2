@@ -25,12 +25,17 @@ const styles = StyleSheet.create({
   }
 });
 
-const Toolbar = ({ children, onButtonPress }) => {
+type ToolbarProps = {
+  children: React.ReactNode,
+  onButtonPress?: Function,
+};
+
+const Toolbar = ({ children, onButtonPress }: ToolbarProps) => {
   return (
     <View style={styles.toolbar}>
       <List horizontal divider>
         {React.Children.map(children, child => (
-          React.cloneElement(child, {
+          React.isValidElement(child) && React.cloneElement(child, {
             onButtonPress,
           })
         ))}
@@ -54,7 +59,7 @@ const equals = (a, b) => {
 };
 
 type GroupProps = {
-  title: string,
+  title?: string,
   name?: string,
   selectedValue?: any,
   children: React.ReactNode,
@@ -75,8 +80,12 @@ const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupPro
           </>
         ))}
       </View>
-      <Spacer size="xsmall" />
-      <Text style={{ fontSize: 12 }}>{title}</Text>
+      {title && (
+        <>
+          <Spacer size="xsmall" />
+          <Text style={{ fontSize: 12 }}>{title}</Text>
+        </>
+      )}
     </View>
   );
 };

@@ -1,115 +1,9 @@
 import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native-web';
-import expr from 'property-expr';
 
+import { Spacer, Divider, Slider, List, Form, NumericInput, Field, InputField } from '../core';
 import Panel from '../shared/Panel';
 import ShapeContext from '../../ShapeContext';
-import { Spacer, Divider, Slider, List } from '../core';
-
-const FormContext = React.createContext<any>(null);
-
-const Form = ({ dataSource, children, onPropertyChange, ...props }) => {
-  const value = useMemo<any>(() => ({
-    dataSource,
-    onPropertyChange: (name: string, value: any) => {
-      onPropertyChange(name, value);
-    }
-  }), [dataSource, onPropertyChange]);
-
-  return (
-    <FormContext.Provider value={value}>
-      <View {...props}>
-        {children}
-      </View>
-    </FormContext.Provider>
-  );
-};
-
-const styles = StyleSheet.create({
-  numericInput: {
-    backgroundColor: 'white',
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: '#c0c0c0',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 5,
-    height: 30,
-  },
-  input: {
-    outlineWidth: 0,
-    width: 40,
-    marginRight: 3,
-    marginTop: -1,
-    textAlign: 'right'
-  }
-});
-
-const NumericInput = ({ value, ...props }) => {
-  return (
-    <View style={styles.numericInput}>
-      <TextInput selectTextOnFocus value={value} style={styles.input} {...props} />
-      <Text>px</Text>
-    </View>
-  );
-};
-
-type FieldProps = {
-  label?: string,
-  value: any,
-  editable?: boolean,
-  onChangeText?: Function,
-  onBlur?: Function,
-};
-
-const Field = React.memo(({ label, value, ...props }: FieldProps) => {
-  // console.log('Field()', value);
-
-  return (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      {label && (
-        <>
-          <Text>{label}</Text>
-          <Spacer size="xsmall" />
-        </>
-      )}
-      <NumericInput value={value} {...props} />
-    </View>
-  );
-});
-
-type InputFieldProps = {
-  label?: string,
-  property: string,
-  value?: any,
-  editable?: boolean,
-};
-
-const InputField = React.memo(({ label, property, value: defaultValue, editable, ...props }: InputFieldProps) => {
-  // console.log('InputField()', label);
-
-  const { dataSource, onPropertyChange } = useContext(FormContext);
-  const propertyValue = dataSource ? expr.getter(property)(dataSource) : 0;
-  const [value, setValue] = useState(propertyValue);
-
-  useEffect(() => {
-    setValue(propertyValue);
-  }, [propertyValue]);
-
-  const handleChangeText = useCallback((text) => {
-    setValue(text);
-  }, []);
-
-  const handleBlur = useCallback(event => {
-    if (editable) {
-      onPropertyChange(property, Number(event.nativeEvent.text));
-    }
-  }, [propertyValue]);
-
-  return (
-    <Field label={label} value={value} editable={editable} onChangeText={handleChangeText} onBlur={handleBlur} {...props} />
-  );
-});
 
 const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
   console.log('PropertiesPanel()', selectedShapeId);
@@ -122,10 +16,11 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
 
   const handleSlidingComplete = opacity => {
     dispatch({
-      type: 'set-shape-opacity',
+      type: 'SET_SHAPE_PROPERTY',
       payload: {
         shapeId: selectedShapeId,
-        opacity
+        property: 'opacity',
+        value: opacity,
       }
     });
   };

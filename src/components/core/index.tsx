@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
+import Form from './Form';
+import NumericInput from './NumericInput';
+import Field from './Field';
+import InputField from './InputField';
+
 type Size = 'none' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 
 type SpacerProps = {
@@ -113,4 +118,8 @@ export {
   Divider,
   List,
   Slider,
+  Form,
+  NumericInput,
+  Field,
+  InputField,
 };
