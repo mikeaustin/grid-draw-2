@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 const NumericInput = ({ value, ...props }) => {
   return (
     <View style={styles.numericInput}>
-      <TextInput value={value} style={styles.input} {...props} />
+      <TextInput selectTextOnFocus value={value} style={styles.input} {...props} />
       <Text>px</Text>
     </View>
   );
@@ -83,17 +83,18 @@ const InputField = React.memo(({ label, property, value: defaultValue }: InputFi
   // console.log('InputField()', label);
 
   const { dataSource, onPropertyChange } = useContext(FormContext);
-  const [value, setValue] = useState(dataSource ? dataSource[property][0] : '');
+  const propertyValue = dataSource ? expr.getter(property)(dataSource) : 0;
+  const [value, setValue] = useState(propertyValue);
 
   useEffect(() => {
-    setValue(dataSource ? dataSource[property][0] : '');
-  }, [dataSource ? dataSource[property][0] : '']);
+    setValue(propertyValue);
+  }, [propertyValue]);
 
   const handleChangeText = useCallback((text) => setValue(text), []);
 
   const handleBlur = useCallback(event => {
     onPropertyChange(property, Number(event.nativeEvent.text));
-  }, [dataSource ? dataSource[property][0] : '']);
+  }, [propertyValue]);
 
   return (
     <Field label={label} value={value} onChangeText={handleChangeText} onBlur={handleBlur} />
@@ -149,12 +150,9 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
             </View>
             <Spacer size="medium" />
             <View style={{ flexDirection: 'row' }}>
-              <Field label="X" value={selectedShape ? selectedShape.position[0] : 0} />
+              <InputField label="X" property="position[0]" />
               <Spacer size="medium" />
-              <InputField
-                label="X"
-                property="position"
-              />
+              <InputField label="Y" property="position[1]" />
             </View>
           </Form>
         )}

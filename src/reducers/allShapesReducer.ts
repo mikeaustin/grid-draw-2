@@ -1,3 +1,5 @@
+import expr from 'property-expr';
+
 type _State = {
   currentTool: {
     tool: string,
@@ -40,6 +42,21 @@ const initialState: State = {
   }
 };
 
+const clone = value => {
+  if (Array.isArray(value)) {
+    return value.map(item => clone(item));
+  }
+
+  if (typeof value === 'object') {
+    return Object.entries(value).reduce((acc, [key, value]) => ({
+      ...acc,
+      [key]: clone(value)
+    }), {});
+  }
+
+  return value;
+};
+
 const allShapesReducer = (allShapes: State['allShapes'], action) => {
   const { type, payload } = action;
 
@@ -49,11 +66,14 @@ const allShapesReducer = (allShapes: State['allShapes'], action) => {
 
       console.log('SET_SHAPE_PROPERTY', shapeId, property, index, value);
 
+      let newValue = clone(allShapes[shapeId]);
+      expr.setter(property)(newValue, value);
+
       return {
         ...allShapes,
         [shapeId]: {
           ...allShapes[shapeId],
-          [property]: [value, allShapes[shapeId][property][1]],
+          ...newValue,
         }
       };
     }
