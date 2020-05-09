@@ -1,32 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
 
-import Spacer from '../shared/Spacer';
-
-const Divider = () => {
-  return (
-    <>
-      <Spacer />
-      <View style={{ background: '#e0e0e0', minWidth: 1, minHeight: 1 }} />
-      <Spacer />
-    </>
-  );
-};
-
-const List = ({ divider, children }) => {
-  const Separator = divider ? Divider : Spacer;
-
-  return (
-    <View style={{ flexDirection: 'row' }}>
-      {React.Children.map(children, (child, index) => (
-        <>
-          {index > 0 && <Separator />}
-          {child}
-        </>
-      ))}
-    </View>
-  );
-};
+import { Spacer, Divider, List } from '../core';
 
 const styles = StyleSheet.create({
   button: {
@@ -53,7 +28,7 @@ const styles = StyleSheet.create({
 const Toolbar = ({ children, onButtonPress }) => {
   return (
     <View style={styles.toolbar}>
-      <List divider>
+      <List horizontal divider>
         {React.Children.map(children, child => (
           React.cloneElement(child, {
             onButtonPress,
@@ -92,7 +67,7 @@ const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupPro
       <View style={{ flexDirection: 'row' }}>
         {React.Children.map(children, (child, index) => (
           <>
-            {index > 0 && <Spacer />}
+            {index > 0 && <Spacer size="xsmall" />}
             {React.isValidElement(child) && React.cloneElement(child, {
               selected: child.props.selected || selectedValue && equals(child.props.value, selectedValue),
               onDispatch: value => onButtonPress(name, value)
@@ -100,7 +75,7 @@ const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupPro
           </>
         ))}
       </View>
-      <Spacer />
+      <Spacer size="xsmall" />
       <Text style={{ fontSize: 12 }}>{title}</Text>
     </View>
   );

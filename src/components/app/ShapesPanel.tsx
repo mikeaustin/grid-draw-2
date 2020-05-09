@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native-web';
 
+import { List, Divider } from '../core';
 import Panel from '../shared/Panel';
 
 const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch, onUpdateShape, ...props }) => {
   return (
-    <View {...props}>
+    <List {...props}>
       {childIds.slice().reverse().map(childId => {
         const selected = selectedShapeIds.includes(childId);
 
@@ -22,7 +23,7 @@ const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch,
           />
         );
       })}
-    </View>
+    </List>
   );
 };
 

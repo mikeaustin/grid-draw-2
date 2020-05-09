@@ -4,7 +4,7 @@ import expr from 'property-expr';
 
 import Panel from '../shared/Panel';
 import ShapeContext from '../../ShapeContext';
-import { Spacer, Slider } from '../core';
+import { Spacer, Divider, Slider, List } from '../core';
 
 const FormContext = React.createContext<any>(null);
 
@@ -55,8 +55,9 @@ const NumericInput = ({ value, ...props }) => {
 };
 
 type FieldProps = {
-  label: string,
+  label?: string,
   value: any,
+  editable?: boolean,
   onChangeText?: Function,
   onBlur?: Function,
 };
@@ -66,20 +67,25 @@ const Field = React.memo(({ label, value, ...props }: FieldProps) => {
 
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <Text>{label}</Text>
-      <Spacer />
+      {label && (
+        <>
+          <Text>{label}</Text>
+          <Spacer size="xsmall" />
+        </>
+      )}
       <NumericInput value={value} {...props} />
     </View>
   );
 });
 
 type InputFieldProps = {
-  label: string,
+  label?: string,
   property: string,
   value?: any,
+  editable?: boolean,
 };
 
-const InputField = React.memo(({ label, property, value: defaultValue }: InputFieldProps) => {
+const InputField = React.memo(({ label, property, value: defaultValue, editable, ...props }: InputFieldProps) => {
   // console.log('InputField()', label);
 
   const { dataSource, onPropertyChange } = useContext(FormContext);
@@ -90,14 +96,18 @@ const InputField = React.memo(({ label, property, value: defaultValue }: InputFi
     setValue(propertyValue);
   }, [propertyValue]);
 
-  const handleChangeText = useCallback((text) => setValue(text), []);
+  const handleChangeText = useCallback((text) => {
+    setValue(text);
+  }, []);
 
   const handleBlur = useCallback(event => {
-    onPropertyChange(property, Number(event.nativeEvent.text));
+    if (editable) {
+      onPropertyChange(property, Number(event.nativeEvent.text));
+    }
   }, [propertyValue]);
 
   return (
-    <Field label={label} value={value} onChangeText={handleChangeText} onBlur={handleBlur} />
+    <Field label={label} value={value} editable={editable} onChangeText={handleChangeText} onBlur={handleBlur} {...props} />
   );
 });
 
@@ -138,26 +148,51 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
     <Panel title="Properties">
       <ShapeContext.Consumer>
         {selectedShape => (
-          <Form dataSource={selectedShape} style={{ padding: 15 }} onPropertyChange={handlePropertyChange}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Slider
-                value={selectedShape ? selectedShape.opacity : 0}
-                onValueChange={handleSliderChange}
-                onSlidingComplete={handleSlidingComplete}
-              />
-              <Spacer size="medium" />
-              <NumericInput value={selectedShape ? selectedShape.opacity : 0} />
-            </View>
-            <Spacer size="medium" />
-            <View style={{ flexDirection: 'row' }}>
-              <InputField label="X" property="position[0]" />
-              <Spacer size="medium" />
-              <InputField label="Y" property="position[1]" />
-            </View>
+          <Form dataSource={selectedShape} style={{ padding: 5 }} onPropertyChange={handlePropertyChange}>
+            <List divider spacerSize="xsmall">
+              <Section title="Position">
+                <List horizontal spacerSize="large">
+                  <InputField label="X" property="position[0]" editable={selectedShape} />
+                  <InputField label="Y" property="position[1]" editable={selectedShape} />
+                </List>
+              </Section>
+              <Section title="Opacity">
+                <List horizontal spacerSize="small">
+                  <Slider
+                    value={selectedShape ? selectedShape.opacity : 0}
+                    disabled={!selectedShape}
+                    onValueChange={handleSliderChange}
+                    onSlidingComplete={handleSlidingComplete}
+                  />
+                  <InputField property="opacity" editable={selectedShape} />
+                </List>
+              </Section>
+              <Section title="Angle">
+                <List horizontal spacerSize="small">
+                  <Slider
+                    value={selectedShape ? selectedShape.opacity : 0}
+                    disabled={!selectedShape}
+                    onValueChange={handleSliderChange}
+                    onSlidingComplete={handleSlidingComplete}
+                  />
+                  <InputField property="angle" />
+                </List>
+              </Section>
+            </List>
           </Form>
         )}
       </ShapeContext.Consumer>
     </Panel>
+  );
+};
+
+const Section = ({ title, children }) => {
+  return (
+    <View style={{ padding: 10 }}>
+      <Text style={{ fontSize: 12, fontWeight: 700 }}>{title}</Text>
+      <Spacer size="small" />
+      {children}
+    </View>
   );
 };
 

@@ -1,27 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
-const Spacer = ({ size = 'small' }) => {
+type Size = 'none' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
+
+type SpacerProps = {
+  size: Size;
+};
+
+const Spacer = ({ size }: SpacerProps) => {
   const styles = StyleSheet.create({
-    small: {
+    none: {
+      minWidth: 0,
+      minHeight: 0,
+    },
+    xsmall: {
       minWidth: 5,
       minHeight: 5,
     },
-    medium: {
+    small: {
       minWidth: 10,
       minHeight: 10,
     },
+    medium: {
+      minWidth: 15,
+      minHeight: 15,
+    },
+    large: {
+      minWidth: 20,
+      minHeight: 20,
+    },
   });
+
   return (
     <View style={styles[size]} />
   );
 };
 
 type DividerProps = {
-  spacerSize?: string,
+  spacerSize?: Size,
 };
 
-const Divider = ({ spacerSize = 'small' }: DividerProps) => {
+const Divider = ({ spacerSize = 'none' }: DividerProps) => {
   return (
     <>
       <Spacer size={spacerSize} />
@@ -33,8 +52,9 @@ const Divider = ({ spacerSize = 'small' }: DividerProps) => {
 
 type ListProps = {
   horizontal?: boolean,
-  spacerSize?: string,
+  spacerSize?: Size,
   divider?: boolean,
+  style?: any,
   children: React.ReactNode,
 };
 
@@ -44,11 +64,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const List = ({ horizontal, spacerSize = 'small', divider, children }: ListProps) => {
+const List = ({ horizontal, spacerSize = 'none', divider, style, children, ...props }: ListProps) => {
   const separator = divider ? <Divider spacerSize={spacerSize} /> : <Spacer size={spacerSize} />;
 
   return (
-    <View style={horizontal && styles.horizontal}>
+    <View style={[horizontal && styles.horizontal, style]} {...props}>
       {React.Children.map(children, (child, index) => (
         <>
           {index > 0 && separator}
