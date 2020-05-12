@@ -3,13 +3,12 @@ import { StyleSheet, View, Text, TextInput } from 'react-native-web';
 
 import FormContext from './FormContext';
 
-const Form = ({ dataSource, children, onPropertyChange, ...props }) => {
+const Form = ({ children, onPropertyChange, ...props }) => {
   const value = useMemo<any>(() => ({
-    dataSource,
     onPropertyChange: (name: string, value: any) => {
       onPropertyChange(name, value);
     }
-  }), [dataSource, onPropertyChange]);
+  }), [onPropertyChange]);
 
   return (
     <FormContext.Provider value={value}>

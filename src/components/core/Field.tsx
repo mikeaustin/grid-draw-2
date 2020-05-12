@@ -11,7 +11,7 @@ type FieldProps = {
   onBlur?: Function,
 };
 
-const Field = React.memo(({ label, value, ...props }: FieldProps) => {
+const Field = ({ label, value, ...props }: FieldProps) => {
   // console.log('Field()', value);
 
   return (
@@ -25,6 +25,6 @@ const Field = React.memo(({ label, value, ...props }: FieldProps) => {
       <NumericInput value={value} {...props} />
     </View>
   );
-});
+};
 
-export default Field;
+export default React.memo(Field);

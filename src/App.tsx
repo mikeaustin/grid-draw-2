@@ -15,11 +15,21 @@ const styles = StyleSheet.create({
   },
 });
 
+const setSelectedShape = (state, selectedShape, eventType) => {
+  const event = new CustomEvent(eventType, {
+    detail: {
+      ...state.allShapes[state.selectedShapeIds[0]],
+      ...selectedShape
+    }
+  });
+
+  document.dispatchEvent(event);
+};
+
 function App() {
   // console.log('App()');
 
   const [state, dispatch] = useReducer(stateReducer, initialState);
-  const [selectedShape, setSelectedShape] = useState<State['allShapes'][0] | null>(null);
 
   const stateView = useMemo(() => ({ ...state }), [state]);
 
@@ -27,19 +37,21 @@ function App() {
     const newSelectedShape = state.allShapes[state.selectedShapeIds[0]];
 
     if (newSelectedShape) {
-      setSelectedShape(newSelectedShape);
+      setSelectedShape(state, newSelectedShape, 'position');
     }
   }, [state.allShapes]);
 
   const handleShapeUpdate = useCallback((shapeId, newSelectedShape) => {
-    setSelectedShape({
+    const eventType = Object.keys(newSelectedShape)[0];
+
+    setSelectedShape(state, {
       ...state.allShapes[shapeId],
       ...newSelectedShape
-    });
+    }, eventType);
   }, [state.allShapes]);
 
   return (
-    <ShapeContext.Provider value={selectedShape}>
+    <ShapeContext.Provider value={null}>
       <View style={styles.app}>
         <MainToolbar currentTool={state.currentTool} state={state} dispatch={dispatch} />
         <View style={{ flex: 1, flexDirection: 'row' }}>

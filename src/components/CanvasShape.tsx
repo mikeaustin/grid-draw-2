@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext, useEffect, useCallback } from 'react';
 import { View } from 'react-native-web';
 import { G, Ellipse, Rect } from 'react-native-svg';
 import JsxParser from 'react-jsx-parser';
@@ -20,6 +20,7 @@ const shapeRegistry = {
     render: ({
       position: [x, y],
       opacity,
+      childIds,
       ...props
     }) => {
       return (
@@ -39,6 +40,7 @@ const shapeRegistry = {
       position: [x, y],
       angle,
       opacity,
+      childIds,
       ...props
     }) => {
       return (
@@ -80,7 +82,7 @@ const shapeRegistry = {
     }
   },
   'GridDraw.Shape.Group': {
-    render: ({ position, opacity, ...props }) => {
+    render: ({ position, opacity, childIds, ...props }) => {
       const groupProps = {
         style: {
           pointerEvents: 'visiblePainted'
@@ -100,14 +102,6 @@ const shapeRegistry = {
   }
 };
 
-const withShapeContext = Component => ({ shape, selected, ...props }) => {
-  const selectedShape = useContext(ShapeContext);
-
-  return (
-    <Component selectedShape={selected ? selectedShape : shape} shape={shape} selected={selected} {...props} />
-  );
-};
-
 type CanvasShapeProps = {
   selectedShape?: any,
   shape: any,
@@ -119,8 +113,8 @@ type CanvasShapeProps = {
   onShapeUpdate: Function,
 };
 
-const _CanvasShape = ({
-  selectedShape,
+const CanvasShape = ({
+  // selectedShape,
   shape,
   selected,
   allShapes,
@@ -129,10 +123,26 @@ const _CanvasShape = ({
   onSelectShape,
   onShapeUpdate
 }: CanvasShapeProps) => {
-  // console.log('CanvasShape()', shape.id, selectedShape);
+  console.log('CanvasShape()', shape.id);
 
   const [firstPosition, setFirstPosition] = useState<number[]>([0, 0]);
+  const [selectedShape, setSelectedShape] = useState<any | null>(null);
   const lastTap = useRef<number>(Date.now());
+
+  useEffect(() => {
+    if (selected) {
+      document.addEventListener('position', handleShapeMove);
+    } else {
+      setSelectedShape(null);
+      document.removeEventListener('position', handleShapeMove);
+    }
+  }, [selected]);
+
+  const handleShapeMove = useCallback(event => {
+    // console.log('handleShapeMove()', shape.id, event);
+
+    setSelectedShape(event.detail);
+  }, []);
 
   const handleStartShouldSetResponder = event => {
     event.preventDefault();
@@ -144,10 +154,17 @@ const _CanvasShape = ({
   };
 
   const handleResponderGrant = (event: any) => {
+    console.log('setFirstPosition()');
     setFirstPosition([event.nativeEvent.pageX, event.nativeEvent.pageY]);
+    console.log('onSelectShape()');
     onSelectShape(shape.id);
 
-    onShapeUpdate(shape.id, {});
+    setTimeout(() => {
+      console.log('onShapeUpdate()');
+      onShapeUpdate(shape.id, {
+        position: shape.position,
+      });
+    }, 0);
   };
 
   const handleResponderMove = event => {
@@ -160,6 +177,8 @@ const _CanvasShape = ({
   };
 
   const handleResponseRelease = event => {
+    console.log('----------');
+
     onSetPosition(shape.id, [
       shape.position[0] + (event.nativeEvent.pageX - firstPosition[0]),
       shape.position[1] + (event.nativeEvent.pageY - firstPosition[1]),
@@ -179,7 +198,7 @@ const _CanvasShape = ({
 
   return (
     <Component
-      {...selectedShape}
+      {...(selectedShape ? selectedShape : shape)}
       stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
       strokeWidth={selected ? 5 : undefined}
       {...shapeProps}
@@ -205,6 +224,4 @@ const _CanvasShape = ({
   );
 };
 
-const CanvasShape = withShapeContext(React.memo(_CanvasShape));
-
-export default CanvasShape;;
+export default React.memo(CanvasShape);;

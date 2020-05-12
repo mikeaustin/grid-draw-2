@@ -8,13 +8,25 @@ import ShapeContext from '../../ShapeContext';
 const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
   console.log('PropertiesPanel()', selectedShapeId);
 
-  const handleSliderChange = opacity => {
+  // const [selectedShape, setSelectedShape] = useState<any | null>(null);
+
+  // useEffect(() => {
+  //   document.addEventListener('shapemove', handleShapeMove);
+  // }, []);
+
+  // const handleShapeMove = useCallback(event => {
+  //   // console.log(event.detail);
+
+  //   // setSelectedShape(event.detail);
+  // }, []);
+
+  const handleSliderChange = useCallback(opacity => {
     onShapeUpdate(selectedShapeId, {
       opacity: opacity
     });
-  };
+  }, [onShapeUpdate]);
 
-  const handleSlidingComplete = opacity => {
+  const handleSlidingComplete = useCallback(opacity => {
     dispatch({
       type: 'SET_SHAPE_PROPERTY',
       payload: {
@@ -23,9 +35,9 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
         value: opacity,
       }
     });
-  };
+  }, [dispatch]);
 
-  const handlePropertyChange = (name, value) => {
+  const handlePropertyChange = useCallback((name, value) => {
     console.log('handlePropertyChange()', selectedShapeId, name, value);
 
     dispatch({
@@ -37,46 +49,31 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
         value: value,
       }
     });
-  };
+  }, [selectedShapeId, dispatch]);
 
   return (
     <Panel title="Properties">
-      <ShapeContext.Consumer>
-        {selectedShape => (
-          <Form dataSource={selectedShape} style={{ padding: 5 }} onPropertyChange={handlePropertyChange}>
-            <List divider spacerSize="xsmall">
-              <Section title="Position">
-                <List horizontal spacerSize="large">
-                  <InputField label="X" property="position[0]" editable={selectedShape} />
-                  <InputField label="Y" property="position[1]" editable={selectedShape} />
-                </List>
-              </Section>
-              <Section title="Opacity">
-                <List horizontal spacerSize="small">
-                  <Slider
-                    value={selectedShape ? selectedShape.opacity : 0}
-                    disabled={!selectedShape}
-                    onValueChange={handleSliderChange}
-                    onSlidingComplete={handleSlidingComplete}
-                  />
-                  <InputField property="opacity" editable={selectedShape} />
-                </List>
-              </Section>
-              <Section title="Angle">
-                <List horizontal spacerSize="small">
-                  <Slider
-                    value={selectedShape ? selectedShape.opacity : 0}
-                    disabled={!selectedShape}
-                    onValueChange={handleSliderChange}
-                    onSlidingComplete={handleSlidingComplete}
-                  />
-                  <InputField property="angle" />
-                </List>
-              </Section>
+      <Form style={{ padding: 5 }} onPropertyChange={handlePropertyChange}>
+        <List divider spacerSize="xsmall">
+          <Section title="Position">
+            <List horizontal spacerSize="large">
+              <InputField label="X" property="position[0]" />
+              <InputField label="Y" property="position[1]" />
             </List>
-          </Form>
-        )}
-      </ShapeContext.Consumer>
+          </Section>
+          <Section title="Opacity">
+            <List horizontal spacerSize="small">
+              {/* <Slider
+                value={selectedShape ? selectedShape.opacity : 0}
+                disabled={!selectedShape}
+                onValueChange={handleSliderChange}
+                onSlidingComplete={handleSlidingComplete}
+              /> */}
+              <InputField label="opacity" property="opacity" />
+            </List>
+          </Section>
+        </List>
+      </Form>
     </Panel>
   );
 };
