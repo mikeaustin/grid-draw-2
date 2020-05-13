@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native-web';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
+import { View, Text, TextInput } from 'react-native-web';
 
-import { Spacer, Divider, Slider, List, Form, NumericInput, Field, InputField } from '../core';
+import { Spacer, Slider, List, Form, NumericInput, Field, PropertyField } from '../core';
 import Panel from '../shared/Panel';
-import ShapeContext from '../../ShapeContext';
 
 const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
   console.log('PropertiesPanel()', selectedShapeId);
@@ -37,6 +36,12 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
     });
   }, [dispatch]);
 
+  const handleShapeUpdate = (name, value) => {
+    onShapeUpdate(selectedShapeId, {
+      [name]: value,
+    });
+  };
+
   const handlePropertyChange = useCallback((name, value) => {
     console.log('handlePropertyChange()', selectedShapeId, name, value);
 
@@ -53,12 +58,12 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
 
   return (
     <Panel title="Properties">
-      <Form style={{ padding: 5 }} onPropertyChange={handlePropertyChange}>
+      <Form style={{ padding: 5 }} onShapeUpdate={handleShapeUpdate} onPropertyChange={handlePropertyChange}>
         <List divider spacerSize="xsmall">
           <Section title="Position">
             <List horizontal spacerSize="large">
-              <InputField label="X" property="position[0]" />
-              <InputField label="Y" property="position[1]" />
+              <PropertyField label="X" property="position[0]" />
+              <PropertyField label="Y" property="position[1]" />
             </List>
           </Section>
           <Section title="Opacity">
@@ -69,7 +74,6 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
                 onValueChange={handleSliderChange}
                 onSlidingComplete={handleSlidingComplete}
               /> */}
-              <InputField label="opacity" property="opacity" />
             </List>
           </Section>
         </List>

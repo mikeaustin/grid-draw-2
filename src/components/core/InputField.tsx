@@ -1,22 +1,21 @@
 import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native-web';
 import expr from 'property-expr';
 
-import { Spacer, Divider, Slider, List, Form, NumericInput, Field } from '../core';
+import { Field } from '../core';
+import ShapeContext from '../../ShapeContext';
 import FormContext from '../core/FormContext';
 
-const useSelectedShape = (rootProperty: string) => {
+const useSelectedShape = (property: string) => {
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
+  const { eventEmitter } = useContext(ShapeContext);
 
   useEffect(() => {
-    document.addEventListener(rootProperty, handleShapeMove);
+    eventEmitter.addListener(property, handlePositionChange);
   }, []);
 
-  const handleShapeMove = useCallback(event => {
-    // console.log(event.detail);
-
-    setSelectedShape(event.detail);
-  }, []);
+  const handlePositionChange = (shape) => {
+    setSelectedShape(shape);
+  };
 
   return selectedShape;
 };
@@ -28,41 +27,37 @@ type InputFieldProps = {
   editable?: boolean,
 };
 
-const InputField = ({ label, property, value: defaultValue, ...props }: InputFieldProps) => {
-  // console.log('InputField()', label);
+const PropertyField = ({
+  label,
+  property,
+  ...props
+}: InputFieldProps) => {
   const index = property.search(/[\.\[]/);
   const rootProperty = index >= 0 ? property.slice(0, index) : property;
-  console.log(rootProperty);
-
   const selectedShape = useSelectedShape(rootProperty);
 
   const getter = useMemo(() => expr.getter(property), [property]);
 
-  const { onPropertyChange } = useContext(FormContext);
+  const { onShapeUpdate, onPropertyChange } = useContext(FormContext);
   const propertyValue = selectedShape ? getter(selectedShape) : 0;
-  const [value, setValue] = useState(propertyValue);
 
-  useEffect(() => {
-    setValue(propertyValue);
-  }, [propertyValue]);
+  const handleValueChange = text => {
+    onShapeUpdate(property, Number(text));
+  };
 
-  const handleChangeText = useCallback((text) => {
-    setValue(text);
-  }, []);
-
-  const handleBlur = useCallback(event => {
-    onPropertyChange(property, Number(event.nativeEvent.text));
+  const handleBlur = useCallback(text => {
+    onPropertyChange(property, Number(text));
   }, [property, propertyValue]);
 
   return (
     <Field
       label={label}
-      value={value}
-      onChangeText={handleChangeText}
-      onBlur={handleBlur}
+      value={propertyValue}
+      onValueChange={handleValueChange}
+      onValueCommit={handleBlur}
       {...props}
     />
   );
 };
 
-export default React.memo(InputField);
+export default React.memo(PropertyField);

@@ -1,13 +1,14 @@
-import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
-import { StyleSheet, View, Text, TextInput } from 'react-native-web';
+import React from 'react';
+import { View, Text } from 'react-native-web';
 
-import { Spacer, Divider, Slider, List, Form, NumericInput } from '../core';
+import { Spacer, NumericInput } from '../core';
 
 type FieldProps = {
   label?: string,
   value: any,
   editable?: boolean,
-  onChangeText?: Function,
+  onValueChange?: Function,
+  onValueCommit?: Function,
   onBlur?: Function,
 };
 

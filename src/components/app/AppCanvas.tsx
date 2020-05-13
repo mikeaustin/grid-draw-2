@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native-web';
 import { Svg, G, Rect, Text as SvgText } from 'react-native-svg';
 
-import CanvasShape from '../CanvasShape';
+import CanvasShape from './CanvasShape';
 import Grid from '../shared/Grid';
 import Ruler from '../shared/Ruler';
 

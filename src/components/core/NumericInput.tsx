@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native-web';
 
 const styles = StyleSheet.create({
@@ -21,10 +21,39 @@ const styles = StyleSheet.create({
   }
 });
 
-const NumericInput = ({ value, ...props }) => {
+type NumericInputProps = {
+  value: number,
+  onValueChange?: Function,
+  onValueCommit?: Function,
+};
+
+const NumericInput = ({ value, onValueChange, onValueCommit, ...props }: NumericInputProps) => {
+  const [internalValue, setInternalValue] = useState(value);
+
+  useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
+
+  const handleChangeText = (value) => {
+    setInternalValue(value);
+  };
+
+  const handleBlur = () => {
+    if (onValueCommit) {
+      onValueCommit(internalValue);
+    }
+  };
+
   return (
     <View style={styles.numericInput}>
-      <TextInput selectTextOnFocus value={value} style={styles.input} {...props} />
+      <TextInput
+        selectTextOnFocus
+        value={internalValue}
+        style={styles.input}
+        onChangeText={handleChangeText}
+        onBlur={handleBlur}
+        {...props}
+      />
       <Text>px</Text>
     </View>
   );

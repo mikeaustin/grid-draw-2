@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native-web';
 import Form from './Form';
 import NumericInput from './NumericInput';
 import Field from './Field';
-import InputField from './InputField';
+import PropertyField from './InputField';
 
 type Size = 'none' | 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge';
 
@@ -121,5 +121,5 @@ export {
   Form,
   NumericInput,
   Field,
-  InputField,
+  PropertyField,
 };

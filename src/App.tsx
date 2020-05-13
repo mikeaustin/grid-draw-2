@@ -8,6 +8,7 @@ import AppCanvas from './components/app/AppCanvas';
 import MainToolbar from './components/app/MainToolbar';
 import ShapesPanel from './components/app/ShapesPanel';
 import PropertiesPanel from './components/app/PropertiesPanel';
+import { EventEmitter } from 'events';
 
 const styles = StyleSheet.create({
   app: {
@@ -15,19 +16,19 @@ const styles = StyleSheet.create({
   },
 });
 
-const setSelectedShape = (state, selectedShape, eventType) => {
-  const event = new CustomEvent(eventType, {
-    detail: {
-      ...state.allShapes[state.selectedShapeIds[0]],
-      ...selectedShape
-    }
-  });
+const appContext = {
+  eventEmitter: new EventEmitter()
+};
 
-  document.dispatchEvent(event);
+const setSelectedShape = (state, selectedShape, eventType) => {
+  appContext.eventEmitter.emit(eventType, {
+    ...state.allShapes[state.selectedShapeIds[0]],
+    ...selectedShape
+  });
 };
 
 function App() {
-  // console.log('App()');
+  console.log('App()', appContext);
 
   const [state, dispatch] = useReducer(stateReducer, initialState);
 
@@ -42,16 +43,18 @@ function App() {
   }, [state.allShapes]);
 
   const handleShapeUpdate = useCallback((shapeId, newSelectedShape) => {
-    const eventType = Object.keys(newSelectedShape)[0];
-
-    setSelectedShape(state, {
+    const shape = {
       ...state.allShapes[shapeId],
       ...newSelectedShape
-    }, eventType);
+    };
+
+    Object.keys(newSelectedShape).forEach(eventType => {
+      setSelectedShape(state, shape, eventType);
+    });
   }, [state.allShapes]);
 
   return (
-    <ShapeContext.Provider value={null}>
+    <ShapeContext.Provider value={appContext}>
       <View style={styles.app}>
         <MainToolbar currentTool={state.currentTool} state={state} dispatch={dispatch} />
         <View style={{ flex: 1, flexDirection: 'row' }}>
