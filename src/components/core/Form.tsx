@@ -7,7 +7,7 @@ const Form = ({ children, onShapeUpdate, onPropertyChange, ...props }) => {
   const value = useMemo<any>(() => ({
     onShapeUpdate,
     onPropertyChange
-  }), [onPropertyChange]);
+  }), [onShapeUpdate, onPropertyChange]);
 
   return (
     <FormContext.Provider value={value}>

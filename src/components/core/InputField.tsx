@@ -9,18 +9,19 @@ const useSelectedShape = (property: string) => {
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
   const { eventEmitter } = useContext(ShapeContext);
 
-  useEffect(() => {
-    eventEmitter.addListener(property, handlePositionChange);
-  }, []);
-
   const handlePositionChange = (shape) => {
     setSelectedShape(shape);
   };
+
+  useEffect(() => {
+    eventEmitter.addListener(property, handlePositionChange);
+  }, [eventEmitter]);
 
   return selectedShape;
 };
 
 type InputFieldProps = {
+  Component: React.FunctionComponent<any>,
   label?: string,
   property: string,
   value?: any,
@@ -28,6 +29,7 @@ type InputFieldProps = {
 };
 
 const PropertyField = ({
+  Component,
   label,
   property,
   ...props
@@ -45,12 +47,13 @@ const PropertyField = ({
     onShapeUpdate(property, Number(text));
   };
 
-  const handleBlur = useCallback(text => {
+  const handleBlur = text => {
     onPropertyChange(property, Number(text));
-  }, [property, propertyValue]);
+  };
 
   return (
     <Field
+      Component={Component}
       label={label}
       value={propertyValue}
       onValueChange={handleValueChange}
@@ -59,5 +62,9 @@ const PropertyField = ({
     />
   );
 };
+
+// const withField = Component => ({ ...props }) => {
+//   return <PropertyField Component={Component} {...props} />;
+// };
 
 export default React.memo(PropertyField);

@@ -39,10 +39,13 @@ function App() {
 
     if (newSelectedShape) {
       setSelectedShape(state, newSelectedShape, 'position');
+      setSelectedShape(state, newSelectedShape, 'opacity');
     }
-  }, [state.allShapes]);
+  }, [state.allShapes, state.selectedShapeIds]);
 
   const handleShapeUpdate = useCallback((shapeId, newSelectedShape) => {
+    // console.log('handleShapeUpdate()', state.allShapes[shapeId]);
+
     const shape = {
       ...state.allShapes[shapeId],
       ...newSelectedShape

@@ -32,10 +32,12 @@ const CanvasShape = React.memo(({
 
   useEffect(() => {
     if (selected) {
-      eventEmitter.on('position', handlePositionChange);
+      eventEmitter.addListener('position', handlePositionChange);
+      eventEmitter.addListener('opacity', handlePositionChange);
     } else {
       setSelectedShape(null);
       eventEmitter.removeListener('position', handlePositionChange);
+      eventEmitter.removeListener('opacity', handlePositionChange);
     }
   }, [eventEmitter, selected]);
 

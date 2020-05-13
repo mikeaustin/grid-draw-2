@@ -84,7 +84,7 @@ const List = ({ horizontal, spacerSize = 'none', divider, style, children, ...pr
   );
 };
 
-const Slider = ({ value: defaultValue, onValueChange, onSlidingComplete, ...props }) => {
+const Slider = ({ value: defaultValue, onValueChange, onValueCommit, ...props }) => {
   const [value, setValue] = useState(defaultValue || 0);
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const Slider = ({ value: defaultValue, onValueChange, onSlidingComplete, ...prop
   };
 
   const handleMouseUp = event => {
-    onSlidingComplete(value);
+    onValueCommit(value);
   };
 
   return (

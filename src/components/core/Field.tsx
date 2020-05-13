@@ -4,6 +4,7 @@ import { View, Text } from 'react-native-web';
 import { Spacer, NumericInput } from '../core';
 
 type FieldProps = {
+  Component: React.FunctionComponent<any>,
   label?: string,
   value: any,
   editable?: boolean,
@@ -12,7 +13,7 @@ type FieldProps = {
   onBlur?: Function,
 };
 
-const Field = ({ label, value, ...props }: FieldProps) => {
+const Field = ({ Component, label, value, ...props }: FieldProps) => {
   // console.log('Field()', value);
 
   return (
@@ -23,7 +24,7 @@ const Field = ({ label, value, ...props }: FieldProps) => {
           <Spacer size="xsmall" />
         </>
       )}
-      <NumericInput value={value} {...props} />
+      <Component value={value} {...props} />
     </View>
   );
 };
