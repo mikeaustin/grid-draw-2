@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
 
 import { Spacer, Divider, List } from '../core';
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   selected: {
     backgroundColor: 'hsla(0, 0%, 0%, 0.1)'
   },
-  active: {
+  pressed: {
     backgroundColor: 'hsla(0, 0%, 0%, 0.15)'
   },
   toolbar: {
@@ -98,13 +98,29 @@ type ButtonProps = {
 };
 
 const Button = ({ icon, value, selected, onDispatch }: ButtonProps) => {
-  const onPress = () => {
+  const [pressed, setPressed] = useState(false);
+
+  const handlePressIn = () => {
+    setPressed(true);
+  };
+
+  const handlePressOut = () => {
+    setPressed(false);
+  };
+
+  const handlePress = () => {
     onDispatch && onDispatch(value);
   };
 
+  const buttonStyle = [
+    styles.button,
+    selected && styles.selected,
+    pressed && styles.pressed,
+  ];
+
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[styles.button, selected && styles.selected]}>
+    <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={handlePress}>
+      <View style={buttonStyle}>
         <Image source={{ uri: `images/icons/${icon}.svg` }} style={{ width: 25, height: 25 }} />
       </View>
     </TouchableWithoutFeedback>
