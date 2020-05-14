@@ -5,8 +5,8 @@ import { Svg, G, Rect, Text as SvgText } from 'react-native-svg';
 import CanvasShape from './CanvasShape';
 import Grid from '../shared/Grid';
 import Ruler from '../shared/Ruler';
-import State from '../types/State';
-import Property from '../types/Property';
+import State from '../../types/State';
+import Properties from '../../types/Properties';
 
 const styles = StyleSheet.create({
   svg: {
@@ -19,7 +19,7 @@ type AppCanvasProps = {
   state: State,
   dispatch: React.Dispatch<any>,
   scale?: number,
-  onShapeUpdate: (shapeId: number, shape: Property) => void,
+  onShapeUpdate: (shapeId: number, shape: Properties) => void,
 };
 
 const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasProps) => {

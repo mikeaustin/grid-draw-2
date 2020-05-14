@@ -1,4 +1,4 @@
-import { State } from '../components/types';
+import { State } from '../types';
 
 const initialState: State = {
   currentTool: {

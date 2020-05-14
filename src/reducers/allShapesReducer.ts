@@ -1,7 +1,7 @@
 import expr from 'property-expr';
 
 import initialState from './initialState';
-import { State, Action } from '../components/types';
+import { State, Action } from '../types';
 
 const clone = value => {
   if (Array.isArray(value)) {

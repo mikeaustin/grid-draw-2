@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext, useEffect, useCallback } from 'rea
 
 import shapeRegistry from './ShapeRegistry';
 import ShapeContext from '../../ShapeContext';
-import { State, Shape, Property } from '../types';
+import { State, Shape, Properties } from '../../types';
 
 type CanvasShapeProps = {
   shape: Shape,
@@ -11,7 +11,7 @@ type CanvasShapeProps = {
   selectedShapeIds: number[],
   onSetPosition: (shapeId: number, position: number[]) => void,
   onSelectShape: (shapeId: number) => void,
-  onShapeUpdate: (shapeId: number, shape: Property) => void,
+  onShapeUpdate: (shapeId: number, shape: Properties) => void,
 };
 
 const CanvasShape = React.memo(({

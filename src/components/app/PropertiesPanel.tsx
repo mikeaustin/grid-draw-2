@@ -3,13 +3,13 @@ import { View, Text, TextInput } from 'react-native-web';
 
 import { Spacer, Slider, List, Form, NumericInput, Field, PropertyField } from '../core';
 import Panel from '../shared/Panel';
-import Shape from '../types/Shape';
-import Property from '../types/Property';
+import Shape from '../../types/Shape';
+import Properties from '../../types/Properties';
 
 type PropertiesPanelProps = {
   selectedShapeId: number,
   dispatch: React.Dispatch<any>,
-  onShapeUpdate: (shapeId: number, shape: Property) => void,
+  onShapeUpdate: (shapeId: number, shape: Properties) => void,
 };
 
 const PropertiesPanel = ({

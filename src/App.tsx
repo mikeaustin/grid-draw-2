@@ -1,8 +1,8 @@
-import React, { useState, useReducer, useCallback, useMemo, useEffect } from 'react';
+import React, { useReducer, useCallback, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
 import { initialState, stateReducer } from './reducers/allShapesReducer';
-import { State, Shape, Property } from './components/types';
+import { State, Shape, Properties } from './types';
 import ShapeContext from './ShapeContext';
 
 import AppCanvas from './components/app/AppCanvas';
@@ -44,7 +44,7 @@ function App() {
     }
   }, [state.allShapes, state.selectedShapeIds]);
 
-  const handleShapeUpdate = useCallback((shapeId: number, newSelectedShape: Property) => {
+  const handleShapeUpdate = useCallback((shapeId: number, newSelectedShape: Properties) => {
     // console.log('handleShapeUpdate()', state.allShapes[shapeId]);
 
     const shape = {

@@ -1,10 +1,10 @@
 import State, { Action } from './State';
 import Shape from './Shape';
-import Property from './Property';
+import Properties from './Properties';
 
 export type {
   State,
   Action,
   Shape,
-  Property,
+  Properties,
 };
