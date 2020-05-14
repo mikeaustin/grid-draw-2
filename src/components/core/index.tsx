@@ -59,7 +59,7 @@ type ListProps = {
   horizontal?: boolean,
   spacerSize?: Size,
   divider?: boolean,
-  style?: any,
+  style?: object,
   children: React.ReactNode,
 };
 

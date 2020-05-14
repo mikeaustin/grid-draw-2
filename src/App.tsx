@@ -1,7 +1,8 @@
 import React, { useState, useReducer, useCallback, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
-import { State, initialState, stateReducer } from './reducers/allShapesReducer';
+import { initialState, stateReducer } from './reducers/allShapesReducer';
+import { State, Shape, Property } from './components/types';
 import ShapeContext from './ShapeContext';
 
 import AppCanvas from './components/app/AppCanvas';
@@ -20,7 +21,7 @@ const appContext = {
   eventEmitter: new EventEmitter()
 };
 
-const setSelectedShape = (state, selectedShape, eventType) => {
+const setSelectedShape = (state: State, selectedShape: Shape, eventType: string) => {
   appContext.eventEmitter.emit(eventType, {
     ...state.allShapes[state.selectedShapeIds[0]],
     ...selectedShape
@@ -43,7 +44,7 @@ function App() {
     }
   }, [state.allShapes, state.selectedShapeIds]);
 
-  const handleShapeUpdate = useCallback((shapeId, newSelectedShape) => {
+  const handleShapeUpdate = useCallback((shapeId: number, newSelectedShape: Property) => {
     // console.log('handleShapeUpdate()', state.allShapes[shapeId]);
 
     const shape = {

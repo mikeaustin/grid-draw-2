@@ -1,47 +1,7 @@
 import expr from 'property-expr';
 
-type _State = {
-  currentTool: {
-    tool: string,
-    shape?: string;
-  },
-  nextShapeId: number,
-  selectedShapeIds: number[],
-  options: {
-    showRuler: boolean,
-    showGrid;
-  },
-  allShapes: {
-    [shapeId: string]: {
-      id: number,
-      type: string,
-      position: number[];
-      opacity: number,
-      angle: number,
-      childIds: number[],
-    };
-  };
-};
-
-const initialState: State = {
-  currentTool: {
-    tool: 'GridDraw.Tools.Move',
-  },
-  nextShapeId: 10,
-  selectedShapeIds: [],
-  options: {
-    showRuler: true,
-    showGrid: true,
-  },
-  allShapes: {
-    0: { id: 0, type: 'GridDraw.Shape.Group', position: [0, 0], opacity: 1.0, angle: 0, childIds: [1, 2, 3] },
-    1: { id: 1, type: 'GridDraw.Shape.Rect', position: [100, 100], opacity: 0.75, angle: 45, childIds: [] },
-    2: { id: 2, type: 'GridDraw.Shape.Ellipse', position: [250, 100], opacity: 0.5, angle: 0, childIds: [] },
-    3: { id: 3, type: 'GridDraw.Shape.Group', position: [400, 100], opacity: 0.25, angle: 0, childIds: [4, 5] },
-    4: { id: 4, type: 'GridDraw.Shape.Ellipse', position: [0, 0], opacity: 1.0, angle: 0, childIds: [] },
-    5: { id: 5, type: 'GridDraw.Shape.Ellipse', position: [0, 150], opacity: 0.5, angle: 0, childIds: [] },
-  }
-};
+import initialState from './initialState';
+import { State, Action } from '../components/types';
 
 const clone = value => {
   if (Array.isArray(value)) {
@@ -58,7 +18,7 @@ const clone = value => {
   return value;
 };
 
-const allShapesReducer = (allShapes: State['allShapes'], action) => {
+const allShapesReducer = (allShapes: State['allShapes'], action: Action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -78,34 +38,12 @@ const allShapesReducer = (allShapes: State['allShapes'], action) => {
         }
       };
     }
-    case 'set-shape-position': {
-      const { shapeId, position } = payload;
-
-      return {
-        ...allShapes,
-        [shapeId]: {
-          ...allShapes[shapeId],
-          position: position,
-        }
-      };
-    }
-    case 'set-shape-opacity': {
-      const { shapeId, opacity } = payload;
-
-      return {
-        ...allShapes,
-        [shapeId]: {
-          ...allShapes[shapeId],
-          opacity: opacity,
-        }
-      };
-    }
   }
 
   return allShapes;
 };
 
-const addShape = (allShapes: State['allShapes'], type, shapeId, position) => {
+const addShape = (allShapes: State['allShapes'], type: string, shapeId: number, position: number[]) => {
   return {
     ...allShapes,
     [0]: {
@@ -115,14 +53,15 @@ const addShape = (allShapes: State['allShapes'], type, shapeId, position) => {
     [shapeId]: {
       id: shapeId,
       type: type,
+      childIds: [],
       position: [position[0], position[1]],
       opacity: 0.75,
-      childIds: [],
+      angle: 0,
     }
   };
 };
 
-const stateReducer = (state: State, action): State => {
+const stateReducer = (state: State, action: Action): State => {
   const { type, payload } = action;
 
   switch (type) {
@@ -164,8 +103,6 @@ const stateReducer = (state: State, action): State => {
       };
   };
 };
-
-export type State = _State;
 
 export {
   allShapesReducer,

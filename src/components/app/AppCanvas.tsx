@@ -5,6 +5,8 @@ import { Svg, G, Rect, Text as SvgText } from 'react-native-svg';
 import CanvasShape from './CanvasShape';
 import Grid from '../shared/Grid';
 import Ruler from '../shared/Ruler';
+import State from '../types/State';
+import Property from '../types/Property';
 
 const styles = StyleSheet.create({
   svg: {
@@ -13,11 +15,18 @@ const styles = StyleSheet.create({
   }
 });
 
-const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }) => {
+type AppCanvasProps = {
+  state: State,
+  dispatch: React.Dispatch<any>,
+  scale?: number,
+  onShapeUpdate: (shapeId: number, shape: Property) => void,
+};
+
+const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasProps) => {
   console.log('AppCanvas()', { scale });
 
   const handleSetPosition = (shapeId, position) => {
-    dispatch({ type: 'set-shape-position', payload: { shapeId, position } });
+    dispatch({ type: 'SET_SHAPE_PROPERTY', payload: { shapeId, property: 'position', value: position } });
   };
 
   const handleSelectShape = (shapeId) => {

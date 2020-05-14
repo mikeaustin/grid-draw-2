@@ -2,15 +2,16 @@ import React, { useState, useRef, useContext, useEffect, useCallback } from 'rea
 
 import shapeRegistry from './ShapeRegistry';
 import ShapeContext from '../../ShapeContext';
+import { State, Shape, Property } from '../types';
 
 type CanvasShapeProps = {
-  shape: any,
+  shape: Shape,
   selected: boolean,
-  allShapes: any,
+  allShapes: State['allShapes'],
   selectedShapeIds: number[],
-  onSetPosition: Function,
-  onSelectShape: Function,
-  onShapeUpdate: Function,
+  onSetPosition: (shapeId: number, position: number[]) => void,
+  onSelectShape: (shapeId: number) => void,
+  onShapeUpdate: (shapeId: number, shape: Property) => void,
 };
 
 const CanvasShape = React.memo(({
@@ -41,11 +42,11 @@ const CanvasShape = React.memo(({
     }
   }, [eventEmitter, selected]);
 
-  const handlePositionChange = useCallback(shape => {
+  const handlePositionChange = useCallback((shape: Shape) => {
     setSelectedShape(shape);
   }, []);
 
-  const handleStartShouldSetResponder = useCallback(event => {
+  const handleStartShouldSetResponder = useCallback((event: any) => {
     event.preventDefault();
 
     const tap = !(Date.now() - lastTap.current < 300);

@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
 
 type NumericInputProps = {
   value: number,
-  onValueChange?: Function,
-  onValueCommit?: Function,
+  onValueChange?: (value: any) => void,
+  onValueCommit?: (value: any) => void,
 };
 
 const NumericInput = ({ value, onValueChange, onValueCommit, ...props }: NumericInputProps) => {

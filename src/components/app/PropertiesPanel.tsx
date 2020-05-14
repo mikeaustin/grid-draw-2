@@ -3,11 +3,23 @@ import { View, Text, TextInput } from 'react-native-web';
 
 import { Spacer, Slider, List, Form, NumericInput, Field, PropertyField } from '../core';
 import Panel from '../shared/Panel';
+import Shape from '../types/Shape';
+import Property from '../types/Property';
 
-const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
+type PropertiesPanelProps = {
+  selectedShapeId: number,
+  dispatch: React.Dispatch<any>,
+  onShapeUpdate: (shapeId: number, shape: Property) => void,
+};
+
+const PropertiesPanel = ({
+  selectedShapeId,
+  dispatch,
+  onShapeUpdate
+}: PropertiesPanelProps) => {
   console.log('PropertiesPanel()', selectedShapeId);
 
-  const handleShapeUpdate = (name, value) => {
+  const handleShapeUpdate = (name: string, value: any) => {
     // console.log('handleShpaeUpdate()', name, value);
 
     onShapeUpdate(selectedShapeId, {
@@ -15,7 +27,7 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
     });
   };
 
-  const handlePropertyChange = (name, value) => {
+  const handlePropertyChange = (name: string, value: any) => {
     // console.log('handlePropertyChange()', selectedShapeId, name, value);
 
     dispatch({
@@ -57,7 +69,12 @@ const PropertiesPanel = ({ selectedShapeId, dispatch, onShapeUpdate }) => {
   );
 };
 
-const Section = ({ title, children }) => {
+type SectionProps = {
+  title: string,
+  children: React.ReactNode,
+};
+
+const Section = ({ title, children }: SectionProps) => {
   return (
     <View style={{ padding: 10 }}>
       <Text style={{ fontSize: 12, fontWeight: 700 }}>{title}</Text>

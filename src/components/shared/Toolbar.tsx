@@ -63,7 +63,7 @@ type GroupProps = {
   name?: string,
   selectedValue?: any,
   children: React.ReactNode,
-  onButtonPress?: any,
+  onButtonPress?: Function,
 };
 
 const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupProps) => {
@@ -75,7 +75,7 @@ const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupPro
             {index > 0 && <Spacer size="xsmall" />}
             {React.isValidElement(child) && React.cloneElement(child, {
               selected: child.props.selected || selectedValue && equals(child.props.value, selectedValue),
-              onDispatch: value => onButtonPress(name, value)
+              onDispatch: value => onButtonPress && onButtonPress(name, value)
             })}
           </>
         ))}
@@ -94,12 +94,12 @@ type ButtonProps = {
   icon: string,
   value?: any,
   selected?: boolean,
-  onDispatch?: any,
+  onDispatch?: Function,
 };
 
 const Button = ({ icon, value, selected, onDispatch }: ButtonProps) => {
   const onPress = () => {
-    onDispatch(value);
+    onDispatch && onDispatch(value);
   };
 
   return (
