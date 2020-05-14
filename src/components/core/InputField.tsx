@@ -26,6 +26,7 @@ type InputFieldProps = {
   property: string,
   value?: any,
   editable?: boolean,
+  max?: string,
 };
 
 const PropertyField = ({

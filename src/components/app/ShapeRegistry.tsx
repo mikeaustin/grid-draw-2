@@ -19,6 +19,7 @@ const shapeRegistry = {
   'GridDraw.Shape.Ellipse': {
     render: ({
       position: [x, y],
+      hue,
       opacity,
       ...props
     }: Shape['properties']) => {
@@ -28,6 +29,7 @@ const shapeRegistry = {
           cy={y}
           rx={50}
           ry={50}
+          fill={`hsl(${hue}, 100%, 50%)`}
           opacity={opacity}
           {...props}
         />
@@ -37,6 +39,7 @@ const shapeRegistry = {
   'GridDraw.Shape.Rect': {
     render: ({
       position: [x, y],
+      hue,
       opacity,
       angle,
       ...props
@@ -48,6 +51,7 @@ const shapeRegistry = {
           width={100}
           height={100}
           transform={`rotate(${angle} ${(x - 50) + 100 / 2} ${(y - 50) + 100 / 2})`}
+          fill={`hsl(${hue}, 100%, 50%)`}
           opacity={opacity}
           {...props}
         />

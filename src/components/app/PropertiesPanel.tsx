@@ -54,8 +54,14 @@ const PropertiesPanel = ({
           </Section>
           <Section title="Rotation">
             <List horizontal spacerSize="small">
-              <PropertyField Component={Slider} property="angle" />
+              <PropertyField Component={Slider} property="angle" max="36000" />
               <PropertyField Component={NumericInput} property="angle" />
+            </List>
+          </Section>
+          <Section title="Color">
+            <List horizontal spacerSize="small">
+              <PropertyField Component={Slider} property="hue" max="36000" />
+              <PropertyField Component={NumericInput} property="hue" />
             </List>
           </Section>
         </List>

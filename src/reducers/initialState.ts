@@ -17,6 +17,7 @@ const initialState: State = {
       childIds: [1, 2, 3],
       properties: {
         position: [0, 0],
+        hue: 0,
         opacity: 1.0,
         angle: 0,
       }
@@ -27,6 +28,7 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [100, 100],
+        hue: 0,
         opacity: 0.75,
         angle: 45,
       }
@@ -37,6 +39,7 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [250, 100],
+        hue: 0,
         opacity: 0.5,
         angle: 0,
       }
@@ -47,6 +50,7 @@ const initialState: State = {
       childIds: [4, 5],
       properties: {
         position: [400, 100],
+        hue: 0,
         opacity: 0.25,
         angle: 0,
       }
@@ -57,6 +61,7 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [0, 0],
+        hue: 0,
         opacity: 1.0,
         angle: 0,
       }
@@ -67,6 +72,7 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [0, 150],
+        hue: 0,
         opacity: 0.5,
         angle: 0,
       }

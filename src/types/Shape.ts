@@ -3,7 +3,8 @@ type Shape = {
   type: string,
   childIds: number[],
   properties: {
-    position: number[];
+    position: number[],
+    hue: number,
     opacity: number,
     angle: number,
   };

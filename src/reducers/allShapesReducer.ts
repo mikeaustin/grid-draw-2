@@ -66,6 +66,7 @@ const addShape: AddShapeFunc = (allShapes, type, shapeId, position) => {
       childIds: [],
       properties: {
         position: [position[0], position[1]],
+        hue: 0,
         opacity: 0.75,
         angle: 0,
       }
