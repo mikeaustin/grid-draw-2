@@ -83,7 +83,7 @@ const CanvasShape = React.memo(({
       shape.properties.position[0] + (event.nativeEvent.pageX - firstPosition[0]),
       shape.properties.position[1] + (event.nativeEvent.pageY - firstPosition[1]),
     ]);
-  }, [onSetPosition]);
+  }, [firstPosition, onSetPosition]);
 
   const shapeProps = {
     onStartShouldSetResponder: handleStartShouldSetResponder,

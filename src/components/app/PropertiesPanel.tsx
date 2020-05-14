@@ -20,16 +20,12 @@ const PropertiesPanel = ({
   console.log('PropertiesPanel()', selectedShapeId);
 
   const handleShapeUpdate = (name: string, value: any) => {
-    // console.log('handleShpaeUpdate()', name, value);
-
     onShapeUpdate(selectedShapeId, {
       [name]: value,
     });
   };
 
   const handlePropertyChange = (name: string, value: any) => {
-    // console.log('handlePropertyChange()', selectedShapeId, name, value);
-
     dispatch({
       type: 'SET_SHAPE_PROPERTY',
       payload: {

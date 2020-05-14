@@ -26,7 +26,14 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasPro
   console.log('AppCanvas()', { scale });
 
   const handleSetPosition = (shapeId, position) => {
-    dispatch({ type: 'SET_SHAPE_PROPERTY', payload: { shapeId, propertyName: 'position', propertyValue: position } });
+    dispatch({
+      type: 'SET_SHAPE_PROPERTY',
+      payload: {
+        shapeId,
+        propertyName: 'position',
+        propertyValue: position
+      }
+    });
   };
 
   const handleSelectShape = (shapeId) => {

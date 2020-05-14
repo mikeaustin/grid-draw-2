@@ -20,8 +20,10 @@ const shapeRegistry = {
     render: ({
       id,
       childIds,
-      position: [x, y],
-      opacity,
+      properties: {
+        position: [x, y],
+        opacity,
+      },
       ...props
     }: Shape) => {
       return (
@@ -40,9 +42,11 @@ const shapeRegistry = {
     render: ({
       id,
       childIds,
-      position: [x, y],
-      angle,
-      opacity,
+      properties: {
+        position: [x, y],
+        opacity,
+        angle,
+      },
       ...props
     }: Shape) => {
       return (
@@ -60,7 +64,9 @@ const shapeRegistry = {
   },
   'GridDraw.Shape.Ellipse2': {
     render: ({
-      position: [x, y],
+      properties: {
+        position: [x, y],
+      }
     }: Shape) => {
       return (
         <JsxParser
@@ -84,7 +90,15 @@ const shapeRegistry = {
     }
   },
   'GridDraw.Shape.Group': {
-    render: ({ id, position, opacity, childIds, ...props }: Shape) => {
+    render: ({
+      id,
+      childIds,
+      properties: {
+        position: [x, y],
+        opacity,
+      },
+      ...props
+    }: Shape) => {
       const groupProps = {
         style: {
           pointerEvents: 'visiblePainted'
@@ -93,8 +107,8 @@ const shapeRegistry = {
 
       return (
         <G
-          x={position[0]}
-          y={position[1]}
+          x={x}
+          y={y}
           opacity={opacity}
           {...groupProps}
           {...props}

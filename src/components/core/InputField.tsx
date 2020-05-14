@@ -41,7 +41,7 @@ const PropertyField = ({
   const getter = useMemo(() => expr.getter(property), [property]);
 
   const { onShapeUpdate, onPropertyChange } = useContext(FormContext);
-  const propertyValue = selectedShape ? getter(selectedShape) : 0;
+  const propertyValue = selectedShape ? getter(selectedShape.properties) : 0;
 
   const handleValueChange = text => {
     onShapeUpdate(property, Number(text));
