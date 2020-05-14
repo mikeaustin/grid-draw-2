@@ -15,7 +15,7 @@ const useSelectedShape = (property: string) => {
 
   useEffect(() => {
     eventEmitter.addListener(property, handlePositionChange);
-  }, [eventEmitter]);
+  }, [eventEmitter, property]);
 
   return selectedShape;
 };

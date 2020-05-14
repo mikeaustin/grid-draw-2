@@ -32,10 +32,11 @@ function App() {
     const selectedShape = state.allShapes[state.selectedShapeIds[0]];
 
     if (selectedShape) {
-      appContext.eventEmitter.emit('position', selectedShape);
-      appContext.eventEmitter.emit('opacity', selectedShape);
+      Object.keys(selectedShape.properties).forEach(propertyName => (
+        appContext.eventEmitter.emit(propertyName, selectedShape)
+      ));
     }
-  }, [state.allShapes, state.selectedShapeIds]);
+  }, [appContext, state.allShapes, state.selectedShapeIds]);
 
   const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
     const updatedShape = {

@@ -23,7 +23,7 @@ const CanvasShape = React.memo(({
   onSelectShape,
   onShapeUpdate
 }: CanvasShapeProps) => {
-  console.log('CanvasShape()', shape.id);
+  // console.log('CanvasShape()', shape.id);
 
   const [firstPosition, setFirstPosition] = useState<number[]>([0, 0]);
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
@@ -33,12 +33,15 @@ const CanvasShape = React.memo(({
 
   useEffect(() => {
     if (selected) {
-      eventEmitter.addListener('position', handlePositionChange);
-      eventEmitter.addListener('opacity', handlePositionChange);
+      Object.keys(shape.properties).forEach(propertyName => (
+        eventEmitter.addListener(propertyName, handlePositionChange)
+      ));
     } else {
       setSelectedShape(null);
-      eventEmitter.removeListener('position', handlePositionChange);
-      eventEmitter.removeListener('opacity', handlePositionChange);
+
+      Object.keys(shape.properties).forEach(propertyName => (
+        eventEmitter.removeListener(propertyName, handlePositionChange)
+      ));
     }
   }, [eventEmitter, selected]);
 
@@ -97,7 +100,7 @@ const CanvasShape = React.memo(({
 
   return (
     <Component
-      {...(selectedShape ? selectedShape : shape)}
+      {...(selectedShape ? selectedShape.properties : shape.properties)}
       stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
       strokeWidth={selected ? 5 : undefined}
       {...shapeProps}

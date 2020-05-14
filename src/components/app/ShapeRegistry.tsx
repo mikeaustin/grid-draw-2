@@ -18,14 +18,10 @@ class Ellipse3 extends View {
 const shapeRegistry = {
   'GridDraw.Shape.Ellipse': {
     render: ({
-      id,
-      childIds,
-      properties: {
-        position: [x, y],
-        opacity,
-      },
+      position: [x, y],
+      opacity,
       ...props
-    }: Shape) => {
+    }: Shape['properties']) => {
       return (
         <Ellipse
           cx={x}
@@ -40,15 +36,11 @@ const shapeRegistry = {
   },
   'GridDraw.Shape.Rect': {
     render: ({
-      id,
-      childIds,
-      properties: {
-        position: [x, y],
-        opacity,
-        angle,
-      },
+      position: [x, y],
+      opacity,
+      angle,
       ...props
-    }: Shape) => {
+    }: Shape['properties']) => {
       return (
         <Rect
           x={x - 50}
@@ -64,10 +56,8 @@ const shapeRegistry = {
   },
   'GridDraw.Shape.Ellipse2': {
     render: ({
-      properties: {
-        position: [x, y],
-      }
-    }: Shape) => {
+      position: [x, y],
+    }: Shape['properties']) => {
       return (
         <JsxParser
           bindings={{
@@ -91,14 +81,10 @@ const shapeRegistry = {
   },
   'GridDraw.Shape.Group': {
     render: ({
-      id,
-      childIds,
-      properties: {
-        position: [x, y],
-        opacity,
-      },
+      position: [x, y],
+      opacity,
       ...props
-    }: Shape) => {
+    }: Shape['properties']) => {
       const groupProps = {
         style: {
           pointerEvents: 'visiblePainted'

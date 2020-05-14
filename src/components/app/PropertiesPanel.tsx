@@ -50,13 +50,12 @@ const PropertiesPanel = ({
             <List horizontal spacerSize="small">
               <PropertyField Component={Slider} property="opacity" />
               <PropertyField Component={NumericInput} property="opacity" />
-
-              {/* <Slider
-                value={selectedShape ? selectedShape.opacity : 0}
-                disabled={!selectedShape}
-                onValueChange={handleSliderChange}
-                onSlidingComplete={handleSlidingComplete}
-              /> */}
+            </List>
+          </Section>
+          <Section title="Rotation">
+            <List horizontal spacerSize="small">
+              <PropertyField Component={Slider} property="angle" />
+              <PropertyField Component={NumericInput} property="angle" />
             </List>
           </Section>
         </List>
