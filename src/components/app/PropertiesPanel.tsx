@@ -41,10 +41,17 @@ const PropertiesPanel = ({
       <Form style={{ padding: 5 }} onShapeUpdate={handleShapeUpdate} onPropertyChange={handlePropertyChange}>
         <List divider spacerSize="xsmall">
           <Section title="Position">
-            <List horizontal spacerSize="large">
-              <PropertyField Component={NumericInput} label="X" property="position[0]" />
+            <View style={{ alignItems: 'center' }}>
               <PropertyField Component={NumericInput} label="Y" property="position[1]" />
-            </List>
+              <Spacer size="small" />
+              <List horizontal style={{ width: '100%' }}>
+                <PropertyField Component={NumericInput} label="X" property="position[0]" />
+                <View style={{ flex: 1 }} />
+                <PropertyField Component={NumericInput} label="W" property="position[0]" />
+              </List>
+              <Spacer size="small" />
+              <PropertyField Component={NumericInput} label="H" property="position[1]" />
+            </View>
           </Section>
           <Section title="Opacity">
             <List horizontal spacerSize="small">
@@ -58,9 +65,9 @@ const PropertiesPanel = ({
               <PropertyField Component={NumericInput} property="angle" />
             </List>
           </Section>
-          <Section title="Color">
+          <Section title="Fill">
             <List horizontal spacerSize="small">
-              <PropertyField Component={Slider} property="hue" max="36000" />
+              <PropertyField Component={Slider} label="H" property="hue" max="36000" />
               <PropertyField Component={NumericInput} property="hue" />
             </List>
           </Section>

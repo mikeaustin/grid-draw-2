@@ -13,7 +13,7 @@ code {
 }
 
 input[type='range'] {
-  background: hsl(0, 0%, 75%);
+  background: hsl(0, 0%, 85%);
   appearance: none;
   height: 5px;
   border-radius: 2.5px;
@@ -25,5 +25,5 @@ input[type='range']::-webkit-slider-thumb {
   width: 25px;
   height: 25px;
   border-radius: 12.5px;
-  box-shadow: 0 0 0 1px hsla(0, 0%, 0%, 0.1);
+  box-shadow: 0 0 0 1px hsla(0, 0%, 0%, 0.075);
 }

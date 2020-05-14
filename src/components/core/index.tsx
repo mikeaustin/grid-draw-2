@@ -105,6 +105,7 @@ const Slider = ({ value: defaultValue, onValueChange, onValueCommit, ...props })
       type="range"
       min={0}
       value={value * 100}
+      tabIndex={-1}
       style={{ flex: 1, marginTop: 12.5, marginBottom: 12.5 }}
       onChange={handleOnChange}
       onMouseUp={handleMouseUp}
