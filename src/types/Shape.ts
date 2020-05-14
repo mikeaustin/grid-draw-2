@@ -5,6 +5,11 @@ type Shape = {
   position: number[];
   opacity: number,
   angle: number,
+  properties: {
+    position: number[];
+    opacity: number,
+    angle: number,
+  };
 };
 
 export default Shape;

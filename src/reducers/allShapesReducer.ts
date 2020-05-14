@@ -23,18 +23,22 @@ const allShapesReducer = (allShapes: State['allShapes'], action: Action) => {
 
   switch (type) {
     case 'SET_SHAPE_PROPERTY': {
-      const { shapeId, property, index, value } = payload;
+      const { shapeId, propertyName, index, propertyValue } = payload;
 
-      console.log('SET_SHAPE_PROPERTY', shapeId, property, index, value);
+      console.log('SET_SHAPE_PROPERTY', shapeId, propertyName, index, propertyValue);
 
       let newValue = clone(allShapes[shapeId]);
-      expr.setter(property)(newValue, value);
+      expr.setter(propertyName)(newValue, propertyValue);
 
       return {
         ...allShapes,
         [shapeId]: {
           ...allShapes[shapeId],
           ...newValue,
+          properties: {
+            ...allShapes[shapeId].properties,
+            ...newValue,
+          }
         }
       };
     }
@@ -43,7 +47,14 @@ const allShapesReducer = (allShapes: State['allShapes'], action: Action) => {
   return allShapes;
 };
 
-const addShape = (allShapes: State['allShapes'], type: string, shapeId: number, position: number[]) => {
+type AddShapeFunc = (
+  allShapes: State['allShapes'],
+  type: string,
+  shapeId: number,
+  position: number[]
+) => State['allShapes'];
+
+const addShape: AddShapeFunc = (allShapes, type, shapeId, position) => {
   return {
     ...allShapes,
     [0]: {
@@ -57,6 +68,11 @@ const addShape = (allShapes: State['allShapes'], type: string, shapeId: number, 
       position: [position[0], position[1]],
       opacity: 0.75,
       angle: 0,
+      properties: {
+        position: [position[0], position[1]],
+        opacity: 0.75,
+        angle: 0,
+      }
     }
   };
 };

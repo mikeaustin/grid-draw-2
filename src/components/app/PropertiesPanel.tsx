@@ -34,8 +34,8 @@ const PropertiesPanel = ({
       type: 'SET_SHAPE_PROPERTY',
       payload: {
         shapeId: selectedShapeId,
-        property: name,
-        value: value,
+        propertyName: name,
+        propertyValue: value,
       }
     });
   };

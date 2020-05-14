@@ -21,13 +21,6 @@ const appContext = {
   eventEmitter: new EventEmitter()
 };
 
-const setSelectedShape = (state: State, selectedShape: Shape, eventType: string) => {
-  appContext.eventEmitter.emit(eventType, {
-    ...state.allShapes[state.selectedShapeIds[0]],
-    ...selectedShape
-  });
-};
-
 function App() {
   console.log('App()', appContext);
 
@@ -36,24 +29,22 @@ function App() {
   const stateView = useMemo(() => ({ ...state }), [state]);
 
   useEffect(() => {
-    const newSelectedShape = state.allShapes[state.selectedShapeIds[0]];
+    const selectedShape = state.allShapes[state.selectedShapeIds[0]];
 
-    if (newSelectedShape) {
-      setSelectedShape(state, newSelectedShape, 'position');
-      setSelectedShape(state, newSelectedShape, 'opacity');
+    if (selectedShape) {
+      appContext.eventEmitter.emit('position', selectedShape);
+      appContext.eventEmitter.emit('opacity', selectedShape);
     }
   }, [state.allShapes, state.selectedShapeIds]);
 
-  const handleShapeUpdate = useCallback((shapeId: number, newSelectedShape: Properties) => {
-    // console.log('handleShapeUpdate()', state.allShapes[shapeId]);
-
-    const shape = {
+  const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
+    const updatedShape = {
       ...state.allShapes[shapeId],
-      ...newSelectedShape
+      ...shapeProperties
     };
 
-    Object.keys(newSelectedShape).forEach(eventType => {
-      setSelectedShape(state, shape, eventType);
+    Object.keys(shapeProperties).forEach(eventType => {
+      appContext.eventEmitter.emit(eventType, updatedShape);
     });
   }, [state.allShapes]);
 

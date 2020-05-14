@@ -103,6 +103,8 @@ const CanvasShape = React.memo(({
       {...shapeProps}
     >
       {shape.childIds.map(childId => {
+        console.log('shape.childIds.map()', childId);
+
         const shape = allShapes[childId];
         const selected = selectedShapeIds.includes(childId);
 
