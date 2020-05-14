@@ -14,7 +14,7 @@ const initialState: State = {
     0: {
       id: 0,
       type: 'GridDraw.Shape.Group',
-      childIds: [1],
+      childIds: [1, 2],
       position: [0, 0],
       opacity: 1.0,
       angle: 0,
@@ -32,19 +32,24 @@ const initialState: State = {
       opacity: 0.75,
       angle: 45,
       properties: {
-        position: [0, 0],
-        opacity: 1.0,
+        position: [100, 100],
+        opacity: 0.75,
+        angle: 45,
+      }
+    },
+    2: {
+      id: 2,
+      type: 'GridDraw.Shape.Ellipse',
+      childIds: [],
+      position: [250, 100],
+      opacity: 0.5,
+      angle: 0,
+      properties: {
+        position: [250, 100],
+        opacity: 0.5,
         angle: 0,
       }
     },
-    // 2: {
-    //   id: 2,
-    //   type: 'GridDraw.Shape.Ellipse',
-    //   childIds: [],
-    //   position: [250, 100],
-    //   opacity: 0.5,
-    //   angle: 0,
-    // },
     // 3: {
     //   id: 3,
     //   type: 'GridDraw.Shape.Group',

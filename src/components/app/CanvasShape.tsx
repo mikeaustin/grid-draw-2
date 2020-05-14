@@ -61,8 +61,8 @@ const CanvasShape = React.memo(({
 
     setTimeout(() => {
       onShapeUpdate(shape.id, {
-        position: shape.position,
-        opacity: shape.opacity,
+        position: shape.properties.position,
+        opacity: shape.properties.opacity,
       });
     }, 0);
   }, [shape.id, setFirstPosition, onShapeUpdate]);
@@ -70,8 +70,8 @@ const CanvasShape = React.memo(({
   const handleResponderMove = useCallback(event => {
     onShapeUpdate(shape.id, {
       position: [
-        shape.position[0] + event.nativeEvent.pageX - firstPosition[0],
-        shape.position[1] + event.nativeEvent.pageY - firstPosition[1],
+        shape.properties.position[0] + event.nativeEvent.pageX - firstPosition[0],
+        shape.properties.position[1] + event.nativeEvent.pageY - firstPosition[1],
       ]
     });
   }, [shape.id, firstPosition, onShapeUpdate]);
@@ -80,8 +80,8 @@ const CanvasShape = React.memo(({
     console.log('----------');
 
     onSetPosition(shape.id, [
-      shape.position[0] + (event.nativeEvent.pageX - firstPosition[0]),
-      shape.position[1] + (event.nativeEvent.pageY - firstPosition[1]),
+      shape.properties.position[0] + (event.nativeEvent.pageX - firstPosition[0]),
+      shape.properties.position[1] + (event.nativeEvent.pageY - firstPosition[1]),
     ]);
   }, [onSetPosition]);
 

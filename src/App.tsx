@@ -40,7 +40,11 @@ function App() {
   const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
     const updatedShape = {
       ...state.allShapes[shapeId],
-      ...shapeProperties
+      ...shapeProperties,
+      properties: {
+        ...state.allShapes[shapeId].properties,
+        ...shapeProperties,
+      }
     };
 
     Object.keys(shapeProperties).forEach(eventType => {
