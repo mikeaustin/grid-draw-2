@@ -9,7 +9,9 @@ type State = {
   selectedShapeIds: number[],
   options: {
     showRuler: boolean,
-    showGrid;
+    showGrid: boolean,
+    showSecondCanvas: boolean,
+    showThirdCanvas: boolean,
   },
   allShapes: {
     [shapeId: number]: Shape;

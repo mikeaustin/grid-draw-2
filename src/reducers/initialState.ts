@@ -9,6 +9,8 @@ const initialState: State = {
   options: {
     showRuler: true,
     showGrid: true,
+    showSecondCanvas: true,
+    showThirdCanvas: true,
   },
   allShapes: {
     0: {
@@ -29,7 +31,7 @@ const initialState: State = {
       properties: {
         position: [100, 100],
         hue: 0,
-        opacity: 0.75,
+        opacity: 1.0,
         angle: 45,
       }
     },
@@ -39,8 +41,8 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [250, 100],
-        hue: 0,
-        opacity: 0.5,
+        hue: 90,
+        opacity: 0.75,
         angle: 0,
       }
     },
@@ -51,7 +53,7 @@ const initialState: State = {
       properties: {
         position: [400, 100],
         hue: 0,
-        opacity: 0.25,
+        opacity: 0.5,
         angle: 0,
       }
     },
@@ -61,7 +63,7 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [0, 0],
-        hue: 0,
+        hue: 180,
         opacity: 1.0,
         angle: 0,
       }
@@ -72,7 +74,7 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [0, 150],
-        hue: 0,
+        hue: 270,
         opacity: 0.5,
         angle: 0,
       }

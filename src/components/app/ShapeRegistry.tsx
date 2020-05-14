@@ -17,6 +17,18 @@ class Ellipse3 extends View {
 
 const shapeRegistry = {
   'GridDraw.Shape.Ellipse': {
+    icon: ({ hue, opacity }) => {
+      return (
+        <Ellipse
+          cx={10}
+          cy={10}
+          rx={10}
+          ry={10}
+          fill={`hsl(${hue}, 100%, 50%)`}
+          opacity={opacity}
+        />
+      );
+    },
     render: ({
       position: [x, y],
       hue,
@@ -37,6 +49,18 @@ const shapeRegistry = {
     }
   },
   'GridDraw.Shape.Rect': {
+    icon: ({ hue, opacity }) => {
+      return (
+        <Rect
+          x={0}
+          y={0}
+          width={20}
+          height={20}
+          fill={`hsl(${hue}, 100%, 50%)`}
+          opacity={opacity}
+        />
+      );
+    },
     render: ({
       position: [x, y],
       hue,
@@ -84,6 +108,14 @@ const shapeRegistry = {
     }
   },
   'GridDraw.Shape.Group': {
+    icon: ({ }) => {
+      return (
+        <Rect width={20} height={20} fill="transparent" stroke="black" stroke-width="2"
+          strokeDasharray={'3 1'}
+
+        />
+      );
+    },
     render: ({
       position: [x, y],
       opacity,

@@ -1,6 +1,11 @@
 import React from 'react';
 import { Text, G, Line, Rect } from 'react-native-svg';
 
+const rectProps = {
+  fill: '#e8e8e8',
+  // fill: '#f4f4f4',
+};
+
 const textProps = {
   style: {
     fontSize: 10
@@ -27,7 +32,7 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
   if (vertical) {
     return (
       <G transform={vertical ? 'translate(30, 0) rotate(90)' : ''}>
-        <Rect x={30} y={0} width={1000} height={30} fill="#e8e8e8" />
+        <Rect x={30} y={0} width={10000} height={30} {...rectProps} />
         {Array.from({ length: 101 }, (_, index) => (
           <React.Fragment key={index}>
             <Line
@@ -45,7 +50,7 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
         <Line
           x1={30}
           y1={-0.5}
-          x2={1030}
+          x2={10030}
           y2={-0.5}
           stroke="hsl(0, 0%, 80%)"
         />
@@ -55,7 +60,7 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
 
   return (
     <G>
-      <Rect x={30} y={0} width={1000} height={30} fill="#e8e8e8" />
+      <Rect x={30} y={0} width={10000} height={30} {...rectProps} />
       {Array.from({ length: 101 }, (_, index) => (
         <React.Fragment key={index}>
           <Line
@@ -73,7 +78,7 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
       <Line
         x1={30}
         y1={30.5}
-        x2={1030}
+        x2={10030}
         y2={30.5}
         stroke="hsl(0, 0%, 80%)"
       />

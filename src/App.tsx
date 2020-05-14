@@ -11,6 +11,8 @@ import ShapesPanel from './components/app/ShapesPanel';
 import PropertiesPanel from './components/app/PropertiesPanel';
 import { EventEmitter } from 'events';
 
+import { List } from './components/core';
+
 const styles = StyleSheet.create({
   app: {
     height: '100vh',
@@ -56,24 +58,30 @@ function App() {
     <ShapeContext.Provider value={appContext}>
       <View style={styles.app}>
         <MainToolbar currentTool={state.currentTool} state={state} dispatch={dispatch} />
-        <View style={{ flex: 1, flexDirection: 'row' }}>
+        <List divider dividerColor="#d0d0d0" style={{ flex: 1, flexDirection: 'row' }}>
           <ShapesPanel
             allShapes={state.allShapes}
             selectedShapeIds={state.selectedShapeIds}
             dispatch={dispatch}
             onUpdateShape={handleShapeUpdate}
           />
-          <View style={{ background: '#d0d0d0', minWidth: 1 }} />
-          <AppCanvas state={state} dispatch={dispatch} onShapeUpdate={handleShapeUpdate} />
-          <View style={{ background: '#d0d0d0', minWidth: 1 }} />
-          <AppCanvas state={state} dispatch={dispatch} scale={0.5} onShapeUpdate={handleShapeUpdate} />
-          <View style={{ background: '#d0d0d0', minWidth: 1 }} />
+          <List divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
+            <List horizontal divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
+              <AppCanvas state={state} dispatch={dispatch} onShapeUpdate={handleShapeUpdate} />
+              {state.options.showSecondCanvas && (
+                <AppCanvas state={state} dispatch={dispatch} scale={0.5} onShapeUpdate={handleShapeUpdate} />
+              )}
+            </List>
+            {state.options.showThirdCanvas && (
+              <AppCanvas state={state} dispatch={dispatch} scale={2.0} onShapeUpdate={handleShapeUpdate} />
+            )}
+          </List>
           <PropertiesPanel
             selectedShapeId={state.selectedShapeIds[0]}
             dispatch={dispatch}
             onShapeUpdate={handleShapeUpdate}
           />
-        </View>
+        </List>
       </View >
     </ShapeContext.Provider>
   );

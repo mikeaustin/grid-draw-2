@@ -34,6 +34,10 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
           <Toolbar.Button icon="ruler" value={{ option: 'showRuler' }} selected={state.options.showRuler} />
           <Toolbar.Button icon="square-20" value={{ option: 'showGrid' }} selected={state.options.showGrid} />
         </Toolbar.Group>
+        <Toolbar.Group title="Canvas" name="TOGGLE_OPTION">
+          <Toolbar.Button icon="003-object-alignment-1" value={{ option: 'showSecondCanvas' }} selected={state.options.showSecondCanvas} />
+          <Toolbar.Button icon="004-object-alignment-2" value={{ option: 'showThirdCanvas' }} selected={state.options.showThirdCanvas} />
+        </Toolbar.Group>
       </Toolbar>
       <Toolbar>
         <Toolbar.Group>

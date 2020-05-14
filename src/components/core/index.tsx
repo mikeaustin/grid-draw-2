@@ -42,14 +42,15 @@ const Spacer = ({ size }: SpacerProps) => {
 };
 
 type DividerProps = {
+  color?: string,
   spacerSize?: Size,
 };
 
-const Divider = ({ spacerSize = 'none' }: DividerProps) => {
+const Divider = ({ spacerSize = 'none', color = '#e0e0e0' }: DividerProps) => {
   return (
     <>
       <Spacer size={spacerSize} />
-      <View style={{ background: '#e0e0e0', minWidth: 1, minHeight: 1 }} />
+      <View style={{ background: color, minWidth: 1, minHeight: 1 }} />
       <Spacer size={spacerSize} />
     </>
   );
@@ -59,6 +60,7 @@ type ListProps = {
   horizontal?: boolean,
   spacerSize?: Size,
   divider?: boolean,
+  dividerColor?: string,
   style?: object,
   children: React.ReactNode,
 };
@@ -69,14 +71,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const List = ({ horizontal, spacerSize = 'none', divider, style, children, ...props }: ListProps) => {
-  const separator = divider ? <Divider spacerSize={spacerSize} /> : <Spacer size={spacerSize} />;
+const List = ({ horizontal, spacerSize = 'none', divider, dividerColor, style, children, ...props }: ListProps) => {
+  const separator = divider ? <Divider color={dividerColor} spacerSize={spacerSize} /> : <Spacer size={spacerSize} />;
 
   return (
     <View style={[horizontal && styles.horizontal, style]} {...props}>
       {React.Children.map(children, (child, index) => (
         <>
-          {index > 0 && separator}
+          {index > 0 && React.isValidElement(child) && separator}
           {child}
         </>
       ))}

@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native-web';
+import { Svg } from 'react-native-svg';
 
-import { List, Divider } from '../core';
+import CanvasShape from './CanvasShape';
+import shapeRegistry from './ShapeRegistry';
+import { List, Spacer, Divider } from '../core';
 import Panel from '../shared/Panel';
 
 const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch, onUpdateShape, ...props }) => {
@@ -41,11 +44,15 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
     });
   };
 
+  const icon = shapeRegistry[shape.type] && shapeRegistry[shape.type].icon;
+
   return (
     <View>
       <TouchableWithoutFeedback key={shape.id} onPressIn={() => handleSelectShape(shape.id)}>
         <View
           style={{
+            flexDirection: 'row',
+            alignItems: 'center',
             paddingVertical: 6,
             paddingHorizontal: 20,
             // backgroundColor: selected && 'hsl(210, 90%, 55%)',
@@ -54,7 +61,11 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
             cursor: 'pointer',
           }}
         >
-          <Text style={{ fontWeight: 500, color: selected && 'xwhite' }}>{allShapes[shape.id].type}</Text>
+          <Svg width="20" height="20" viewBox="0 0 20 20">
+            {icon && icon({ ...shape.properties, position: [50, 50], angle: 0 })}
+          </Svg>
+          <Spacer size="small" />
+          <Text style={{ fontWeight: 500, marginTop: -1 }}>{allShapes[shape.id].type}</Text>
         </View>
       </TouchableWithoutFeedback>
       <ShapeItemList
