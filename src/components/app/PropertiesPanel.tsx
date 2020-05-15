@@ -55,25 +55,32 @@ const PropertiesPanel = ({
           </Section>
           <Section title="Opacity">
             <List horizontal spacerSize="small">
-              <PropertyField Component={Slider} property="opacity" />
+              <PropertyField Component={Slider} property="opacity" flex />
               <PropertyField Component={NumericInput} property="opacity" />
             </List>
           </Section>
           <Section title="Rotation">
             <List horizontal spacerSize="small">
-              <PropertyField Component={Slider} property="angle" max="36000" />
+              <PropertyField Component={Slider} property="angle" max="36000" flex />
               <PropertyField Component={NumericInput} property="angle" />
             </List>
           </Section>
           <Section title="Fill">
-            <List horizontal spacerSize="small">
-              <PropertyField Component={Slider} label="H" property="hue" max="36000" />
-              <PropertyField Component={NumericInput} property="hue" />
-            </List>
+            <SliderWithInputPropertyField label="H" property="hue" max="36000" />
+            <SliderWithInputPropertyField label="H" property="hue" max="36000" />
           </Section>
         </List>
       </Form>
     </Panel>
+  );
+};
+
+const SliderWithInputPropertyField = ({ label, property, max }) => {
+  return (
+    <List horizontal spacerSize="small">
+      <PropertyField Component={Slider} label={label} property={property} flex max={max} />
+      <PropertyField Component={NumericInput} property={property} />
+    </List>
   );
 };
 
@@ -84,10 +91,12 @@ type SectionProps = {
 
 const Section = ({ title, children }: SectionProps) => {
   return (
-    <View style={{ padding: 10 }}>
+    <View style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
       <Text style={{ fontSize: 12, fontWeight: 700 }}>{title}</Text>
       <Spacer size="small" />
-      {children}
+      <List spacerSize="small">
+        {children}
+      </List>
     </View>
   );
 };

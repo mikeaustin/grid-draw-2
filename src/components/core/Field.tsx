@@ -8,16 +8,17 @@ type FieldProps = {
   label?: string,
   value: any,
   editable?: boolean,
+  flex?: boolean,
   onValueChange?: Function,
   onValueCommit?: Function,
   onBlur?: Function,
 };
 
-const Field = ({ Component, label, value, ...props }: FieldProps) => {
+const Field = ({ Component, label, value, flex, ...props }: FieldProps) => {
   // console.log('Field()', value);
 
   return (
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+    <View style={[{ flexDirection: 'row', alignItems: 'center' }, flex && { flex: 1 }]}>
       {label && (
         <>
           <Text>{label}</Text>
