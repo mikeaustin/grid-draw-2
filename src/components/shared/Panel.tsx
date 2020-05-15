@@ -3,15 +3,14 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native-web';
 
 const styles = StyleSheet.create({
   panel: {
-    width: 256, backgroundColor: '#f4f4f4',
+    width: 256, backgroundColor: '#f8f8f8',
   },
   title: {
     paddingHorizontal: 15,
     height: 31,
-    backgroundColor: '#e8e8e8',
-    // backgroundColor: '#f4f4f4',
+    backgroundColor: '#f0f0f0',
     borderBottomWidth: 1,
-    borderColor: '#d0d0d0',
+    borderColor: '#e0e0e0',
     justifyContent: 'center'
   }
 });

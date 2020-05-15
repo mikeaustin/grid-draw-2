@@ -12,19 +12,17 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
   },
   selected: {
-    // backgroundColor: 'hsla(0, 0%, 0%, 0.1)',
     backgroundColor: '#e0e0e0',
   },
   pressed: {
-    // backgroundColor: 'hsla(0, 0%, 0%, 0.15)',
     backgroundColor: '#d0d0d0',
   },
   toolbar: {
     flexDirection: 'row',
     padding: 5,
-    backgroundColor: '#f1f3f4',
+    backgroundColor: '#f8f8f8',
     borderBottomWidth: 1,
-    borderColor: 'hsl(0, 0%, 80%)',
+    borderColor: '#e0e0e0',
     minHeight: 41,
   }
 });
@@ -75,7 +73,7 @@ const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupPro
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {React.Children.map(children, (child, index) => (
           <>
-            {index > 0 && <Spacer size="small" />}
+            {index > 0 && <Spacer size="xsmall" />}
             {React.isValidElement(child) && React.cloneElement(child, {
               selected: child.props.selected || selectedValue && equals(child.props.value, selectedValue),
               onDispatch: value => onButtonPress && onButtonPress(name, value)

@@ -126,7 +126,7 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasPro
       {state.options.showRuler && (
         <G>
           <Ruler scale={scale} />
-          <Rect width="30" height="30" fill="#e8e8e8" />
+          <Rect width="30" height="30" fill="#f0f0f0" />
           <SvgText x={9} y={18} {...{ fontSize: 12 }} >px</SvgText>
           <Ruler scale={scale} vertical />
         </G>

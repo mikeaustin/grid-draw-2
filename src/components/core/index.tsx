@@ -46,7 +46,7 @@ type DividerProps = {
   spacerSize?: Size,
 };
 
-const Divider = ({ spacerSize = 'none', color = '#e0e0e0' }: DividerProps) => {
+const Divider = ({ spacerSize = 'none', color = '#e8e8e8' }: DividerProps) => {
   return (
     <>
       <Spacer size={spacerSize} />

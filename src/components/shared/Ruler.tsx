@@ -2,8 +2,7 @@ import React from 'react';
 import { Text, G, Line, Rect } from 'react-native-svg';
 
 const rectProps = {
-  fill: '#e8e8e8',
-  // fill: '#f4f4f4',
+  fill: '#f0f0f0',
 };
 
 const textProps = {
@@ -52,7 +51,7 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
           y1={-0.5}
           x2={10030}
           y2={-0.5}
-          stroke="hsl(0, 0%, 80%)"
+          stroke="#e0e0e0"
         />
       </G>
     );
@@ -80,7 +79,7 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
         y1={30.5}
         x2={10030}
         y2={30.5}
-        stroke="hsl(0, 0%, 80%)"
+        stroke="#e0e0e0"
       />
     </G>
   );
