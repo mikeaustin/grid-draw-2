@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   toolbar: {
     flexDirection: 'row',
-    padding: 5,
+    paddingVertical: 5,
     backgroundColor: '#f8f8f8',
     borderBottomWidth: 1,
     borderColor: '#e0e0e0',
@@ -69,7 +69,7 @@ type GroupProps = {
 
 const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupProps) => {
   return (
-    <View style={{ alignItems: 'center', paddingHorizontal: 10, xpaddingVertical: 5 }}>
+    <View style={{ alignItems: 'center', paddingHorizontal: 15, xpaddingVertical: 5 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {React.Children.map(children, (child, index) => (
           <>

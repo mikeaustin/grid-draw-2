@@ -40,7 +40,7 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
           <Toolbar.Button icon="004-object-alignment-2" value={{ option: 'showThirdCanvas' }} selected={state.options.showThirdCanvas} />
         </Toolbar.Group>
       </Toolbar>
-      <Toolbar spacerSize="xsmall">
+      <Toolbar>
         {currentTool.tool === "Create" && (
           <Toolbar.Group>
             <Text>Tool Options</Text>
