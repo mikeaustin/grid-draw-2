@@ -19,7 +19,11 @@ const initialState: State = {
       childIds: [1, 2, 3],
       properties: {
         position: [0, 0],
-        hue: 0,
+        fill: {
+          hue: 0,
+          saturation: 100,
+          lightness: 50,
+        },
         opacity: 1.0,
         angle: 0,
       }
@@ -30,7 +34,11 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [100, 100],
-        hue: 0,
+        fill: {
+          hue: 0,
+          saturation: 100,
+          lightness: 50,
+        },
         opacity: 1.0,
         angle: 45,
       }
@@ -41,7 +49,11 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [250, 100],
-        hue: 90,
+        fill: {
+          hue: 90,
+          saturation: 100,
+          lightness: 50,
+        },
         opacity: 0.75,
         angle: 0,
       }
@@ -52,7 +64,11 @@ const initialState: State = {
       childIds: [4, 5],
       properties: {
         position: [400, 100],
-        hue: 0,
+        fill: {
+          hue: 0,
+          saturation: 100,
+          lightness: 50,
+        },
         opacity: 0.5,
         angle: 0,
       }
@@ -63,7 +79,11 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [0, 0],
-        hue: 180,
+        fill: {
+          hue: 180,
+          saturation: 100,
+          lightness: 50,
+        },
         opacity: 1.0,
         angle: 0,
       }
@@ -74,7 +94,11 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: [0, 150],
-        hue: 270,
+        fill: {
+          hue: 270,
+          saturation: 100,
+          lightness: 50,
+        },
         opacity: 0.5,
         angle: 0,
       }

@@ -77,6 +77,7 @@ function App() {
             )}
           </List>
           <PropertiesPanel
+            allShapes={state.allShapes}
             selectedShapeId={state.selectedShapeIds[0]}
             dispatch={dispatch}
             onShapeUpdate={handleShapeUpdate}

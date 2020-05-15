@@ -4,7 +4,11 @@ type Shape = {
   childIds: number[],
   properties: {
     position: number[],
-    hue: number,
+    fill: {
+      hue: number,
+      saturation: number,
+      lightness: number,
+    },
     opacity: number,
     angle: number,
   };

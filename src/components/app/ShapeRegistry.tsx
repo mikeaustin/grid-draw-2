@@ -17,21 +17,32 @@ class Ellipse3 extends View {
 
 const shapeRegistry = {
   'GridDraw.Shape.Ellipse': {
-    icon: ({ hue, opacity }) => {
+    icon: ({
+      fill: {
+        hue,
+        saturation,
+        lightness,
+      },
+      opacity
+    }: Shape['properties']) => {
       return (
         <Ellipse
           cx={10}
           cy={10}
           rx={10}
           ry={10}
-          fill={`hsl(${hue}, 100%, 50%)`}
+          fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
           opacity={opacity}
         />
       );
     },
     render: ({
       position: [x, y],
-      hue,
+      fill: {
+        hue,
+        saturation,
+        lightness,
+      },
       opacity,
       ...props
     }: Shape['properties']) => {
@@ -41,7 +52,7 @@ const shapeRegistry = {
           cy={y}
           rx={50}
           ry={50}
-          fill={`hsl(${hue}, 100%, 50%)`}
+          fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
           opacity={opacity}
           {...props}
         />
@@ -49,21 +60,32 @@ const shapeRegistry = {
     }
   },
   'GridDraw.Shape.Rect': {
-    icon: ({ hue, opacity }) => {
+    icon: ({
+      fill: {
+        hue,
+        saturation,
+        lightness,
+      },
+      opacity
+    }: Shape['properties']) => {
       return (
         <Rect
           x={0}
           y={0}
           width={20}
           height={20}
-          fill={`hsl(${hue}, 100%, 50%)`}
+          fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
           opacity={opacity}
         />
       );
     },
     render: ({
       position: [x, y],
-      hue,
+      fill: {
+        hue,
+        saturation,
+        lightness,
+      },
       opacity,
       angle,
       ...props
@@ -75,7 +97,7 @@ const shapeRegistry = {
           width={100}
           height={100}
           transform={`rotate(${angle} ${(x - 50) + 100 / 2} ${(y - 50) + 100 / 2})`}
-          fill={`hsl(${hue}, 100%, 50%)`}
+          fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
           opacity={opacity}
           {...props}
         />
@@ -85,6 +107,11 @@ const shapeRegistry = {
   'GridDraw.Shape.Ellipse2': {
     render: ({
       position: [x, y],
+      fill: {
+        hue,
+        saturation,
+        lightness,
+      },
     }: Shape['properties']) => {
       return (
         <JsxParser
@@ -112,12 +139,16 @@ const shapeRegistry = {
       return (
         <Rect width={20} height={20} fill="transparent" stroke="black" strokeWidth="2"
           strokeDasharray={'3 1'}
-
         />
       );
     },
     render: ({
       position: [x, y],
+      fill: {
+        hue,
+        saturation,
+        lightness,
+      },
       opacity,
       ...props
     }: Shape['properties']) => {

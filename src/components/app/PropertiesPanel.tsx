@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react';
 import { View, Text, TextInput } from 'react-native-web';
+import expr from 'property-expr';
 
 import { Spacer, Slider, List, Form, NumericInput, Field, PropertyField } from '../core';
 import Panel from '../shared/Panel';
@@ -7,22 +8,53 @@ import Shape from '../../types/Shape';
 import Properties from '../../types/Properties';
 
 type PropertiesPanelProps = {
+  allShapes: any,
   selectedShapeId: number,
   dispatch: React.Dispatch<any>,
   onShapeUpdate: (shapeId: number, shape: Properties) => void,
 };
 
+const clone = value => {
+  if (Array.isArray(value)) {
+    return value.map(item => clone(item));
+  }
+
+  if (typeof value === 'object') {
+    return Object.entries(value).reduce((acc, [key, value]) => ({
+      ...acc,
+      [key]: clone(value)
+    }), {});
+  }
+
+  return value;
+};
+
 const PropertiesPanel = ({
+  allShapes,
   selectedShapeId,
   dispatch,
   onShapeUpdate
 }: PropertiesPanelProps) => {
   console.log('PropertiesPanel()', selectedShapeId);
 
-  const handleShapeUpdate = (name: string, value: any) => {
-    onShapeUpdate(selectedShapeId, {
-      [name]: value,
-    });
+  const handleShapeUpdate = (propertyName: string, propertyValue: any) => {
+    const index = propertyName.search(/[\.\[]/);
+
+    if (index >= 0) {
+      const rootPropertyName = propertyName.slice(0, index);
+      const branchPropertyNames = propertyName.slice(index);
+
+      let updatedPropertyValue = clone(allShapes[selectedShapeId].properties[rootPropertyName]);
+      expr.setter(branchPropertyNames)(updatedPropertyValue, propertyValue);
+
+      onShapeUpdate(selectedShapeId, {
+        [rootPropertyName]: updatedPropertyValue,
+      });
+    } else {
+      onShapeUpdate(selectedShapeId, {
+        [propertyName]: propertyValue,
+      });
+    }
   };
 
   const handlePropertyChange = (name: string, value: any) => {
@@ -66,8 +98,9 @@ const PropertiesPanel = ({
             </List>
           </Section>
           <Section title="Fill">
-            <SliderWithInputPropertyField label="H" property="hue" max="36000" />
-            <SliderWithInputPropertyField label="H" property="hue" max="36000" />
+            <SliderWithInputPropertyField label="H" property="fill.hue" max="36000" />
+            <SliderWithInputPropertyField label="S" property="fill.saturation" max="10000" />
+            <SliderWithInputPropertyField label="L" property="fill.lightness" max="10000" />
           </Section>
         </List>
       </Form>
