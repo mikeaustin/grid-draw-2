@@ -110,7 +110,7 @@ const shapeRegistry = {
   'GridDraw.Shape.Group': {
     icon: ({ }) => {
       return (
-        <Rect width={20} height={20} fill="transparent" stroke="black" stroke-width="2"
+        <Rect width={20} height={20} fill="transparent" stroke="black" strokeWidth="2"
           strokeDasharray={'3 1'}
 
         />

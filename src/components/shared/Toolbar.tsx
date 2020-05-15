@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
 
 import { Spacer, Divider, List } from '../core';
+import { Size } from '../../types';
 
 const styles = StyleSheet.create({
   button: {
@@ -11,36 +12,38 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
   },
   selected: {
-    backgroundColor: 'hsla(0, 0%, 0%, 0.1)'
+    // backgroundColor: 'hsla(0, 0%, 0%, 0.1)',
+    backgroundColor: '#e0e0e0',
   },
   pressed: {
-    backgroundColor: 'hsla(0, 0%, 0%, 0.15)'
+    // backgroundColor: 'hsla(0, 0%, 0%, 0.15)',
+    backgroundColor: '#d0d0d0',
   },
   toolbar: {
     flexDirection: 'row',
     padding: 5,
-    backgroundColor: '#f3f3f3',
+    backgroundColor: '#f1f3f4',
     borderBottomWidth: 1,
     borderColor: 'hsl(0, 0%, 80%)',
+    minHeight: 41,
   }
 });
 
 type ToolbarProps = {
+  spacerSize?: Size,
   children: React.ReactNode,
   onButtonPress?: Function,
 };
 
-const Toolbar = ({ children, onButtonPress }: ToolbarProps) => {
+const Toolbar = ({ spacerSize, children, onButtonPress }: ToolbarProps) => {
   return (
-    <View style={styles.toolbar}>
-      <List horizontal divider>
-        {React.Children.map(children, child => (
-          React.isValidElement(child) && React.cloneElement(child, {
-            onButtonPress,
-          })
-        ))}
-      </List>
-    </View>
+    <List horizontal divider spacerSize={spacerSize} style={styles.toolbar}>
+      {React.Children.map(children, child => (
+        React.isValidElement(child) && React.cloneElement(child, {
+          onButtonPress,
+        })
+      ))}
+    </List>
   );
 };
 
@@ -68,11 +71,11 @@ type GroupProps = {
 
 const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupProps) => {
   return (
-    <View style={{ alignItems: 'center', paddingHorizontal: 5 }}>
-      <View style={{ flexDirection: 'row' }}>
+    <View style={{ alignItems: 'center', paddingHorizontal: 10, xpaddingVertical: 5 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         {React.Children.map(children, (child, index) => (
           <>
-            {index > 0 && <Spacer size="xsmall" />}
+            {index > 0 && <Spacer size="small" />}
             {React.isValidElement(child) && React.cloneElement(child, {
               selected: child.props.selected || selectedValue && equals(child.props.value, selectedValue),
               onDispatch: value => onButtonPress && onButtonPress(name, value)
