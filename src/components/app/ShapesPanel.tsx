@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native-web';
 import { Svg } from 'react-native-svg';
 
-import CanvasShape from './CanvasShape';
 import shapeRegistry from './ShapeRegistry';
 import { List, Spacer, Divider } from '../core';
 import Panel from '../shared/Panel';
@@ -55,7 +54,7 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
             alignItems: 'center',
             paddingVertical: 6,
             paddingHorizontal: 20,
-            backgroundColor: selected && '#e0e0e0',
+            backgroundColor: selected && '#e8e8e8',
             paddingLeft: depth * 15 + 15,
             cursor: 'pointer',
           }}
