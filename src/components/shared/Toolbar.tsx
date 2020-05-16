@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 5,
     backgroundColor: '#f8f8f8',
-    borderBottomWidth: 1,
-    borderColor: '#e0e0e0',
+    // borderBottomWidth: 1,
+    // borderColor: '#e0e0e0',
     minHeight: 41,
   }
 });

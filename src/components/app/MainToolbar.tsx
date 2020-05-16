@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
 
 import Toolbar from '../shared/Toolbar';
-import { NumericInput, Field } from '../core';
+import { NumericInput, Field, Divider } from '../core';
 
 const MainToolbar = ({ state, currentTool, dispatch }) => {
   console.log('MainToolbar()', currentTool);
@@ -40,6 +40,7 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
           <Toolbar.Button icon="004-object-alignment-2" value={{ option: 'showThirdCanvas' }} selected={state.options.showThirdCanvas} />
         </Toolbar.Group>
       </Toolbar>
+      <Divider color="#d8d8d8" />
       <Toolbar>
         {currentTool.tool === "Create" && (
           <Toolbar.Group>
@@ -53,6 +54,7 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
           </Toolbar.Group>
         )}
       </Toolbar>
+      <Divider color="#d0d0d0" />
     </View>
   );
 };

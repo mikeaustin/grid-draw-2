@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     height: 31,
     backgroundColor: '#f0f0f0',
     borderBottomWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: '#e8e8e8',
     justifyContent: 'center'
   }
 });

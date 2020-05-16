@@ -79,7 +79,7 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
         y1={30.5}
         x2={10030}
         y2={30.5}
-        stroke="#e0e0e0"
+        stroke="#e8e8e8"
       />
     </G>
   );
