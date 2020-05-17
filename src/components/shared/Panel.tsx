@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     width: 256, backgroundColor: '#f8f8f8',
   },
   title: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     height: 31,
     backgroundColor: '#f0f0f0',
     borderBottomWidth: 1,

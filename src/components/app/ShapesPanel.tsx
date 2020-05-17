@@ -53,9 +53,9 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
             flexDirection: 'row',
             alignItems: 'center',
             paddingVertical: 6,
-            paddingHorizontal: 20,
+            paddingHorizontal: 10,
             backgroundColor: selected && '#e8e8e8',
-            paddingLeft: depth * 15 + 15,
+            paddingLeft: depth * 15 + 10,
             cursor: 'pointer',
           }}
         >

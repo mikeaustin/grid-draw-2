@@ -124,7 +124,7 @@ type SectionProps = {
 
 const Section = ({ title, children }: SectionProps) => {
   return (
-    <View style={{ paddingHorizontal: 10, paddingVertical: 5 }}>
+    <View style={{ paddingHorizontal: 5, paddingVertical: 5 }}>
       <Text style={{ fontSize: 12, fontWeight: 700 }}>{title}</Text>
       <Spacer size="small" />
       <List spacerSize="small">
