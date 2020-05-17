@@ -41,6 +41,13 @@ function App() {
   }, [appContext, state.allShapes, state.selectedShapeIds]);
 
   const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
+    if (shapeProperties.position) {
+      shapeProperties.position = [
+        Math.round((shapeProperties.position[0] / 10)) * 10,
+        Math.round(shapeProperties.position[1] / 10) * 10,
+      ];
+    }
+
     const updatedShape = {
       ...state.allShapes[shapeId],
       properties: {

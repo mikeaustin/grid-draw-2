@@ -15,15 +15,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#e8e8e8',
   },
   pressed: {
-    backgroundColor: '#d0d0d0',
+    backgroundColor: '#d8d8d8',
   },
   toolbar: {
     flexDirection: 'row',
     paddingVertical: 5,
     backgroundColor: '#f8f8f8',
-    // borderBottomWidth: 1,
-    // borderColor: '#e0e0e0',
-    minHeight: 41,
+    minHeight: 40,
   }
 });
 
@@ -122,7 +120,7 @@ const Button = ({ icon, value, selected, onDispatch }: ButtonProps) => {
   return (
     <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={handlePress}>
       <View style={buttonStyle}>
-        <Image source={{ uri: `images/icons/${icon}.svg` }} style={{ width: 25, height: 25 }} />
+        <Image source={{ uri: `images/icons/${icon}` }} style={{ width: 25, height: 25 }} />
       </View>
     </TouchableWithoutFeedback>
   );

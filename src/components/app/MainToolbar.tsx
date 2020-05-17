@@ -18,12 +18,12 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
     <View>
       <Toolbar onButtonPress={handleButtonPress}>
         <Toolbar.Group title="Tools" name="SELECT_TOOL" selectedValue={currentTool}>
-          <Toolbar.Button icon="037-cursor" value={{ tool: 'GridDraw.Tools.Move' }} />
+          <Toolbar.Button icon="mike-pointer.png" value={{ tool: 'GridDraw.Tools.Move' }} />
           {/* <Toolbar.Button icon="008-resize" value="GridDraw.Tools.Move" /> */}
         </Toolbar.Group>
         <Toolbar.Group title="Shapes" name="SELECT_TOOL" selectedValue={currentTool}>
-          <Toolbar.Button icon="009-rectangle" value={{ tool: 'Create', type: 'GridDraw.Shape.Rect' }} />
-          <Toolbar.Button icon="025-ellipse" value={{ tool: 'Create', type: 'GridDraw.Shape.Ellipse' }} />
+          <Toolbar.Button icon="mike-square.png" value={{ tool: 'Create', type: 'GridDraw.Shape.Rect' }} />
+          <Toolbar.Button icon="mike-circle.png" value={{ tool: 'Create', type: 'GridDraw.Shape.Ellipse' }} />
           {/* <Toolbar.Button icon="001-star" />
           <Toolbar.Button icon="007-pen-tool" /> */}
         </Toolbar.Group>
@@ -32,12 +32,13 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
           <Toolbar.Button icon="background" />
         </Toolbar.Group> */}
         <Toolbar.Group title="Guides" name="TOGGLE_OPTION">
-          <Toolbar.Button icon="ruler" value={{ option: 'showRuler' }} selected={state.options.showRuler} />
-          <Toolbar.Button icon="square-20" value={{ option: 'showGrid' }} selected={state.options.showGrid} />
+          <Toolbar.Button icon="mike-ruler.png" value={{ option: 'showRuler' }} selected={state.options.showRuler} />
+          <Toolbar.Button icon="mike-grid.png" value={{ option: 'showGrid' }} selected={state.options.showGrid} />
+          <Toolbar.Button icon="mike-magnet.png" value={{ option: 'showGrid' }} selected={state.options.showGrid} />
         </Toolbar.Group>
         <Toolbar.Group title="Canvas" name="TOGGLE_OPTION">
-          <Toolbar.Button icon="003-object-alignment-1" value={{ option: 'showSecondCanvas' }} selected={state.options.showSecondCanvas} />
-          <Toolbar.Button icon="004-object-alignment-2" value={{ option: 'showThirdCanvas' }} selected={state.options.showThirdCanvas} />
+          <Toolbar.Button icon="mike-horizontal.png" value={{ option: 'showSecondCanvas' }} selected={state.options.showSecondCanvas} />
+          <Toolbar.Button icon="mike-vertical.png" value={{ option: 'showThirdCanvas' }} selected={state.options.showThirdCanvas} />
         </Toolbar.Group>
       </Toolbar>
       <Divider color="#d8d8d8" />
