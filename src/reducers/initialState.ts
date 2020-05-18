@@ -9,6 +9,7 @@ const initialState: State = {
   options: {
     showRuler: true,
     showGrid: true,
+    snapToGrid: false,
     showSecondCanvas: true,
     showThirdCanvas: true,
   },

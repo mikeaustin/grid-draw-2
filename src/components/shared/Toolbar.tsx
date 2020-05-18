@@ -17,6 +17,10 @@ const styles = StyleSheet.create({
   pressed: {
     backgroundColor: '#d8d8d8',
   },
+  disabled: {
+    opacity: 0.25,
+    cursor: 'normal',
+  },
   toolbar: {
     flexDirection: 'row',
     paddingVertical: 5,
@@ -61,11 +65,12 @@ type GroupProps = {
   title?: string,
   name?: string,
   selectedValue?: any,
+  disabled?: boolean,
   children: React.ReactNode,
   onButtonPress?: Function,
 };
 
-const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupProps) => {
+const Group = ({ title, name, selectedValue, disabled, children, onButtonPress }: GroupProps) => {
   return (
     <View style={{ alignItems: 'center', paddingHorizontal: 10, xpaddingVertical: 5 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -74,6 +79,7 @@ const Group = ({ title, name, selectedValue, children, onButtonPress }: GroupPro
             {index > 0 && <Spacer size="xsmall" />}
             {React.isValidElement(child) && React.cloneElement(child, {
               selected: child.props.selected || selectedValue && equals(child.props.value, selectedValue),
+              disabled: disabled,
               onDispatch: value => onButtonPress && onButtonPress(name, value)
             })}
           </>
@@ -93,34 +99,40 @@ type ButtonProps = {
   icon: string,
   value?: any,
   selected?: boolean,
+  disabled?: boolean,
   onDispatch?: Function,
 };
 
-const Button = ({ icon, value, selected, onDispatch }: ButtonProps) => {
+const Button = ({ icon, value, selected, disabled, onDispatch }: ButtonProps) => {
   const [pressed, setPressed] = useState(false);
 
   const handlePressIn = () => {
-    setPressed(true);
+    !disabled && setPressed(true);
   };
 
   const handlePressOut = () => {
-    setPressed(false);
+    !disabled && setPressed(false);
   };
 
   const handlePress = () => {
-    onDispatch && onDispatch(value);
+    !disabled && onDispatch && onDispatch(value);
   };
 
   const buttonStyle = [
     styles.button,
     selected && styles.selected,
     pressed && styles.pressed,
+    disabled && styles.disabled,
   ];
 
   return (
-    <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} onPress={handlePress}>
+    <TouchableWithoutFeedback
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={handlePress}
+    >
       <View style={buttonStyle}>
-        <Image source={{ uri: `images/icons/${icon}` }} style={{ width: 25, height: 25 }} />
+        <Image source={{ uri: `images/icons/${icon}` }} style={{ width: 30, height: 30 }} />
       </View>
     </TouchableWithoutFeedback>
   );

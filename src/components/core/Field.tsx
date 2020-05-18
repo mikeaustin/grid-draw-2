@@ -6,7 +6,8 @@ import { Spacer, NumericInput } from '../core';
 type FieldProps = {
   Component: React.FunctionComponent<any>,
   label?: string,
-  value: any,
+  value?: any,
+  property?: string,
   editable?: boolean,
   flex?: boolean,
   onValueChange?: Function,
@@ -14,7 +15,7 @@ type FieldProps = {
   onBlur?: Function,
 };
 
-const Field = ({ Component, label, value, flex, ...props }: FieldProps) => {
+const Field = ({ Component, label, value, property, flex, ...props }: FieldProps) => {
   // console.log('Field()', value);
 
   return (

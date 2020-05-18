@@ -87,11 +87,6 @@ const CanvasShape = React.memo(({
       shape.properties.position[1] + (event.nativeEvent.pageY - firstPosition[1]),
     ];
 
-    position = [
-      Math.round((position[0] / 10)) * 10,
-      Math.round(position[1] / 10) * 10,
-    ];
-
     onSetPosition(shape.id, position);
   }, [firstPosition, onSetPosition]);
 

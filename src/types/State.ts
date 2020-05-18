@@ -10,6 +10,7 @@ type State = {
   options: {
     showRuler: boolean,
     showGrid: boolean,
+    snapToGrid: boolean,
     showSecondCanvas: boolean,
     showThirdCanvas: boolean,
   },

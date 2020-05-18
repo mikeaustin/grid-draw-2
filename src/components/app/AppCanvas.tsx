@@ -26,6 +26,13 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasPro
   console.log('AppCanvas()', { scale });
 
   const handleSetPosition = (shapeId, position) => {
+    if (state.options.snapToGrid) {
+      position = [
+        Math.round((position[0] / 10)) * 10,
+        Math.round(position[1] / 10) * 10,
+      ];
+    }
+
     dispatch({
       type: 'SET_SHAPE_PROPERTY',
       payload: {

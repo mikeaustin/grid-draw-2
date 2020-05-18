@@ -34,11 +34,24 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
         <Toolbar.Group title="Guides" name="TOGGLE_OPTION">
           <Toolbar.Button icon="mike-ruler.png" value={{ option: 'showRuler' }} selected={state.options.showRuler} />
           <Toolbar.Button icon="mike-grid.png" value={{ option: 'showGrid' }} selected={state.options.showGrid} />
-          <Toolbar.Button icon="mike-magnet.png" value={{ option: 'showGrid' }} selected={state.options.showGrid} />
+          <Toolbar.Button icon="mike-magnet.png" value={{ option: 'snapToGrid' }} selected={state.options.snapToGrid} />
         </Toolbar.Group>
         <Toolbar.Group title="Canvas" name="TOGGLE_OPTION">
           <Toolbar.Button icon="mike-horizontal.png" value={{ option: 'showSecondCanvas' }} selected={state.options.showSecondCanvas} />
           <Toolbar.Button icon="mike-vertical.png" value={{ option: 'showThirdCanvas' }} selected={state.options.showThirdCanvas} />
+        </Toolbar.Group>
+
+        <Toolbar.Group title="Arange" name="TOGGLE_OPTION" disabled>
+          <Toolbar.Button icon="mike-group.png" value={{ option: 'showSecondCanvas' }} />
+          <Toolbar.Button icon="mike-bring-forward.png" value={{ option: 'showThirdCanvas' }} />
+          <Toolbar.Button icon="mike-send-backward.png" value={{ option: 'showThirdCanvas' }} />
+        </Toolbar.Group>
+
+        <Toolbar.Group title="Combine" name="TOGGLE_OPTION" disabled>
+          <Toolbar.Button icon="mike-combine-union.png" value={{ option: 'showSecondCanvas' }} />
+          <Toolbar.Button icon="mike-combine-subtraction.png" value={{ option: 'showThirdCanvas' }} />
+          <Toolbar.Button icon="mike-combine-intersection.png" value={{ option: 'showThirdCanvas' }} />
+          <Toolbar.Button icon="mike-combine-division.png" value={{ option: 'showThirdCanvas' }} />
         </Toolbar.Group>
       </Toolbar>
       <Divider color="#d8d8d8" />

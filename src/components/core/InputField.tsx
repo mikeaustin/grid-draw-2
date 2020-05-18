@@ -69,4 +69,18 @@ const PropertyField = ({
 //   return <PropertyField Component={Component} {...props} />;
 // };
 
+const PropertyProvider = ({ property, children }) => {
+  const selectedShape = useSelectedShape(property);
+
+  return React.Children.map(children, child => (
+    React.cloneElement(child, {
+      value: selectedShape ? selectedShape.properties[property][child.props.property] : 0,
+    })
+  ));
+};
+
 export default React.memo(PropertyField);
+
+export {
+  PropertyProvider,
+};

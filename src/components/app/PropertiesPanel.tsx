@@ -6,6 +6,7 @@ import { Spacer, Slider, List, Form, NumericInput, Field, PropertyField } from '
 import Panel from '../shared/Panel';
 import Shape from '../../types/Shape';
 import Properties from '../../types/Properties';
+import { PropertyProvider } from '../core/InputField';
 
 type PropertiesPanelProps = {
   allShapes: any,
@@ -101,6 +102,10 @@ const PropertiesPanel = ({
             <SliderWithInputPropertyField label="H" property="fill.hue" max="36000" />
             <SliderWithInputPropertyField label="S" property="fill.saturation" max="10000" />
             <SliderWithInputPropertyField label="L" property="fill.lightness" max="10000" />
+
+            <PropertyProvider property="fill">
+              <Field Component={NumericInput} label="H" property="hue" />
+            </PropertyProvider>
           </Section>
         </List>
       </Form>

@@ -41,7 +41,7 @@ function App() {
   }, [appContext, state.allShapes, state.selectedShapeIds]);
 
   const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
-    if (shapeProperties.position) {
+    if (state.options.snapToGrid && shapeProperties.position) {
       shapeProperties.position = [
         Math.round((shapeProperties.position[0] / 10)) * 10,
         Math.round(shapeProperties.position[1] / 10) * 10,
@@ -59,7 +59,7 @@ function App() {
     Object.keys(shapeProperties).forEach(eventType => {
       appContext.eventEmitter.emit(eventType, updatedShape);
     });
-  }, [state.allShapes]);
+  }, [state.allShapes, state.options]);
 
   return (
     <ShapeContext.Provider value={appContext}>
