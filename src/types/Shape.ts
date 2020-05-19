@@ -3,7 +3,10 @@ type Shape = {
   type: string,
   childIds: number[],
   properties: {
-    position: number[],
+    position: {
+      x: number,
+      y: number,
+    },
     fill: {
       hue: number,
       saturation: number,

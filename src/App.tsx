@@ -42,10 +42,10 @@ function App() {
 
   const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
     if (state.options.snapToGrid && shapeProperties.position) {
-      shapeProperties.position = [
-        Math.round((shapeProperties.position[0] / 10)) * 10,
-        Math.round(shapeProperties.position[1] / 10) * 10,
-      ];
+      shapeProperties.position = {
+        x: Math.round((shapeProperties.position.x / 10)) * 10,
+        y: Math.round(shapeProperties.position.y / 10) * 10,
+      };
     }
 
     const updatedShape = {

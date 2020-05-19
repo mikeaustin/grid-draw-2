@@ -36,7 +36,7 @@ const PropertyField = ({
   property,
   ...props
 }: InputFieldProps) => {
-  const index = property.search(/[\.\[]/);
+  const index = property.indexOf('.');
   const rootProperty = index >= 0 ? property.slice(0, index) : property;
   const selectedShape = useSelectedShape(rootProperty);
 
@@ -45,13 +45,13 @@ const PropertyField = ({
   const { onShapeUpdate, onPropertyChange } = useContext(FormContext);
   const propertyValue = selectedShape ? getter(selectedShape.properties) : 0;
 
-  const handleValueChange = text => {
+  const handleValueChange = useCallback(text => {
     onShapeUpdate(property, Number(text));
-  };
+  }, [property, onShapeUpdate]);
 
-  const handleBlur = text => {
+  const handleBlur = useCallback(text => {
     onPropertyChange(property, Number(text));
-  };
+  }, [property, onPropertyChange]);
 
   return (
     <Field
@@ -69,18 +69,4 @@ const PropertyField = ({
 //   return <PropertyField Component={Component} {...props} />;
 // };
 
-const PropertyProvider = ({ property, children }) => {
-  const selectedShape = useSelectedShape(property);
-
-  return React.Children.map(children, child => (
-    React.cloneElement(child, {
-      value: selectedShape ? selectedShape.properties[property][child.props.property] : 0,
-    })
-  ));
-};
-
 export default React.memo(PropertyField);
-
-export {
-  PropertyProvider,
-};

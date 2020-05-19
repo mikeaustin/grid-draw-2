@@ -9,7 +9,7 @@ type CanvasShapeProps = {
   selected: boolean,
   allShapes: State['allShapes'],
   selectedShapeIds: number[],
-  onSetPosition: (shapeId: number, position: number[]) => void,
+  onSetPosition: (shapeId: number, position: { x: number, y: number; }) => void,
   onSelectShape: (shapeId: number) => void,
   onShapeUpdate: (shapeId: number, shape: Properties) => void,
 };
@@ -25,7 +25,7 @@ const CanvasShape = React.memo(({
 }: CanvasShapeProps) => {
   // console.log('CanvasShape()', shape.id);
 
-  const [firstPosition, setFirstPosition] = useState<number[]>([0, 0]);
+  const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
   const { eventEmitter } = useContext(ShapeContext);
 
@@ -59,7 +59,7 @@ const CanvasShape = React.memo(({
   }, []);
 
   const handleResponderGrant = useCallback((event: any) => {
-    setFirstPosition([event.nativeEvent.pageX, event.nativeEvent.pageY]);
+    setFirstPosition({ x: event.nativeEvent.pageX, y: event.nativeEvent.pageY });
     onSelectShape(shape.id);
 
     setTimeout(() => {
@@ -72,20 +72,20 @@ const CanvasShape = React.memo(({
 
   const handleResponderMove = useCallback(event => {
     onShapeUpdate(shape.id, {
-      position: [
-        shape.properties.position[0] + event.nativeEvent.pageX - firstPosition[0],
-        shape.properties.position[1] + event.nativeEvent.pageY - firstPosition[1],
-      ]
+      position: {
+        x: shape.properties.position.x + event.nativeEvent.pageX - firstPosition.x,
+        y: shape.properties.position.y + event.nativeEvent.pageY - firstPosition.y,
+      }
     });
   }, [shape.id, firstPosition, onShapeUpdate]);
 
   const handleResponseRelease = useCallback(event => {
     console.log('----------');
 
-    let position = [
-      shape.properties.position[0] + (event.nativeEvent.pageX - firstPosition[0]),
-      shape.properties.position[1] + (event.nativeEvent.pageY - firstPosition[1]),
-    ];
+    let position = {
+      x: shape.properties.position.x + (event.nativeEvent.pageX - firstPosition.x),
+      y: shape.properties.position.y + (event.nativeEvent.pageY - firstPosition.y),
+    };
 
     onSetPosition(shape.id, position);
   }, [firstPosition, onSetPosition]);

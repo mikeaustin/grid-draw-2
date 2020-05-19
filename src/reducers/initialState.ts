@@ -1,4 +1,4 @@
-import { State } from '../types';
+import { State, Point } from '../types';
 
 const initialState: State = {
   currentTool: {
@@ -19,7 +19,10 @@ const initialState: State = {
       type: 'GridDraw.Shape.Group',
       childIds: [1, 2, 3],
       properties: {
-        position: [0, 0],
+        position: {
+          x: 0,
+          y: 0,
+        },
         fill: {
           hue: 0,
           saturation: 100,
@@ -34,7 +37,10 @@ const initialState: State = {
       type: 'GridDraw.Shape.Rect',
       childIds: [],
       properties: {
-        position: [100, 100],
+        position: {
+          x: 100,
+          y: 100,
+        },
         fill: {
           hue: 0,
           saturation: 100,
@@ -49,7 +55,10 @@ const initialState: State = {
       type: 'GridDraw.Shape.Ellipse',
       childIds: [],
       properties: {
-        position: [250, 100],
+        position: {
+          x: 250,
+          y: 100,
+        },
         fill: {
           hue: 90,
           saturation: 100,
@@ -64,7 +73,10 @@ const initialState: State = {
       type: 'GridDraw.Shape.Group',
       childIds: [4, 5],
       properties: {
-        position: [400, 100],
+        position: {
+          x: 400,
+          y: 100,
+        },
         fill: {
           hue: 0,
           saturation: 100,
@@ -79,7 +91,10 @@ const initialState: State = {
       type: 'GridDraw.Shape.Ellipse',
       childIds: [],
       properties: {
-        position: [0, 0],
+        position: {
+          x: 0,
+          y: 0,
+        },
         fill: {
           hue: 180,
           saturation: 100,
@@ -94,7 +109,10 @@ const initialState: State = {
       type: 'GridDraw.Shape.Ellipse',
       childIds: [],
       properties: {
-        position: [0, 150],
+        position: {
+          x: 0,
+          y: 150,
+        },
         fill: {
           hue: 270,
           saturation: 100,

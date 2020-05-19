@@ -3,7 +3,6 @@ import { View } from 'react-native-web';
 import { G, Ellipse, Rect } from 'react-native-svg';
 import JsxParser from 'react-jsx-parser';
 import Shape from '../../types/Shape';
-import State from '../../types/State';
 
 const Ellipse2 = ({ ...props }) => {
   return <View accessibilityLabel="ellipse" {...props} />;
@@ -37,7 +36,10 @@ const shapeRegistry = {
       );
     },
     render: ({
-      position: [x, y],
+      position: {
+        x,
+        y,
+      },
       fill: {
         hue,
         saturation,
@@ -80,7 +82,10 @@ const shapeRegistry = {
       );
     },
     render: ({
-      position: [x, y],
+      position: {
+        x,
+        y,
+      },
       fill: {
         hue,
         saturation,
@@ -106,7 +111,10 @@ const shapeRegistry = {
   },
   'GridDraw.Shape.Ellipse2': {
     render: ({
-      position: [x, y],
+      position: {
+        x,
+        y,
+      },
       fill: {
         hue,
         saturation,
@@ -143,7 +151,10 @@ const shapeRegistry = {
       );
     },
     render: ({
-      position: [x, y],
+      position: {
+        x,
+        y,
+      },
       fill: {
         hue,
         saturation,

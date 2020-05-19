@@ -6,7 +6,6 @@ import { Spacer, Slider, List, Form, NumericInput, Field, PropertyField } from '
 import Panel from '../shared/Panel';
 import Shape from '../../types/Shape';
 import Properties from '../../types/Properties';
-import { PropertyProvider } from '../core/InputField';
 
 type PropertiesPanelProps = {
   allShapes: any,
@@ -39,7 +38,7 @@ const PropertiesPanel = ({
   console.log('PropertiesPanel()', selectedShapeId);
 
   const handleShapeUpdate = (propertyName: string, propertyValue: any) => {
-    const index = propertyName.search(/[\.\[]/);
+    const index = propertyName.indexOf('.');
 
     if (index >= 0) {
       const rootPropertyName = propertyName.slice(0, index);
@@ -75,15 +74,15 @@ const PropertiesPanel = ({
         <List divider spacerSize="xsmall">
           <Section title="Position">
             <View style={{ alignItems: 'center' }}>
-              <PropertyField Component={NumericInput} label="Y" property="position[1]" />
+              <PropertyField Component={NumericInput} label="Y" property="position.y" />
               <Spacer size="small" />
               <List horizontal style={{ width: '100%' }}>
-                <PropertyField Component={NumericInput} label="X" property="position[0]" />
+                <PropertyField Component={NumericInput} label="X" property="position.x" />
                 <View style={{ flex: 1 }} />
-                <PropertyField Component={NumericInput} label="W" property="position[0]" />
+                <PropertyField Component={NumericInput} label="W" property="position.x" />
               </List>
               <Spacer size="small" />
-              <PropertyField Component={NumericInput} label="H" property="position[1]" />
+              <PropertyField Component={NumericInput} label="H" property="position.y" />
             </View>
           </Section>
           <Section title="Opacity">
@@ -102,10 +101,6 @@ const PropertiesPanel = ({
             <SliderWithInputPropertyField label="H" property="fill.hue" max="36000" />
             <SliderWithInputPropertyField label="S" property="fill.saturation" max="10000" />
             <SliderWithInputPropertyField label="L" property="fill.lightness" max="10000" />
-
-            <PropertyProvider property="fill">
-              <Field Component={NumericInput} label="H" property="hue" />
-            </PropertyProvider>
           </Section>
         </List>
       </Form>

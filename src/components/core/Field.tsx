@@ -13,6 +13,7 @@ type FieldProps = {
   onValueChange?: Function,
   onValueCommit?: Function,
   onBlur?: Function,
+  max?: string,
 };
 
 const Field = ({ Component, label, value, property, flex, ...props }: FieldProps) => {

@@ -25,12 +25,12 @@ type AppCanvasProps = {
 const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasProps) => {
   console.log('AppCanvas()', { scale });
 
-  const handleSetPosition = (shapeId, position) => {
+  const handleSetPosition = (shapeId: number, position: { x: number, y: number; }) => {
     if (state.options.snapToGrid) {
-      position = [
-        Math.round((position[0] / 10)) * 10,
-        Math.round(position[1] / 10) * 10,
-      ];
+      position = {
+        x: Math.round((position.x / 10)) * 10,
+        y: Math.round(position.y / 10) * 10,
+      };
     }
 
     dispatch({
@@ -88,7 +88,7 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasPro
       type: 'ADD_SHAPE',
       payload: {
         type: state.currentTool.type,
-        position: [locationX, locationY]
+        position: { x: locationX, y: locationY }
       }
     });
   };

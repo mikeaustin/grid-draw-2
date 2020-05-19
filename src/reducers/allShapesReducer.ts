@@ -23,9 +23,9 @@ const allShapesReducer = (allShapes: State['allShapes'], action: Action) => {
 
   switch (type) {
     case 'SET_SHAPE_PROPERTY': {
-      const { shapeId, propertyName, index, propertyValue } = payload;
+      const { shapeId, propertyName, propertyValue } = payload;
 
-      console.log('SET_SHAPE_PROPERTY', shapeId, propertyName, index, propertyValue);
+      console.log('SET_SHAPE_PROPERTY', shapeId, propertyName, propertyValue);
 
       let updatedProperties = clone(allShapes[shapeId].properties);
       expr.setter(propertyName)(updatedProperties, propertyValue);
@@ -50,7 +50,7 @@ type AddShapeFunc = (
   allShapes: State['allShapes'],
   type: string,
   shapeId: number,
-  position: number[]
+  position: { x: number, y: number; },
 ) => State['allShapes'];
 
 const addShape: AddShapeFunc = (allShapes, type, shapeId, position) => {
@@ -65,7 +65,7 @@ const addShape: AddShapeFunc = (allShapes, type, shapeId, position) => {
       type: type,
       childIds: [],
       properties: {
-        position: [position[0], position[1]],
+        position: position,
         fill: {
           hue: 0,
           saturation: 100,

@@ -27,5 +27,5 @@ type Action = {
 export default State;
 
 export type {
-  Action
+  Action,
 };
