@@ -107,27 +107,42 @@ const CanvasShape = React.memo(({
       strokeWidth={selected ? 5 : undefined}
       {...shapeProps}
     >
-      {shape.childIds.map(childId => {
-        console.log('shape.childIds.map()', childId);
-
-        const shape = allShapes[childId];
-        const selected = selectedShapeIds.includes(childId);
-
-        return (
-          <CanvasShape
-            key={childId}
-            shape={shape}
-            selected={selected}
-            allShapes={allShapes}
-            selectedShapeIds={selectedShapeIds}
-            onSetPosition={onSetPosition}
-            onSelectShape={onSelectShape}
-            onShapeUpdate={onShapeUpdate}
-          />
-        );
-      })}
+      <CanvasShapeList
+        allShapes={allShapes}
+        childIds={shape.childIds}
+        selectedShapeIds={selectedShapeIds}
+        onSetPosition={onSetPosition}
+        onSelectShape={onSelectShape}
+        onShapeUpdate={onShapeUpdate}
+      />
     </Component>
   );
 });
+
+const _CanvasShapeList = ({ allShapes, childIds, selectedShapeIds, onSetPosition, onSelectShape, onShapeUpdate }) => {
+  return (
+    childIds.map(childId => {
+      console.log('shape.childIds.map()', childId);
+
+      const shape = allShapes[childId];
+      const selected = selectedShapeIds.includes(childId);
+
+      return (
+        <CanvasShape
+          key={childId}
+          shape={shape}
+          selected={selected}
+          allShapes={allShapes}
+          selectedShapeIds={selectedShapeIds}
+          onSetPosition={onSetPosition}
+          onSelectShape={onSelectShape}
+          onShapeUpdate={onShapeUpdate}
+        />
+      );
+    })
+  );
+};
+
+const CanvasShapeList = React.memo(_CanvasShapeList);
 
 export default CanvasShape;
