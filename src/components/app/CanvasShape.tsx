@@ -1,8 +1,44 @@
-import React, { useState, useRef, useContext, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useContext, useMemo, useEffect, useCallback } from 'react';
 
 import shapeRegistry from './ShapeRegistry';
 import ShapeContext from '../../ShapeContext';
 import { State, Shape, Properties } from '../../types';
+
+const positionChange = setSelectedShape => (shape: Shape) => {
+  setSelectedShape(shape);
+};
+
+const startShouldSetResponder = lastTap => (event: any) => {
+  event.preventDefault();
+
+  const tap = !(Date.now() - lastTap.current < 300);
+  lastTap.current = Date.now();
+
+  return tap;
+};
+
+const useHOFCallback = (fn, args) => {
+  const resultRef = useRef<Function>();
+  const argsRef = useRef<any[]>();
+
+  if (argsRef.current) {
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] !== argsRef.current[i]) {
+        resultRef.current = fn(...args);
+        argsRef.current = args;
+
+        break;
+      }
+    }
+  } else {
+    resultRef.current = fn(...args);
+    argsRef.current = args;
+  }
+
+  return resultRef.current;
+
+  // return useMemo(() => fn(...args), args);
+};
 
 type CanvasShapeProps = {
   shape: Shape,
@@ -14,7 +50,7 @@ type CanvasShapeProps = {
   onShapeUpdate: (shapeId: number, shape: Properties) => void,
 };
 
-const CanvasShape = React.memo(({
+const _CanvasShape = ({
   shape,
   selected,
   allShapes,
@@ -45,18 +81,27 @@ const CanvasShape = React.memo(({
     }
   }, [eventEmitter, selected]);
 
-  const handlePositionChange = useCallback((shape: Shape) => {
-    setSelectedShape(shape);
-  }, []);
+  // const handlePositionChange = useCallback((shape: Shape) => {
+  //   setSelectedShape(shape);
+  // }, [setSelectedShape]);
 
-  const handleStartShouldSetResponder = useCallback((event: any) => {
-    event.preventDefault();
+  // const handlePositionChange = useCallback(positionChange(setSelectedShape), [setSelectedShape]);
 
-    const tap = !(Date.now() - lastTap.current < 300);
-    lastTap.current = Date.now();
+  const handlePositionChange = useHOFCallback(positionChange, [setSelectedShape]);
 
-    return tap;
-  }, []);
+  //
+
+  // const handleStartShouldSetResponder = useCallback((event: any) => {
+  //   event.preventDefault();
+
+  //   const tap = !(Date.now() - lastTap.current < 300);
+  //   lastTap.current = Date.now();
+
+  //   return tap;
+  // }, [lastTap.current]);
+
+  // const handleStartShouldSetResponder = useMemo(() => startShouldSetResponder(lastTap), [lastTap]);
+  const handleStartShouldSetResponder = useHOFCallback(startShouldSetResponder, [lastTap]);
 
   const handleResponderGrant = useCallback((event: any) => {
     setFirstPosition({ x: event.nativeEvent.pageX, y: event.nativeEvent.pageY });
@@ -117,7 +162,7 @@ const CanvasShape = React.memo(({
       />
     </Component>
   );
-});
+};
 
 const _CanvasShapeList = ({ allShapes, childIds, selectedShapeIds, onSetPosition, onSelectShape, onShapeUpdate }) => {
   return (
@@ -143,6 +188,7 @@ const _CanvasShapeList = ({ allShapes, childIds, selectedShapeIds, onSetPosition
   );
 };
 
+const CanvasShape = React.memo(_CanvasShape);
 const CanvasShapeList = React.memo(_CanvasShapeList);
 
 export default CanvasShape;

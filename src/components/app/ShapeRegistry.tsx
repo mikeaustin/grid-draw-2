@@ -71,14 +71,16 @@ const shapeRegistry = {
       opacity
     }: Shape['properties']) => {
       return (
-        <Rect
-          x={0}
-          y={0}
-          width={20}
-          height={20}
-          fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
-          opacity={opacity}
-        />
+        <>
+          <Rect
+            x={0}
+            y={0}
+            width={20}
+            height={20}
+            fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
+            opacity={opacity}
+          />
+        </>
       );
     },
     render: ({
