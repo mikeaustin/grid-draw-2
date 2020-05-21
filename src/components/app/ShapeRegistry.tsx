@@ -1,20 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native-web';
 import { G, Ellipse, Rect } from 'react-native-svg';
-import JsxParser from 'react-jsx-parser';
+// import JsxParser from 'react-jsx-parser';
 
 import Shape from '../../types/Shape';
 import RectShape from './shapes/RectShape';
-
-const Ellipse2 = ({ ...props }) => {
-  return <View accessibilityLabel="ellipse" {...props} />;
-};
-
-class Ellipse3 extends View {
-  render() {
-    return <ellipse />;
-  }
-}
 
 const shapeRegistry = {
   'GridDraw.Shape.Ellipse': {
@@ -85,39 +75,6 @@ const shapeRegistry = {
     },
     render: RectShape,
   },
-  'GridDraw.Shape.Ellipse2': {
-    render: ({
-      position: {
-        x,
-        y,
-      },
-      fill: {
-        hue,
-        saturation,
-        lightness,
-      },
-    }: Shape['properties']) => {
-      return (
-        <JsxParser
-          bindings={{
-            x, y, rx: 50, ry: 50, test: () => alert('here')
-          }}
-          components={{ Ellipse }}
-          renderInWrapper={false}
-          showWarnings={true}
-          jsx={`
-            <Ellipse
-              cx={ x }
-              cy={ y }
-              rx={ rx }
-              ry={ ry }
-              onPress={ test }
-            />
-          `}
-        />
-      );
-    }
-  },
   'GridDraw.Shape.Group': {
     icon: ({ }) => {
       return (
@@ -159,3 +116,41 @@ const shapeRegistry = {
 };
 
 export default shapeRegistry;
+
+/*
+
+  'GridDraw.Shape.Ellipse2': {
+    render: ({
+      position: {
+        x,
+        y,
+      },
+      fill: {
+        hue,
+        saturation,
+        lightness,
+      },
+    }: Shape['properties']) => {
+      return (
+        <JsxParser
+          bindings={{
+            x, y, rx: 50, ry: 50, test: () => alert('here')
+          }}
+          components={{ Ellipse }}
+          renderInWrapper={false}
+          showWarnings={true}
+          jsx={`
+            <Ellipse
+              cx={ x }
+              cy={ y }
+              rx={ rx }
+              ry={ ry }
+              onPress={ test }
+            />
+          `}
+        />
+      );
+    }
+  },
+
+*/
