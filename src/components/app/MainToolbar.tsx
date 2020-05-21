@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
+import React from 'react';
+import { View, Text } from 'react-native-web';
 
 import Toolbar from '../shared/Toolbar';
 import { NumericInput, Field, Divider } from '../core';

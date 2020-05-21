@@ -78,7 +78,7 @@ const Group = ({ title, name, selectedValue, disabled, children, onButtonPress }
           <>
             {index > 0 && <Spacer size="xsmall" />}
             {React.isValidElement(child) && React.cloneElement(child, {
-              selected: child.props.selected || selectedValue && equals(child.props.value, selectedValue),
+              selected: child.props.selected || (selectedValue && equals(child.props.value, selectedValue)),
               disabled: disabled,
               onDispatch: value => onButtonPress && onButtonPress(name, value)
             })}

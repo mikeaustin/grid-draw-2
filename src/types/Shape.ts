@@ -3,6 +3,15 @@ type Shape = {
   type: string,
   childIds: number[],
   properties: {
+    [property: string]: any;
+  };
+};
+
+export default Shape;
+
+/*
+
+  properties: {
     position: {
       x: number,
       y: number,
@@ -18,4 +27,4 @@ type Shape = {
   };
 };
 
-export default Shape;
+*/

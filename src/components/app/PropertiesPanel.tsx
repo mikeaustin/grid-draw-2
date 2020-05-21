@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
-import { View, Text, TextInput } from 'react-native-web';
+import React from 'react';
+import { View, Text } from 'react-native-web';
 import expr from 'property-expr';
 
 import { Spacer, Slider, List, Form, NumericInput, Field, PropertyField } from '../core';
