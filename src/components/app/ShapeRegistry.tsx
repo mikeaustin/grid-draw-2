@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native-web';
 import { G, Ellipse, Rect } from 'react-native-svg';
 // import JsxParser from 'react-jsx-parser';
 
