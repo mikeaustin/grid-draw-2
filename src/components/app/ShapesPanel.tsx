@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native-web';
+import { View, Text, TouchableWithoutFeedback } from 'react-native-web';
 import { Svg } from 'react-native-svg';
 
 import shapeRegistry from './ShapeRegistry';
