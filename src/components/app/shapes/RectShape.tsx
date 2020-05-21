@@ -76,18 +76,20 @@ function rotate(cx, cy, x, y, angle) {
 const RectShape = ({
   shapeId,
   selected,
-  position: {
-    x,
-    y,
+  properties: {
+    position: {
+      x,
+      y,
+    },
+    fill: {
+      hue,
+      saturation,
+      lightness,
+    },
+    opacity,
+    angle,
+    cornerRadius,
   },
-  fill: {
-    hue,
-    saturation,
-    lightness,
-  },
-  opacity,
-  angle,
-  cornerRadius,
   ...props
 }: Shape['properties'] & { shapeId: number, selected: boolean; }) => {
   const { onShapeUpdate, onPropertyChange } = useContext(ShapeContext);

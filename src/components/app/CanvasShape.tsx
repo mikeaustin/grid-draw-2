@@ -151,7 +151,7 @@ const _CanvasShape = ({
 
   return (
     <Component
-      {...(selectedShape ? selectedShape.properties : shape.properties)}
+      properties={selectedShape ? selectedShape.properties : shape.properties}
       stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
       strokeWidth={selected ? 5 : undefined}
       shapeId={shape.id}

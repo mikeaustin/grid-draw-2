@@ -9,12 +9,14 @@ import RectShape from './shapes/RectShape';
 const shapeRegistry = {
   'GridDraw.Shape.Ellipse': {
     icon: ({
-      fill: {
-        hue,
-        saturation,
-        lightness,
-      },
-      opacity
+      properties: {
+        fill: {
+          hue,
+          saturation,
+          lightness,
+        },
+        opacity
+      }
     }: Shape['properties']) => {
       return (
         <Ellipse
@@ -28,16 +30,19 @@ const shapeRegistry = {
       );
     },
     render: ({
-      position: {
-        x,
-        y,
+      shapeId,
+      properties: {
+        position: {
+          x,
+          y,
+        },
+        fill: {
+          hue,
+          saturation,
+          lightness,
+        },
+        opacity,
       },
-      fill: {
-        hue,
-        saturation,
-        lightness,
-      },
-      opacity,
       ...props
     }: Shape['properties']) => {
       return (
@@ -55,12 +60,14 @@ const shapeRegistry = {
   },
   'GridDraw.Shape.Rect': {
     icon: ({
-      fill: {
-        hue,
-        saturation,
-        lightness,
+      properties: {
+        fill: {
+          hue,
+          saturation,
+          lightness,
+        },
+        opacity
       },
-      opacity
     }: Shape['properties']) => {
       return (
         <Rect
@@ -84,16 +91,19 @@ const shapeRegistry = {
       );
     },
     render: ({
-      position: {
-        x,
-        y,
+      shapeId,
+      properties: {
+        position: {
+          x,
+          y,
+        },
+        fill: {
+          hue,
+          saturation,
+          lightness,
+        },
+        opacity,
       },
-      fill: {
-        hue,
-        saturation,
-        lightness,
-      },
-      opacity,
       ...props
     }: Shape['properties']) => {
       const groupProps = {

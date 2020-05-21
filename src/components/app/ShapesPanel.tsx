@@ -60,7 +60,13 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
           }}
         >
           <Svg width="20" height="20" viewBox="0 0 20 20">
-            {icon && icon({ ...shape.properties, position: { x: 50, y: 50 }, angle: 0 })}
+            {icon && icon({
+              properties: {
+                ...shape.properties,
+                position: { x: 50, y: 50 },
+                angle: 0
+              }
+            })}
           </Svg>
           <Spacer size="small" />
           <Text style={{ fontWeight: 500, marginTop: -1 }}>{allShapes[shape.id].type}</Text>
