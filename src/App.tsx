@@ -47,10 +47,22 @@ function App() {
     });
   }, [state.allShapes, state.options]);
 
+  const handlePropertyChange = useCallback((shapeId: number, name: string, value: any) => {
+    dispatch({
+      type: 'SET_SHAPE_PROPERTY',
+      payload: {
+        shapeId: shapeId,
+        propertyName: name,
+        propertyValue: value,
+      }
+    });
+  }, [dispatch]);
+
   const appContext = useMemo(() => ({
     eventEmitter: eventEmitter,
     currentTool: state.currentTool,
     onShapeUpdate: handleShapeUpdate,
+    onPropertyChange: handlePropertyChange,
   }), [state.currentTool, handleShapeUpdate]);
 
   const stateView = useMemo(() => ({ ...state }), [state]);

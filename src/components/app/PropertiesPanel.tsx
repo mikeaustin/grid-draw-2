@@ -102,6 +102,9 @@ const PropertiesPanel = ({
             <SliderWithInputPropertyField label="S" property="fill.saturation" max="10000" />
             <SliderWithInputPropertyField label="L" property="fill.lightness" max="10000" />
           </Section>
+          <Section title="Corner Radius">
+            <SliderWithInputPropertyField label={undefined} property="cornerRadius" max="10000" />
+          </Section>
         </List>
       </Form>
     </Panel>

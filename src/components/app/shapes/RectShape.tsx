@@ -6,24 +6,38 @@ import JsxParser from 'react-jsx-parser';
 import Shape from '../../../types/Shape';
 import ShapeContext from '../../../ShapeContext';
 
-const Handle = ({ position: { x, y }, angle, onHandleMove }) => {
+const Handle = ({
+  position: { x, y },
+  transform,
+  onDragStart,
+  onDragMove,
+  onDragEnd,
+}) => {
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
 
   const handleStartShouldSetResponder = () => true;
 
   const handleResponderGrant = (event) => {
-    console.log(event.nativeEvent.pageX);
-
     setFirstPosition({
       x: event.nativeEvent.pageX,
       y: event.nativeEvent.pageY
     });
+
+    onDragStart({
+      x: 0,
+      y: 0
+    });
   };
 
   const handleResponderMove = (event) => {
-    console.log(event.nativeEvent.pageX);
+    onDragMove({
+      x: event.nativeEvent.pageX - firstPosition.x,
+      y: event.nativeEvent.pageY - firstPosition.y,
+    });
+  };
 
-    onHandleMove({
+  const handleResponderRelease = (event) => {
+    onDragEnd({
       x: event.nativeEvent.pageX - firstPosition.x,
       y: event.nativeEvent.pageY - firstPosition.y,
     });
@@ -33,7 +47,7 @@ const Handle = ({ position: { x, y }, angle, onHandleMove }) => {
     onStartShouldSetResponder: handleStartShouldSetResponder,
     onResponderGrant: handleResponderGrant,
     onResponderMove: handleResponderMove,
-    // onResponderRelease: handleResponseRelease,
+    onResponderRelease: handleResponderRelease,
   };
 
   return (
@@ -42,7 +56,7 @@ const Handle = ({ position: { x, y }, angle, onHandleMove }) => {
       cy={y}
       rx={7}
       ry={7}
-      transform={`rotate(${angle} ${200} ${200})`}
+      transform={transform}
       fill="white"
       stroke="black"
       strokeWidth={2}
@@ -78,33 +92,37 @@ const RectShape = ({
   cornerRadius,
   ...props
 }: Shape['properties'] & { shapeId: number, selected: boolean; }) => {
-  const [handlePosition, setHandlePosition] = useState({ x, y });
-  const { currentTool, onShapeUpdate } = useContext(ShapeContext);
-  // const firstCornerRadius = useRef(cornerRadius);
-
-  const handleHandleMove = useCallback((position) => {
-    const [_, handleY] = rotate(0, 0, position.x, position.y, angle);
-
-    const newCornerRadius = handleY;
-
-    onShapeUpdate(shapeId, {
-      cornerRadius: Math.max(Math.min(newCornerRadius, halfHeight), 0),
-    });
-  }, [cornerRadius]);
-
-  useEffect(() => {
-    setHandlePosition({
-      x,
-      y,
-    });
-  }, [x, y, setHandlePosition]);
+  const { currentTool, onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
+  const firstCornerRadius = useRef(0);
 
   const width = 200, height = 200;
   const halfWidth = width / 2, halfHeight = height / 2;
 
-  const position = {
+  const handlePosition = {
     x: x + halfWidth,
-    y: height - (y - cornerRadius),
+    y: y + cornerRadius,
+  };
+
+  const handleDragStart = (position) => {
+    firstCornerRadius.current = cornerRadius;
+  };
+
+  const handleDragMove = useCallback((position) => {
+    const [_, handleY] = rotate(0, 0, position.x, position.y, angle);
+
+    const newCornerRadius = firstCornerRadius.current + handleY;
+
+    onShapeUpdate(shapeId, {
+      cornerRadius: Math.max(Math.min(newCornerRadius, halfHeight), 0),
+    });
+  }, [shapeId, angle, halfHeight, onShapeUpdate]);
+
+  const handleDragEnd = (position) => {
+    const [_, handleY] = rotate(0, 0, position.x, position.y, angle);
+
+    const newCornerRadius = firstCornerRadius.current + handleY;
+
+    onPropertyChange(shapeId, 'cornerRadius', Math.max(Math.min(newCornerRadius, halfHeight), 0));
   };
 
   return (
@@ -128,28 +146,16 @@ const RectShape = ({
         {...props}
       />
       {selected && (
-        <Handle position={position} angle={angle} onHandleMove={handleHandleMove} />
+        <Handle
+          position={handlePosition}
+          transform={`rotate(${angle} ${x + halfWidth} ${y + halfHeight})`}
+          onDragStart={handleDragStart}
+          onDragMove={handleDragMove}
+          onDragEnd={handleDragEnd}
+        />
       )}
     </>
   );
-
-  // return (
-  //   <>
-  //     <Rect
-  //       x={x - halfWidth}
-  //       y={y - halfHeight}
-  //       width={width}
-  //       height={height}
-  //       transform={`rotate(${angle} ${x} ${y})`}
-  //       fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
-  //       opacity={opacity}
-  //       {...props}
-  //     />
-  //     {selected && (
-  //       <Handle position={position} angle={angle} onHandleMove={handleHandleMove} />
-  //     )}
-  //   </>
-  // );
 };
 
 export default RectShape;
