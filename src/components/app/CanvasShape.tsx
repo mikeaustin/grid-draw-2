@@ -67,6 +67,13 @@ const _CanvasShape = ({
 
   const lastTap = useRef<number>(Date.now());
 
+  // const handlePositionChange = useCallback((shape: Shape) => {
+  //   setSelectedShape(shape);
+  // }, [setSelectedShape]);
+
+  const handlePositionChange = useHOFCallback(positionChange, [setSelectedShape]);
+  const handleStartShouldSetResponder = useHOFCallback(startShouldSetResponder, [lastTap]);
+
   useEffect(() => {
     if (selected) {
       Object.keys(shape.properties).forEach(propertyName => (
@@ -79,17 +86,7 @@ const _CanvasShape = ({
         eventEmitter.removeListener(propertyName, handlePositionChange)
       ));
     }
-  }, [eventEmitter, selected]);
-
-  // const handlePositionChange = useCallback((shape: Shape) => {
-  //   setSelectedShape(shape);
-  // }, [setSelectedShape]);
-
-  // const handlePositionChange = useCallback(positionChange(setSelectedShape), [setSelectedShape]);
-
-  const handlePositionChange = useHOFCallback(positionChange, [setSelectedShape]);
-
-  //
+  }, [eventEmitter, selected, handlePositionChange]);
 
   // const handleStartShouldSetResponder = useCallback((event: any) => {
   //   event.preventDefault();
@@ -100,8 +97,6 @@ const _CanvasShape = ({
   //   return tap;
   // }, [lastTap.current]);
 
-  // const handleStartShouldSetResponder = useMemo(() => startShouldSetResponder(lastTap), [lastTap]);
-  const handleStartShouldSetResponder = useHOFCallback(startShouldSetResponder, [lastTap]);
 
   const handleResponderGrant = useCallback((event: any) => {
     setFirstPosition({ x: event.nativeEvent.pageX, y: event.nativeEvent.pageY });
@@ -113,7 +108,7 @@ const _CanvasShape = ({
         opacity: shape.properties.opacity,
       });
     }, 0);
-  }, [shape.id, setFirstPosition, onShapeUpdate]);
+  }, [shape.id, setFirstPosition, shape.properties.opacity, onSelectShape, onShapeUpdate]);
 
   const handleResponderMove = useCallback(event => {
     // if (currentTool.tool === 'GridDraw.Tools.Move') {
@@ -137,7 +132,7 @@ const _CanvasShape = ({
 
     onSetPosition(shape.id, position);
     // }
-  }, [currentTool, firstPosition, onSetPosition]);
+  }, [shape.id, currentTool, firstPosition, onSetPosition]);
 
   const shapeEventProps = {
     onStartShouldSetResponder: handleStartShouldSetResponder,
