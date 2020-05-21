@@ -10,8 +10,8 @@ const initialState: State = {
     showRuler: true,
     showGrid: true,
     snapToGrid: false,
-    showSecondCanvas: true,
-    showThirdCanvas: true,
+    showSecondCanvas: false,
+    showThirdCanvas: false,
   },
   allShapes: {
     0: {
@@ -30,6 +30,7 @@ const initialState: State = {
         },
         opacity: 1.0,
         angle: 0,
+        cornerRadius: 10,
       }
     },
     1: {
@@ -38,8 +39,8 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: {
-          x: 100,
-          y: 100,
+          x: 150,
+          y: 150,
         },
         fill: {
           hue: 0,
@@ -47,7 +48,8 @@ const initialState: State = {
           lightness: 50,
         },
         opacity: 1.0,
-        angle: 45,
+        angle: 15,
+        cornerRadius: 10,
       }
     },
     2: {
@@ -56,7 +58,7 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: {
-          x: 250,
+          x: 400,
           y: 100,
         },
         fill: {
@@ -66,6 +68,7 @@ const initialState: State = {
         },
         opacity: 0.75,
         angle: 0,
+        cornerRadius: 10,
       }
     },
     3: {
@@ -74,7 +77,7 @@ const initialState: State = {
       childIds: [4, 5],
       properties: {
         position: {
-          x: 400,
+          x: 600,
           y: 100,
         },
         fill: {
@@ -84,6 +87,7 @@ const initialState: State = {
         },
         opacity: 0.5,
         angle: 0,
+        cornerRadius: 10,
       }
     },
     4: {
@@ -102,6 +106,7 @@ const initialState: State = {
         },
         opacity: 1.0,
         angle: 0,
+        cornerRadius: 10,
       }
     },
     5: {
@@ -120,6 +125,7 @@ const initialState: State = {
         },
         opacity: 0.5,
         angle: 0,
+        cornerRadius: 10,
       }
     },
   }

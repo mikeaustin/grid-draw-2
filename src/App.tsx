@@ -19,26 +19,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const appContext = {
-  eventEmitter: new EventEmitter()
-};
+const eventEmitter = new EventEmitter();
 
 function App() {
-  console.log('App()', appContext);
+  console.log('App()');
 
   const [state, dispatch] = useReducer(stateReducer, initialState);
-
-  const stateView = useMemo(() => ({ ...state }), [state]);
-
-  useEffect(() => {
-    const selectedShape = state.allShapes[state.selectedShapeIds[0]];
-
-    if (selectedShape) {
-      Object.keys(selectedShape.properties).forEach(propertyName => (
-        appContext.eventEmitter.emit(propertyName, selectedShape)
-      ));
-    }
-  }, [appContext, state.allShapes, state.selectedShapeIds]);
 
   const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
     if (state.options.snapToGrid && shapeProperties.position) {
@@ -60,6 +46,24 @@ function App() {
       appContext.eventEmitter.emit(eventType, updatedShape);
     });
   }, [state.allShapes, state.options]);
+
+  const appContext = useMemo(() => ({
+    eventEmitter: eventEmitter,
+    currentTool: state.currentTool,
+    onShapeUpdate: handleShapeUpdate,
+  }), [state.currentTool, handleShapeUpdate]);
+
+  const stateView = useMemo(() => ({ ...state }), [state]);
+
+  useEffect(() => {
+    const selectedShape = state.allShapes[state.selectedShapeIds[0]];
+
+    if (selectedShape) {
+      Object.keys(selectedShape.properties).forEach(propertyName => (
+        appContext.eventEmitter.emit(propertyName, selectedShape)
+      ));
+    }
+  }, [appContext, state.allShapes, state.selectedShapeIds]);
 
   return (
     <ShapeContext.Provider value={appContext}>

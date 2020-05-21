@@ -14,6 +14,7 @@ type Shape = {
     },
     opacity: number,
     angle: number,
+    cornerRadius: number,
   };
 };
 

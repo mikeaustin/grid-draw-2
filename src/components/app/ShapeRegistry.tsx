@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native-web';
 import { G, Ellipse, Rect } from 'react-native-svg';
 import JsxParser from 'react-jsx-parser';
+
 import Shape from '../../types/Shape';
+import RectShape from './shapes/RectShape';
 
 const Ellipse2 = ({ ...props }) => {
   return <View accessibilityLabel="ellipse" {...props} />;
@@ -71,45 +73,17 @@ const shapeRegistry = {
       opacity
     }: Shape['properties']) => {
       return (
-        <>
-          <Rect
-            x={0}
-            y={0}
-            width={20}
-            height={20}
-            fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
-            opacity={opacity}
-          />
-        </>
-      );
-    },
-    render: ({
-      position: {
-        x,
-        y,
-      },
-      fill: {
-        hue,
-        saturation,
-        lightness,
-      },
-      opacity,
-      angle,
-      ...props
-    }: Shape['properties']) => {
-      return (
         <Rect
-          x={x - 50}
-          y={y - 50}
-          width={100}
-          height={100}
-          transform={`rotate(${angle} ${(x - 50) + 100 / 2} ${(y - 50) + 100 / 2})`}
+          x={0}
+          y={0}
+          width={20}
+          height={20}
           fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
           opacity={opacity}
-          {...props}
         />
       );
-    }
+    },
+    render: RectShape,
   },
   'GridDraw.Shape.Ellipse2': {
     render: ({

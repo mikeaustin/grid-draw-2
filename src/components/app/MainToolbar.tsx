@@ -18,8 +18,8 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
     <View>
       <Toolbar onButtonPress={handleButtonPress}>
         <Toolbar.Group title="Tools" name="SELECT_TOOL" selectedValue={currentTool}>
-          <Toolbar.Button icon="mike-pointer.png" value={{ tool: 'GridDraw.Tools.Move' }} />
-          {/* <Toolbar.Button icon="008-resize" value="GridDraw.Tools.Move" /> */}
+          <Toolbar.Button icon="mike-pointer-solid.png" value={{ tool: 'GridDraw.Tools.Move' }} />
+          <Toolbar.Button icon="mike-pointer.png" value={{ tool: 'GridDraw.Tools.Edit' }} />
         </Toolbar.Group>
         <Toolbar.Group title="Shapes" name="SELECT_TOOL" selectedValue={currentTool}>
           <Toolbar.Button icon="mike-square.png" value={{ tool: 'Create', type: 'GridDraw.Shape.Rect' }} />
@@ -40,13 +40,11 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
           <Toolbar.Button icon="mike-horizontal.png" value={{ option: 'showSecondCanvas' }} selected={state.options.showSecondCanvas} />
           <Toolbar.Button icon="mike-vertical.png" value={{ option: 'showThirdCanvas' }} selected={state.options.showThirdCanvas} />
         </Toolbar.Group>
-
         <Toolbar.Group title="Arange" name="TOGGLE_OPTION" disabled>
           <Toolbar.Button icon="mike-group.png" value={{ option: 'showSecondCanvas' }} />
           <Toolbar.Button icon="mike-bring-forward.png" value={{ option: 'showThirdCanvas' }} />
           <Toolbar.Button icon="mike-send-backward.png" value={{ option: 'showThirdCanvas' }} />
         </Toolbar.Group>
-
         <Toolbar.Group title="Combine" name="TOGGLE_OPTION" disabled>
           <Toolbar.Button icon="mike-combine-union.png" value={{ option: 'showSecondCanvas' }} />
           <Toolbar.Button icon="mike-combine-subtraction.png" value={{ option: 'showThirdCanvas' }} />

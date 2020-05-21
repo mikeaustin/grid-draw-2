@@ -58,21 +58,21 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasPro
     console.log('AppCanvas.handleStartShouldSetResponderCapture()');
     event.preventDefault();
 
-    return state.currentTool.tool !== 'GridDraw.Tools.Move';
+    return state.currentTool.tool === 'Create';
   };
 
-  const handleMoveShouldSetResponderCapture = event => {
-    console.log('handleMoveShouldSetResponderCapture', state.currentTool);
-    // event.preventDefault();
+  // const handleMoveShouldSetResponderCapture = event => {
+  //   console.log('handleMoveShouldSetResponderCapture', state.currentTool);
+  //   // event.preventDefault();
 
-    return state.currentTool.tool !== 'GridDraw.Tools.Move';
-  };
+  //   return state.currentTool.tool !== 'GridDraw.Tools.Move';
+  // };
 
   const handleStartShouldSetResponder = event => {
     console.log('AppCanvas.handleStartShouldSetResponder()');
     // event.preventDefault();
 
-    return state.currentTool.tool !== 'GridDraw.Tools.Move';
+    return state.currentTool.tool === 'Create';
   };
 
   const handleResponderGrant = (event: any) => {

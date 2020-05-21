@@ -63,7 +63,7 @@ const _CanvasShape = ({
 
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
-  const { eventEmitter } = useContext(ShapeContext);
+  const { eventEmitter, currentTool } = useContext(ShapeContext);
 
   const lastTap = useRef<number>(Date.now());
 
@@ -116,15 +116,18 @@ const _CanvasShape = ({
   }, [shape.id, setFirstPosition, onShapeUpdate]);
 
   const handleResponderMove = useCallback(event => {
+    // if (currentTool.tool === 'GridDraw.Tools.Move') {
     onShapeUpdate(shape.id, {
       position: {
         x: shape.properties.position.x + event.nativeEvent.pageX - firstPosition.x,
         y: shape.properties.position.y + event.nativeEvent.pageY - firstPosition.y,
       }
     });
-  }, [shape.id, firstPosition, onShapeUpdate]);
+    // }
+  }, [currentTool, shape.id, firstPosition, onShapeUpdate]);
 
   const handleResponseRelease = useCallback(event => {
+    // if (currentTool.tool === 'GridDraw.Tools.Move') {
     console.log('----------');
 
     let position = {
@@ -133,9 +136,10 @@ const _CanvasShape = ({
     };
 
     onSetPosition(shape.id, position);
-  }, [firstPosition, onSetPosition]);
+    // }
+  }, [currentTool, firstPosition, onSetPosition]);
 
-  const shapeProps = {
+  const shapeEventProps = {
     onStartShouldSetResponder: handleStartShouldSetResponder,
     onStartShouldSetResponderCapture: handleStartShouldSetResponder,
     onResponderGrant: handleResponderGrant,
@@ -150,7 +154,9 @@ const _CanvasShape = ({
       {...(selectedShape ? selectedShape.properties : shape.properties)}
       stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
       strokeWidth={selected ? 5 : undefined}
-      {...shapeProps}
+      shapeId={shape.id}
+      selected={selected}
+      {...shapeEventProps}
     >
       <CanvasShapeList
         allShapes={allShapes}

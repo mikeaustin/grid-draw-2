@@ -73,6 +73,7 @@ const addShape: AddShapeFunc = (allShapes, type, shapeId, position) => {
         },
         opacity: 1.0,
         angle: 0,
+        cornerRadius: 10,
       }
     }
   };
