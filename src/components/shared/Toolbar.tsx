@@ -132,7 +132,7 @@ const Button = ({ icon, value, selected, disabled, onDispatch }: ButtonProps) =>
       onPress={handlePress}
     >
       <View style={buttonStyle}>
-        <Image source={{ uri: `images/icons/${icon}` }} style={{ width: 30, height: 30 }} />
+        <Image source={{ uri: `images/icons/${icon}` }} style={{ width: 25, height: 25 }} />
       </View>
     </TouchableWithoutFeedback>
   );

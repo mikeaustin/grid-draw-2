@@ -30,7 +30,7 @@ const initialState: State = {
         },
         opacity: 1.0,
         angle: 0,
-        cornerRadius: 10,
+        cornerRadius: 0,
       }
     },
     1: {
@@ -39,8 +39,8 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: {
-          x: 150,
-          y: 150,
+          x: 100,
+          y: 100,
         },
         fill: {
           hue: 0,
@@ -49,7 +49,7 @@ const initialState: State = {
         },
         opacity: 1.0,
         angle: 15,
-        cornerRadius: 10,
+        cornerRadius: 20,
       }
     },
     2: {
@@ -68,7 +68,7 @@ const initialState: State = {
         },
         opacity: 0.75,
         angle: 0,
-        cornerRadius: 10,
+        cornerRadius: 0,
       }
     },
     3: {
@@ -87,7 +87,7 @@ const initialState: State = {
         },
         opacity: 0.5,
         angle: 0,
-        cornerRadius: 10,
+        cornerRadius: 0,
       }
     },
     4: {
@@ -106,7 +106,7 @@ const initialState: State = {
         },
         opacity: 1.0,
         angle: 0,
-        cornerRadius: 10,
+        cornerRadius: 0,
       }
     },
     5: {
@@ -125,7 +125,7 @@ const initialState: State = {
         },
         opacity: 0.5,
         angle: 0,
-        cornerRadius: 10,
+        cornerRadius: 0,
       }
     },
   }
