@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useContext, useRef, useCallback } from 'react';
-import { View } from 'react-native-web';
-import { G, Ellipse, Rect, Path } from 'react-native-svg';
-import JsxParser from 'react-jsx-parser';
+import React, { useState, useContext, useRef, useCallback } from 'react';
+import { Ellipse, Path } from 'react-native-svg';
 
 import Shape from '../../../types/Shape';
 import ShapeContext from '../../../ShapeContext';
@@ -92,7 +90,7 @@ const RectShape = ({
   cornerRadius,
   ...props
 }: Shape['properties'] & { shapeId: number, selected: boolean; }) => {
-  const { currentTool, onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
+  const { onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
   const firstCornerRadius = useRef(0);
 
   const width = 200, height = 200;
