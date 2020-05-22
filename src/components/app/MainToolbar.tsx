@@ -18,8 +18,8 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
     <View>
       <Toolbar onButtonPress={handleButtonPress}>
         <Toolbar.Group title="Tools" name="SELECT_TOOL" selectedValue={currentTool}>
-          <Toolbar.Button icon="mike-pointer-solid.png" value={{ tool: 'GridDraw.Tools.Move' }} />
-          <Toolbar.Button icon="mike-pointer.png" value={{ tool: 'GridDraw.Tools.Edit' }} />
+          <Toolbar.Button icon="mike-pointer.png" value={{ tool: 'GridDraw.Tools.Move' }} />
+          {/* <Toolbar.Button icon="mike-pointer.png" value={{ tool: 'GridDraw.Tools.Edit' }} /> */}
         </Toolbar.Group>
         <Toolbar.Group title="Shapes" name="SELECT_TOOL" selectedValue={currentTool}>
           <Toolbar.Button icon="mike-square.png" value={{ tool: 'Create', type: 'GridDraw.Shape.Rect' }} />

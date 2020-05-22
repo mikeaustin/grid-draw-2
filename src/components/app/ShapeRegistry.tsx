@@ -46,8 +46,8 @@ const shapeRegistry = {
     }: Shape['properties']) => {
       return (
         <Ellipse
-          cx={x}
-          cy={y}
+          cx={x + 50}
+          cy={y + 50}
           rx={50}
           ry={50}
           fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}

@@ -39,8 +39,8 @@ const initialState: State = {
       childIds: [],
       properties: {
         position: {
-          x: 50,
-          y: 50,
+          x: 100,
+          y: 100,
         },
         fill: {
           hue: 0,
