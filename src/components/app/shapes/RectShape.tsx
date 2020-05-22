@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef, useCallback } from 'react';
 import { Ellipse, Path } from 'react-native-svg';
 
 import Shape from '../../../types/Shape';
-import ShapeContext from '../../../ShapeContext';
+import AppContext from '../../../AppContext';
 
 const Handle = ({
   position: { x, y },
@@ -92,7 +92,7 @@ const RectShape = ({
   },
   ...props
 }: Shape['properties'] & { shapeId: number, selected: boolean; }) => {
-  const { onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
+  const { onShapeUpdate, onPropertyChange } = useContext(AppContext);
   const firstCornerRadius = useRef(0);
 
   const width = 200, height = 200;

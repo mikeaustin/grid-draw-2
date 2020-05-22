@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native-web';
 
 import { initialState, stateReducer } from './reducers/allShapesReducer';
 import { State, Shape, Properties } from './types';
-import ShapeContext from './ShapeContext';
+import AppContext from './AppContext';
 
 import AppCanvas from './components/app/AppCanvas';
 import MainToolbar from './components/app/MainToolbar';
@@ -59,11 +59,12 @@ function App() {
   }, [dispatch]);
 
   const appContext = useMemo(() => ({
-    eventEmitter: eventEmitter,
+    allShapes: state.allShapes,
     currentTool: state.currentTool,
+    eventEmitter: eventEmitter,
     onShapeUpdate: handleShapeUpdate,
     onPropertyChange: handlePropertyChange,
-  }), [state.currentTool, handleShapeUpdate]);
+  }), [state.allShapes, state.currentTool, handleShapeUpdate, handlePropertyChange]);
 
   const stateView = useMemo(() => ({ ...state }), [state]);
 
@@ -78,7 +79,7 @@ function App() {
   }, [appContext, state.allShapes, state.selectedShapeIds]);
 
   return (
-    <ShapeContext.Provider value={appContext}>
+    <AppContext.Provider value={appContext}>
       <View style={styles.app}>
         <MainToolbar currentTool={state.currentTool} state={state} dispatch={dispatch} />
         <List divider dividerColor="#d0d0d0" style={{ flex: 1, flexDirection: 'row' }}>
@@ -86,17 +87,16 @@ function App() {
             allShapes={state.allShapes}
             selectedShapeIds={state.selectedShapeIds}
             dispatch={dispatch}
-            onUpdateShape={handleShapeUpdate}
           />
           <List divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
             <List horizontal divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
-              <AppCanvas state={state} dispatch={dispatch} onShapeUpdate={handleShapeUpdate} />
+              <AppCanvas state={state} dispatch={dispatch} />
               {state.options.showSecondCanvas && (
-                <AppCanvas state={state} dispatch={dispatch} scale={0.5} onShapeUpdate={handleShapeUpdate} />
+                <AppCanvas state={state} dispatch={dispatch} scale={0.5} />
               )}
             </List>
             {state.options.showThirdCanvas && (
-              <AppCanvas state={state} dispatch={dispatch} scale={2.0} onShapeUpdate={handleShapeUpdate} />
+              <AppCanvas state={state} dispatch={dispatch} scale={2.0} />
             )}
           </List>
           <PropertiesPanel
@@ -107,7 +107,7 @@ function App() {
           />
         </List>
       </View >
-    </ShapeContext.Provider>
+    </AppContext.Provider>
   );
 }
 

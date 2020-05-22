@@ -19,10 +19,9 @@ type AppCanvasProps = {
   state: State,
   dispatch: React.Dispatch<any>,
   scale?: number,
-  onShapeUpdate: (shapeId: number, shape: Properties) => void,
 };
 
-const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasProps) => {
+const AppCanvas = ({ state, dispatch, scale = 1.0 }: AppCanvasProps) => {
   console.log('AppCanvas()', { scale });
 
   const handleSetPosition = (shapeId: number, position: { x: number, y: number; }) => {

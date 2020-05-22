@@ -6,7 +6,7 @@ import shapeRegistry from './ShapeRegistry';
 import { List, Spacer, Divider } from '../core';
 import Panel from '../shared/Panel';
 
-const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch, onUpdateShape, ...props }) => {
+const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch, ...props }) => {
   return (
     <List {...props}>
       {childIds.slice().reverse().map(childId => {
@@ -21,7 +21,6 @@ const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch,
             selected={selected}
             depth={depth}
             dispatch={dispatch}
-            onUpdateShape={onUpdateShape}
           />
         );
       })}
@@ -29,12 +28,10 @@ const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch,
   );
 };
 
-const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, dispatch, onUpdateShape }) => {
+const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, dispatch }) => {
   const shape = allShapes[shapeId];
 
   const handleSelectShape = (shapeId) => {
-    onUpdateShape(shapeId, {});
-
     dispatch({
       type: 'SELECT_SHAPE',
       payload: {
@@ -78,13 +75,12 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
         selectedShapeIds={selectedShapeIds}
         depth={depth + 1}
         dispatch={dispatch}
-        onUpdateShape={onUpdateShape}
       />
     </View>
   );
 };
 
-const ShapesPanel = ({ allShapes, selectedShapeIds, dispatch, onUpdateShape }) => {
+const ShapesPanel = ({ allShapes, selectedShapeIds, dispatch }) => {
   console.log('ShapesPanel()');
 
   return (
@@ -96,7 +92,6 @@ const ShapesPanel = ({ allShapes, selectedShapeIds, dispatch, onUpdateShape }) =
         depth={0}
         dispatch={dispatch}
         style={{ paddingVertical: 8 }}
-        onUpdateShape={onUpdateShape}
       />
     </Panel>
   );

@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react';
 import expr from 'property-expr';
 
-import { Field } from '../core';
-import ShapeContext from '../../ShapeContext';
-import FormContext from '../core/FormContext';
+import { Field } from '.';
+import AppContext from '../../AppContext';
+import FormContext from './FormContext';
 
 const useSelectedShape = (property: string) => {
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
-  const { eventEmitter } = useContext(ShapeContext);
+  const { eventEmitter } = useContext(AppContext);
 
   const handlePositionChange = (shape) => {
     setSelectedShape(shape);

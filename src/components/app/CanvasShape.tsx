@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext, useMemo, useEffect, useCallback } from 'react';
 
 import shapeRegistry from './ShapeRegistry';
-import ShapeContext from '../../ShapeContext';
+import AppContext from '../../AppContext';
 import { State, Shape, Properties } from '../../types';
 
 const positionChange = setSelectedShape => (shape: Shape) => {
@@ -59,7 +59,7 @@ const _CanvasShape = ({
 
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
-  const { eventEmitter, onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
+  const { eventEmitter, onShapeUpdate, onPropertyChange } = useContext(AppContext);
 
   const lastTap = useRef<number>(Date.now());
 
