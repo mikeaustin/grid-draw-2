@@ -123,9 +123,7 @@ const AppCanvas = ({ state, dispatch, scale = 1.0, onShapeUpdate }: AppCanvasPro
               selected={state.selectedShapeIds.includes(shape.id)}
               allShapes={state.allShapes}
               selectedShapeIds={state.selectedShapeIds}
-              onSetPosition={handleSetPosition}
               onSelectShape={handleSelectShape}
-              onShapeUpdate={onShapeUpdate}
             />
           );
         })}

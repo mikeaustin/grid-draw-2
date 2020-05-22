@@ -1,7 +1,7 @@
 import React from 'react';
 import { G, Line } from 'react-native-svg';
 
-const Grid = ({ }) => {
+const Grid = () => {
   return (
     <G>
       {Array.from({ length: 50 }, (_, index) => (

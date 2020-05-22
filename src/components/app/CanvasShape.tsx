@@ -45,9 +45,7 @@ type CanvasShapeProps = {
   selected: boolean,
   allShapes: State['allShapes'],
   selectedShapeIds: number[],
-  onSetPosition: (shapeId: number, position: { x: number, y: number; }) => void,
   onSelectShape: (shapeId: number) => void,
-  onShapeUpdate: (shapeId: number, shape: Properties) => void,
 };
 
 const _CanvasShape = ({
@@ -55,15 +53,13 @@ const _CanvasShape = ({
   selected,
   allShapes,
   selectedShapeIds,
-  onSetPosition,
   onSelectShape,
-  onShapeUpdate
 }: CanvasShapeProps) => {
   // console.log('CanvasShape()', shape.id);
 
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
-  const { eventEmitter, currentTool } = useContext(ShapeContext);
+  const { eventEmitter, onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
 
   const lastTap = useRef<number>(Date.now());
 
@@ -76,9 +72,10 @@ const _CanvasShape = ({
 
   useEffect(() => {
     if (selected) {
-      Object.keys(shape.properties).forEach(propertyName => (
-        eventEmitter.addListener(propertyName, handlePositionChange)
-      ));
+      Object.keys(shape.properties).forEach(propertyName => {
+        eventEmitter.removeListener(propertyName, handlePositionChange);
+        eventEmitter.addListener(propertyName, handlePositionChange);
+      });
     } else {
       setSelectedShape(null);
 
@@ -86,7 +83,7 @@ const _CanvasShape = ({
         eventEmitter.removeListener(propertyName, handlePositionChange)
       ));
     }
-  }, [eventEmitter, selected, handlePositionChange]);
+  }, [eventEmitter, selected, shape.properties, handlePositionChange]);
 
   // const handleStartShouldSetResponder = useCallback((event: any) => {
   //   event.preventDefault();
@@ -108,21 +105,18 @@ const _CanvasShape = ({
         opacity: shape.properties.opacity,
       });
     }, 0);
-  }, [shape.id, setFirstPosition, shape.properties.opacity, onSelectShape, onShapeUpdate]);
+  }, [shape.id, setFirstPosition, shape.properties.position, shape.properties.opacity, onSelectShape, onShapeUpdate]);
 
   const handleResponderMove = useCallback(event => {
-    // if (currentTool.tool === 'GridDraw.Tools.Move') {
     onShapeUpdate(shape.id, {
       position: {
         x: shape.properties.position.x + event.nativeEvent.pageX - firstPosition.x,
         y: shape.properties.position.y + event.nativeEvent.pageY - firstPosition.y,
       }
     });
-    // }
-  }, [currentTool, shape.id, firstPosition, onShapeUpdate]);
+  }, [shape.id, shape.properties.position.x, shape.properties.position.y, firstPosition, onShapeUpdate]);
 
   const handleResponseRelease = useCallback(event => {
-    // if (currentTool.tool === 'GridDraw.Tools.Move') {
     console.log('----------');
 
     let position = {
@@ -130,9 +124,8 @@ const _CanvasShape = ({
       y: shape.properties.position.y + (event.nativeEvent.pageY - firstPosition.y),
     };
 
-    onSetPosition(shape.id, position);
-    // }
-  }, [shape.id, currentTool, firstPosition, onSetPosition]);
+    onPropertyChange(shape.id, 'position', position);
+  }, [shape.id, shape.properties.position.x, shape.properties.position.y, firstPosition, onPropertyChange]);
 
   const shapeEventProps = {
     onStartShouldSetResponder: handleStartShouldSetResponder,
@@ -157,15 +150,13 @@ const _CanvasShape = ({
         allShapes={allShapes}
         childIds={shape.childIds}
         selectedShapeIds={selectedShapeIds}
-        onSetPosition={onSetPosition}
         onSelectShape={onSelectShape}
-        onShapeUpdate={onShapeUpdate}
       />
     </Component>
   );
 };
 
-const _CanvasShapeList = ({ allShapes, childIds, selectedShapeIds, onSetPosition, onSelectShape, onShapeUpdate }) => {
+const _CanvasShapeList = ({ allShapes, childIds, selectedShapeIds, onSelectShape }) => {
   return (
     childIds.map(childId => {
       console.log('shape.childIds.map()', childId);
@@ -180,9 +171,7 @@ const _CanvasShapeList = ({ allShapes, childIds, selectedShapeIds, onSetPosition
           selected={selected}
           allShapes={allShapes}
           selectedShapeIds={selectedShapeIds}
-          onSetPosition={onSetPosition}
           onSelectShape={onSelectShape}
-          onShapeUpdate={onShapeUpdate}
         />
       );
     })
