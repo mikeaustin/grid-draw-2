@@ -4,7 +4,7 @@ import initialState from './initialState';
 import { State, Action } from '../types';
 
 const clone = value => {
-  if (Array.isArray(value)) {
+  if (Array.isArray(value) || value instanceof Int16Array) {
     return value.map(item => clone(item));
   }
 
@@ -74,6 +74,13 @@ const addShape: AddShapeFunc = (allShapes, type, shapeId, position) => {
         opacity: 1.0,
         angle: 0,
         cornerRadius: 10,
+        bezierNodes: new Int16Array([
+          0, 0,
+          100, 100, 250, -100,
+          200, 0,
+          250, 100, 100, -100,
+          0, 0,
+        ]),
       }
     }
   };

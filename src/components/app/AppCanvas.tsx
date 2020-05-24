@@ -24,23 +24,23 @@ type AppCanvasProps = {
 const AppCanvas = ({ state, dispatch, scale = 1.0 }: AppCanvasProps) => {
   console.log('AppCanvas()', { scale });
 
-  const handleSetPosition = (shapeId: number, position: { x: number, y: number; }) => {
-    if (state.options.snapToGrid) {
-      position = {
-        x: Math.round((position.x / 10)) * 10,
-        y: Math.round(position.y / 10) * 10,
-      };
-    }
+  // const handleSetPosition = (shapeId: number, position: { x: number, y: number; }) => {
+  //   if (state.options.snapToGrid) {
+  //     position = {
+  //       x: Math.round((position.x / 10)) * 10,
+  //       y: Math.round(position.y / 10) * 10,
+  //     };
+  //   }
 
-    dispatch({
-      type: 'SET_SHAPE_PROPERTY',
-      payload: {
-        shapeId,
-        propertyName: 'position',
-        propertyValue: position
-      }
-    });
-  };
+  //   dispatch({
+  //     type: 'SET_SHAPE_PROPERTY',
+  //     payload: {
+  //       shapeId,
+  //       propertyName: 'position',
+  //       propertyValue: position
+  //     }
+  //   });
+  // };
 
   const handleSelectShape = (shapeId) => {
     dispatch({

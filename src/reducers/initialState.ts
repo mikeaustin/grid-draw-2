@@ -17,7 +17,7 @@ const initialState: State = {
     0: {
       id: 0,
       type: 'GridDraw.Shape.Group',
-      childIds: [1, 2, 3],
+      childIds: [1, 2, 3, 6],
       properties: {
         position: {
           x: 0,
@@ -43,9 +43,9 @@ const initialState: State = {
           y: 100,
         },
         fill: {
-          hue: 0,
+          hue: 340,
           saturation: 100,
-          lightness: 50,
+          lightness: 60,
         },
         opacity: 1.0,
         angle: 15,
@@ -66,7 +66,7 @@ const initialState: State = {
           saturation: 100,
           lightness: 50,
         },
-        opacity: 0.75,
+        opacity: 1.0,
         angle: 0,
         cornerRadius: 0,
       }
@@ -85,7 +85,7 @@ const initialState: State = {
           saturation: 100,
           lightness: 50,
         },
-        opacity: 0.5,
+        opacity: 1.0,
         angle: 0,
         cornerRadius: 0,
       }
@@ -119,15 +119,41 @@ const initialState: State = {
           y: 150,
         },
         fill: {
-          hue: 270,
-          saturation: 100,
+          hue: 60,
+          saturation: 95,
           lightness: 50,
         },
-        opacity: 0.5,
+        opacity: 1.0,
         angle: 0,
         cornerRadius: 0,
       }
     },
+    6: {
+      id: 6,
+      type: 'GridDraw.Shape.Path',
+      childIds: [],
+      properties: {
+        position: {
+          x: 100,
+          y: 500,
+        },
+        fill: {
+          hue: 190,
+          saturation: 100,
+          lightness: 50,
+        },
+        opacity: 1.0,
+        angle: 0,
+        cornerRadius: 0,
+        bezierNodes: new Int16Array([
+          0, 0,
+          100, 100, 250, -100,
+          200, 0,
+          250, 100, 100, -100,
+          0, 0,
+        ]),
+      }
+    }
   }
 };
 

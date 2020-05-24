@@ -3,66 +3,7 @@ import { Ellipse, Path } from 'react-native-svg';
 
 import Shape from '../../../types/Shape';
 import AppContext from '../../../AppContext';
-
-const Handle = ({
-  position: { x, y },
-  transform,
-  onDragStart,
-  onDragMove,
-  onDragEnd,
-}) => {
-  const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
-
-  const handleStartShouldSetResponder = () => true;
-
-  const handleResponderGrant = (event) => {
-    setFirstPosition({
-      x: event.nativeEvent.pageX,
-      y: event.nativeEvent.pageY
-    });
-
-    onDragStart({
-      x: 0,
-      y: 0
-    });
-  };
-
-  const handleResponderMove = (event) => {
-    onDragMove({
-      x: event.nativeEvent.pageX - firstPosition.x,
-      y: event.nativeEvent.pageY - firstPosition.y,
-    });
-  };
-
-  const handleResponderRelease = (event) => {
-    onDragEnd({
-      x: event.nativeEvent.pageX - firstPosition.x,
-      y: event.nativeEvent.pageY - firstPosition.y,
-    });
-  };
-
-  const shapeProps = {
-    onStartShouldSetResponder: handleStartShouldSetResponder,
-    onResponderGrant: handleResponderGrant,
-    onResponderMove: handleResponderMove,
-    onResponderRelease: handleResponderRelease,
-  };
-
-  return (
-    <Ellipse
-      cx={x}
-      cy={y}
-      rx={7}
-      ry={7}
-      transform={transform}
-      fill="white"
-      stroke="black"
-      strokeWidth={2}
-      {...shapeProps}
-    />
-  );
-};
-
+import DragHandle from '../../shared/DragHandle';
 
 function rotate(cx, cy, x, y, angle) {
   var radians = (Math.PI / 180) * angle,
@@ -146,7 +87,7 @@ const RectShape = ({
         {...props}
       />
       {selected && (
-        <Handle
+        <DragHandle
           position={handlePosition}
           transform={`rotate(${angle} ${x + halfWidth} ${y + halfHeight})`}
           onDragStart={handleDragStart}

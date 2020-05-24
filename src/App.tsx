@@ -48,6 +48,13 @@ function App() {
   }, [state.allShapes, state.options]);
 
   const handlePropertyChange = useCallback((shapeId: number, name: string, value: any) => {
+    if (state.options.snapToGrid && name === 'position') {
+      value = {
+        x: Math.round((value.x / 10)) * 10,
+        y: Math.round(value.y / 10) * 10,
+      };
+    }
+
     dispatch({
       type: 'SET_SHAPE_PROPERTY',
       payload: {
@@ -56,15 +63,16 @@ function App() {
         propertyValue: value,
       }
     });
-  }, [dispatch]);
+  }, [state.options.snapToGrid, dispatch]);
 
   const appContext = useMemo(() => ({
     allShapes: state.allShapes,
     currentTool: state.currentTool,
+    options: state.options,
     eventEmitter: eventEmitter,
     onShapeUpdate: handleShapeUpdate,
     onPropertyChange: handlePropertyChange,
-  }), [state.allShapes, state.currentTool, handleShapeUpdate, handlePropertyChange]);
+  }), [state.allShapes, state.currentTool, state.options, handleShapeUpdate, handlePropertyChange]);
 
   const stateView = useMemo(() => ({ ...state }), [state]);
 

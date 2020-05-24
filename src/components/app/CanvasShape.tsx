@@ -140,8 +140,8 @@ const _CanvasShape = ({
   return (
     <Component
       properties={selectedShape ? selectedShape.properties : shape.properties}
-      stroke={selected ? 'hsl(210, 90%, 55%)' : undefined}
-      strokeWidth={selected ? 5 : undefined}
+      stroke={selected ? 'hsl(210, 90%, 55%)' : 'black'}
+      strokeWidth={selected ? 3 : 3}
       shapeId={shape.id}
       selected={selected}
       {...shapeEventProps}

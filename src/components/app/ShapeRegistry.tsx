@@ -1,9 +1,12 @@
 import React from 'react';
-import { G, Ellipse, Rect } from 'react-native-svg';
+import { Ellipse, Rect } from 'react-native-svg';
 // import JsxParser from 'react-jsx-parser';
 
 import Shape from '../../types/Shape';
+import EllipseShape from './shapes/EllipseShape';
 import RectShape from './shapes/RectShape';
+import PathShape from './shapes/PathShape';
+import GroupShape from './shapes/GroupShape';
 
 const shapeRegistry = {
   'GridDraw.Shape.Ellipse': {
@@ -28,34 +31,7 @@ const shapeRegistry = {
         />
       );
     },
-    render: ({
-      shapeId,
-      properties: {
-        position: {
-          x,
-          y,
-        },
-        fill: {
-          hue,
-          saturation,
-          lightness,
-        },
-        opacity,
-      },
-      ...props
-    }: Shape['properties']) => {
-      return (
-        <Ellipse
-          cx={x + 50}
-          cy={y + 50}
-          rx={50}
-          ry={50}
-          fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
-          opacity={opacity}
-          {...props}
-        />
-      );
-    }
+    render: EllipseShape,
   },
   'GridDraw.Shape.Rect': {
     icon: ({
@@ -81,6 +57,30 @@ const shapeRegistry = {
     },
     render: RectShape,
   },
+  'GridDraw.Shape.Path': {
+    icon: ({
+      properties: {
+        fill: {
+          hue,
+          saturation,
+          lightness,
+        },
+        opacity
+      },
+    }) => {
+      return (
+        <Rect
+          x={0}
+          y={0}
+          width={20}
+          height={20}
+          fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
+          opacity={opacity}
+        />
+      );
+    },
+    render: PathShape,
+  },
   'GridDraw.Shape.Group': {
     icon: ({ }) => {
       return (
@@ -89,38 +89,7 @@ const shapeRegistry = {
         />
       );
     },
-    render: ({
-      shapeId,
-      properties: {
-        position: {
-          x,
-          y,
-        },
-        fill: {
-          hue,
-          saturation,
-          lightness,
-        },
-        opacity,
-      },
-      ...props
-    }: Shape['properties']) => {
-      const groupProps = {
-        style: {
-          pointerEvents: 'visiblePainted'
-        }
-      };
-
-      return (
-        <G
-          x={x}
-          y={y}
-          opacity={opacity}
-          {...groupProps}
-          {...props}
-        />
-      );
-    }
+    render: GroupShape,
   }
 };
 

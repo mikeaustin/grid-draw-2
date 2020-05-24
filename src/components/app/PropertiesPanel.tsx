@@ -15,7 +15,7 @@ type PropertiesPanelProps = {
 };
 
 const clone = value => {
-  if (Array.isArray(value)) {
+  if (Array.isArray(value) || value instanceof Int16Array) {
     return value.map(item => clone(item));
   }
 
