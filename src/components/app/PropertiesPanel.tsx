@@ -79,10 +79,10 @@ const PropertiesPanel = ({
               <List horizontal style={{ width: '100%' }}>
                 <PropertyField Component={NumericInput} label="X" property="position.x" />
                 <View style={{ flex: 1 }} />
-                <PropertyField Component={NumericInput} label="W" property="position.x" />
+                <PropertyField Component={NumericInput} label="W" property="size.x" />
               </List>
               <Spacer size="small" />
-              <PropertyField Component={NumericInput} label="H" property="position.y" />
+              <PropertyField Component={NumericInput} label="H" property="size.y" />
             </View>
           </Section>
           <Section title="Opacity">
