@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React from 'react';
 import { Ellipse } from 'react-native-svg';
 

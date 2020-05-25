@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React from 'react';
 import { View, Text } from 'react-native-web';
 import expr from 'property-expr';
@@ -35,7 +37,7 @@ const PropertiesPanel = ({
   dispatch,
   onShapeUpdate
 }: PropertiesPanelProps) => {
-  console.log('PropertiesPanel()', selectedShapeId);
+  console.log('PropertiesPanel() - selectedShapeId:', selectedShapeId);
 
   const handleShapeUpdate = (propertyName: string, propertyValue: any) => {
     const index = propertyName.indexOf('.');

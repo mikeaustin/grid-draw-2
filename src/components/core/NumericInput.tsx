@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View, Text, TextInput } from 'react-native-web';
 

@@ -5,7 +5,7 @@ import Toolbar from '../shared/Toolbar';
 import { NumericInput, Field, Divider } from '../core';
 
 const MainToolbar = ({ state, currentTool, dispatch }) => {
-  console.log('MainToolbar()', currentTool);
+  console.log('MainToolbar() - currentTool:', currentTool);
 
   const handleButtonPress = (name, value) => {
     dispatch({

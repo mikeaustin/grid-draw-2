@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import { State, Point } from '../types';
 
 const initialState: State = {

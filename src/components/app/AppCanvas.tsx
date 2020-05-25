@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React from 'react';
 import { StyleSheet } from 'react-native-web';
 import { Svg, G, Rect, Text as SvgText } from 'react-native-svg';
@@ -22,7 +24,7 @@ type AppCanvasProps = {
 };
 
 const AppCanvas = ({ state, dispatch, scale = 1.0 }: AppCanvasProps) => {
-  console.log('AppCanvas()', { scale });
+  console.log('AppCanvas() - scale:', scale);
 
   // const handleSetPosition = (shapeId: number, position: { x: number, y: number; }) => {
   //   if (state.options.snapToGrid) {

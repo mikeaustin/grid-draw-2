@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React, { useState, useContext, useRef, useCallback } from 'react';
 import { Ellipse, Path } from 'react-native-svg';
 
@@ -44,9 +46,9 @@ const RectShape = ({
     y: y + cornerRadius,
   };
 
-  const handleDragStart = (position) => {
+  const handleDragStart = useCallback((position) => {
     firstCornerRadius.current = cornerRadius;
-  };
+  }, [firstCornerRadius, cornerRadius]);
 
   const handleDragMove = useCallback((position) => {
     const [_, handleY] = rotate(0, 0, position.x, position.y, angle);

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React from 'react';
 import { Ellipse, Rect } from 'react-native-svg';
 // import JsxParser from 'react-jsx-parser';
@@ -82,7 +84,7 @@ const shapeRegistry = {
     render: PathShape,
   },
   'GridDraw.Shape.Group': {
-    icon: ({ }) => {
+    icon: () => {
       return (
         <Rect width={20} height={20} fill="transparent" stroke="black" strokeWidth="2"
           strokeDasharray={'3 1'}

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import expr from 'property-expr';
 
 import initialState from './initialState';
@@ -56,7 +58,7 @@ type AddShapeFunc = (
 const addShape: AddShapeFunc = (allShapes, type, shapeId, position) => {
   return {
     ...allShapes,
-    [0]: {
+    0: {
       ...allShapes[0],
       childIds: [...allShapes[0].childIds, shapeId]
     },

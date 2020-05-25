@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React, { useReducer, useCallback, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
@@ -44,7 +46,7 @@ function App() {
     };
 
     Object.keys(shapeProperties).forEach(eventType => {
-      appContext.eventEmitter.emit(eventType, updatedShape);
+      eventEmitter.emit(eventType, updatedShape);
     });
   }, [state.allShapes, state.options]);
 
@@ -131,7 +133,7 @@ function add(a: any, b: any): any {
   return a + b;
 }
 
-console.log(add(3, 2));
+// console.log(add(3, 2));
 
 function method(types: any[], f: Function, cont?: Function) {
   return (...args) => {
@@ -182,9 +184,9 @@ const add2 = method([Number, Number], (a, b) => a + b);
 const add3 = method([1, 2], () => 3, add2);
 const add4 = method([String, Number], (a, b) => 100, add3);
 
-console.log('>>>', add3(1, 2));
-console.log('>>>', add3(2, 3));
-console.log('>>>', add4('x', 3));
+// console.log('>>>', add3(1, 2));
+// console.log('>>>', add3(2, 3));
+// console.log('>>>', add4('x', 3));
 
 const add5 = method([Number, Number], (a, b) => a + b);
 const add6 = multi2(method([1, 2], () => 3), add5);

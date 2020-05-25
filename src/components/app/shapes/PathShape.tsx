@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React, { useState, useContext } from 'react';
 import { Path, Circle, Line } from 'react-native-svg';
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Circle } from 'react-native-svg';
 
 type DragHandleProps = {

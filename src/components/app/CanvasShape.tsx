@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-unused-vars: "off" */
+
 import React, { useState, useRef, useContext, useMemo, useEffect, useCallback } from 'react';
 
 import shapeRegistry from './ShapeRegistry';
@@ -63,10 +65,6 @@ const _CanvasShape = ({
 
   const lastTap = useRef<number>(Date.now());
 
-  // const handlePositionChange = useCallback((shape: Shape) => {
-  //   setSelectedShape(shape);
-  // }, [setSelectedShape]);
-
   const handlePositionChange = useHOFCallback(positionChange, [setSelectedShape]);
   const handleStartShouldSetResponder = useHOFCallback(startShouldSetResponder, [lastTap]);
 
@@ -84,16 +82,6 @@ const _CanvasShape = ({
       ));
     }
   }, [eventEmitter, selected, shape.properties, handlePositionChange]);
-
-  // const handleStartShouldSetResponder = useCallback((event: any) => {
-  //   event.preventDefault();
-
-  //   const tap = !(Date.now() - lastTap.current < 300);
-  //   lastTap.current = Date.now();
-
-  //   return tap;
-  // }, [lastTap.current]);
-
 
   const handleResponderGrant = useCallback((event: any) => {
     setFirstPosition({ x: event.nativeEvent.pageX, y: event.nativeEvent.pageY });
@@ -159,7 +147,7 @@ const _CanvasShape = ({
 const _CanvasShapeList = ({ allShapes, childIds, selectedShapeIds, onSelectShape }) => {
   return (
     childIds.map(childId => {
-      console.log('shape.childIds.map()', childId);
+      // console.log('shape.childIds.map()', childId);
 
       const shape = allShapes[childId];
       const selected = selectedShapeIds.includes(childId);
