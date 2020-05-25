@@ -42,7 +42,7 @@ const startShouldSetResponder = lastTap => (event: any) => {
   return tap;
 };
 
-const responderGrant = (shapeId, setFirstPosition, onSelectShape) => (event: any) => {
+const responderGrant = (shapeId, setFirstPosition, onSelectShape) => event => {
   setFirstPosition({
     x: event.nativeEvent.pageX,
     y: event.nativeEvent.pageY
