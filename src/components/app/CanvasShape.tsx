@@ -6,19 +6,6 @@ import shapeRegistry from './ShapeRegistry';
 import AppContext from '../../AppContext';
 import { State, Shape, Properties } from '../../types';
 
-const positionChange = setSelectedShape => (shape: Shape) => {
-  setSelectedShape(shape);
-};
-
-const startShouldSetResponder = lastTap => (event: any) => {
-  event.preventDefault();
-
-  const tap = !(Date.now() - lastTap.current < 300);
-  lastTap.current = Date.now();
-
-  return tap;
-};
-
 const useHOFCallback = (fn, args) => {
   const resultRef = useRef<Function>();
   const argsRef = useRef<any[]>();
@@ -42,6 +29,48 @@ const useHOFCallback = (fn, args) => {
   // return useMemo(() => fn(...args), args);
 };
 
+const positionChange = setSelectedShape => (shape: Shape) => {
+  setSelectedShape(shape);
+};
+
+const startShouldSetResponder = lastTap => (event: any) => {
+  event.preventDefault();
+
+  const tap = !(Date.now() - lastTap.current < 300);
+  lastTap.current = Date.now();
+
+  return tap;
+};
+
+const responderGrant = (shapeId, setFirstPosition, onSelectShape) => (event: any) => {
+  setFirstPosition({
+    x: event.nativeEvent.pageX,
+    y: event.nativeEvent.pageY
+  });
+
+  onSelectShape(shapeId);
+};
+
+const responderMove = (shapeId, position, firstPosition, onShapeUpdate) => event => {
+  onShapeUpdate(shapeId, {
+    position: {
+      x: position.x + event.nativeEvent.pageX - firstPosition.x,
+      y: position.y + event.nativeEvent.pageY - firstPosition.y,
+    }
+  });
+};
+
+const responseRelease = (shapeId, position, firstPosition, onPropertyChange) => event => {
+  console.log('----------');
+
+  let newPosition = {
+    x: position.x + (event.nativeEvent.pageX - firstPosition.x),
+    y: position.y + (event.nativeEvent.pageY - firstPosition.y),
+  };
+
+  onPropertyChange(shapeId, 'position', newPosition);
+};
+
 type CanvasShapeProps = {
   shape: Shape,
   selected: boolean,
@@ -61,12 +90,30 @@ const _CanvasShape = ({
 
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
+
   const { eventEmitter, onShapeUpdate, onPropertyChange } = useContext(AppContext);
 
   const lastTap = useRef<number>(Date.now());
 
-  const handlePositionChange = useHOFCallback(positionChange, [setSelectedShape]);
-  const handleStartShouldSetResponder = useHOFCallback(startShouldSetResponder, [lastTap]);
+  const handlePositionChange = useHOFCallback(positionChange, [
+    setSelectedShape
+  ]);
+
+  const handleStartShouldSetResponder = useHOFCallback(startShouldSetResponder, [
+    lastTap
+  ]);
+
+  const handleResponderGrant = useHOFCallback(responderGrant, [
+    shape.id, setFirstPosition, onSelectShape
+  ]);
+
+  const handleResponderMove = useHOFCallback(responderMove,
+    [shape.id, shape.properties.position, firstPosition, onShapeUpdate]
+  );
+
+  const handleResponseRelease = useHOFCallback(responseRelease, [
+    shape.id, shape.properties.position, firstPosition, onPropertyChange
+  ]);
 
   useEffect(() => {
     if (selected) {
@@ -81,39 +128,7 @@ const _CanvasShape = ({
         eventEmitter.removeListener(propertyName, handlePositionChange)
       ));
     }
-  }, [eventEmitter, selected, shape.properties, handlePositionChange]);
-
-  const handleResponderGrant = useCallback((event: any) => {
-    setFirstPosition({ x: event.nativeEvent.pageX, y: event.nativeEvent.pageY });
-    onSelectShape(shape.id);
-
-    setTimeout(() => {
-      onShapeUpdate(shape.id, {
-        position: shape.properties.position,
-        opacity: shape.properties.opacity,
-      });
-    }, 0);
-  }, [shape.id, setFirstPosition, shape.properties.position, shape.properties.opacity, onSelectShape, onShapeUpdate]);
-
-  const handleResponderMove = useCallback(event => {
-    onShapeUpdate(shape.id, {
-      position: {
-        x: shape.properties.position.x + event.nativeEvent.pageX - firstPosition.x,
-        y: shape.properties.position.y + event.nativeEvent.pageY - firstPosition.y,
-      }
-    });
-  }, [shape.id, shape.properties.position.x, shape.properties.position.y, firstPosition, onShapeUpdate]);
-
-  const handleResponseRelease = useCallback(event => {
-    console.log('----------');
-
-    let position = {
-      x: shape.properties.position.x + (event.nativeEvent.pageX - firstPosition.x),
-      y: shape.properties.position.y + (event.nativeEvent.pageY - firstPosition.y),
-    };
-
-    onPropertyChange(shape.id, 'position', position);
-  }, [shape.id, shape.properties.position.x, shape.properties.position.y, firstPosition, onPropertyChange]);
+  }, [selected, shape.properties, eventEmitter, handlePositionChange]);
 
   const shapeEventProps = {
     onStartShouldSetResponder: handleStartShouldSetResponder,
