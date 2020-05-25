@@ -12,10 +12,10 @@ const styles = StyleSheet.create({
     cursor: 'pointer',
   },
   selected: {
-    backgroundColor: '#e8e8e8',
+    backgroundColor: '#e0e0e0',
   },
   pressed: {
-    backgroundColor: '#d8d8d8',
+    backgroundColor: '#d0d0d0',
   },
   disabled: {
     opacity: 0.25,

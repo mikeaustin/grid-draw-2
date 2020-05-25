@@ -51,7 +51,7 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
             alignItems: 'center',
             paddingVertical: 6,
             paddingHorizontal: 10,
-            backgroundColor: selected && '#e8e8e8',
+            backgroundColor: selected && '#e0e0e0',
             paddingLeft: depth * 15 + 10,
             cursor: 'pointer',
           }}
