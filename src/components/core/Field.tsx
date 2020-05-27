@@ -18,20 +18,26 @@ type FieldProps = {
   max?: string,
 };
 
+const _Label = ({ label }) => {
+  return (
+    <>
+      <Text>{label}</Text>
+      <Spacer size="xsmall" />
+    </>
+  );
+};
+
 const Field = ({ Component, label, value, property, flex, ...props }: FieldProps) => {
   // console.log('Field()', value);
 
   return (
     <View style={[{ flexDirection: 'row', alignItems: 'center' }, flex && { flex: 1 }]}>
-      {label && (
-        <>
-          <Text>{label}</Text>
-          <Spacer size="xsmall" />
-        </>
-      )}
+      {label && <Label label={label} />}
       <Component value={value} {...props} />
     </View>
   );
 };
+
+const Label = React.memo(_Label);
 
 export default React.memo(Field);

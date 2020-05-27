@@ -65,8 +65,4 @@ const PropertyField = ({
   );
 };
 
-// const withField = Component => ({ ...props }) => {
-//   return <PropertyField Component={Component} {...props} />;
-// };
-
 export default React.memo(PropertyField);

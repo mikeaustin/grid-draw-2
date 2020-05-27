@@ -23,6 +23,12 @@ const styles = StyleSheet.create({
   }
 });
 
+const _Units = ({ label }) => {
+  return (
+    <Text>px</Text>
+  );
+};
+
 type NumericInputProps = {
   value: number,
   onValueChange?: (value: any) => void,
@@ -36,15 +42,15 @@ const NumericInput = ({ value, onValueChange, onValueCommit, ...props }: Numeric
     setInternalValue(value);
   }, [value]);
 
-  const handleChangeText = (value) => {
+  const handleChangeText = useCallback((value) => {
     setInternalValue(value);
-  };
+  }, [setInternalValue]);
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     if (onValueCommit) {
       onValueCommit(internalValue);
     }
-  };
+  }, [internalValue, onValueCommit]);
 
   return (
     <View style={styles.numericInput}>
@@ -56,9 +62,11 @@ const NumericInput = ({ value, onValueChange, onValueCommit, ...props }: Numeric
         onBlur={handleBlur}
         {...props}
       />
-      <Text>px</Text>
+      <Units label="px" />
     </View>
   );
 };
+
+const Units = React.memo(_Units);
 
 export default NumericInput;

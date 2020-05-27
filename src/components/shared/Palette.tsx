@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useCallback, useMemo } from 'react';
 import { Svg, Rect } from 'react-native-svg';
 
 import AppContext from '../../AppContext';
@@ -12,18 +12,20 @@ const range = (from, to) => ({
 const Palette = ({ selectedShapeId }) => {
   const { onPropertyChange } = useContext(AppContext);
 
-  const eventProps = {
-    onPressIn: event => {
-      const color = event.target.getAttribute('fill').match(/hsl\(([\d.]+), ([\d.]+)%, ([\d.]+)%\)/);
-      console.log('color', color, event.target.getAttribute('fill'));
+  const handlePressIn = useCallback(event => {
+    const color = event.target.getAttribute('fill').match(/hsl\(([\d.]+), ([\d.]+)%, ([\d.]+)%\)/);
+    console.log('color', color, event.target.getAttribute('fill'));
 
-      onPropertyChange(selectedShapeId, 'fill', {
-        hue: Number(color[1]),
-        saturation: Number(color[2]),
-        lightness: Number(color[3]),
-      });
-    }
-  };
+    onPropertyChange(selectedShapeId, 'fill', {
+      hue: Number(color[1]),
+      saturation: Number(color[2]),
+      lightness: Number(color[3]),
+    });
+  }, [selectedShapeId, onPropertyChange]);
+
+  const eventProps = useMemo(() => ({
+    onPressIn: handlePressIn,
+  }), [handlePressIn]);
 
   const size = 15;
 
