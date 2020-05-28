@@ -20,12 +20,12 @@ const clone = value => {
   return value;
 };
 
-const allShapesReducer = (allShapes: State['allShapes'], action: Action) => {
+const allShapesReducer = (allShapes: State['allShapes'], action: Action, selectedShapeIds) => {
   const { type, payload } = action;
 
   switch (type) {
     case 'SET_SHAPE_PROPERTY': {
-      const { shapeId, propertyName, propertyValue } = payload;
+      const { shapeId = selectedShapeIds[0], propertyName, propertyValue } = payload;
 
       console.log('SET_SHAPE_PROPERTY', shapeId, propertyName, propertyValue);
 
@@ -126,7 +126,7 @@ const stateReducer = (state: State, action: Action): State => {
     default:
       return {
         ...state,
-        allShapes: allShapesReducer(state.allShapes, action)
+        allShapes: allShapesReducer(state.allShapes, action, state.selectedShapeIds)
       };
   };
 };

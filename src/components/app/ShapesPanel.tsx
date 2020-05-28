@@ -1,14 +1,31 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 
-import React from 'react';
-import { View, Text, TouchableWithoutFeedback } from 'react-native-web';
+import React, { useContext, useCallback } from 'react';
+import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native-web';
 import { Svg } from 'react-native-svg';
 
 import shapeRegistry from './ShapeRegistry';
 import { List, Spacer, Divider } from '../core';
 import Panel from '../shared/Panel';
+import { AllShapesContext, SelectedShapeContext } from '../../AppContext';
 
-const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch, ...props }) => {
+const styles = StyleSheet.create({
+  itemList: {
+    paddingVertical: 8,
+  }
+});
+
+type ShapeItemListProps = {
+  childIds: number[],
+  depth: number,
+  style?: any,
+  dispatch: Function,
+};
+
+const ShapeItemList = React.memo(({ childIds, depth, dispatch, ...props }: ShapeItemListProps) => {
+  const allShapes = useContext(AllShapesContext);
+  const { selectedShapeIds } = useContext(SelectedShapeContext);
+
   return (
     <List {...props}>
       {childIds.slice().reverse().map(childId => {
@@ -17,9 +34,7 @@ const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch,
         return (
           <ShapeItem
             key={childId}
-            shapeId={childId}
-            allShapes={allShapes}
-            selectedShapeIds={selectedShapeIds}
+            shape={allShapes[childId]}
             selected={selected}
             depth={depth}
             dispatch={dispatch}
@@ -28,19 +43,26 @@ const ShapeItemList = ({ childIds, allShapes, selectedShapeIds, depth, dispatch,
       })}
     </List>
   );
+});
+
+type ShapeItemProps = {
+  shape: any,
+  selected: boolean,
+  depth: number,
+  dispatch: Function,
 };
 
-const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, dispatch }) => {
-  const shape = allShapes[shapeId];
+const ShapeItem = React.memo(({ shape, selected, depth, dispatch }: ShapeItemProps) => {
+  console.log('ShapeItem()');
 
-  const handleSelectShape = (shapeId) => {
+  const handleSelectShape = useCallback((shapeId) => {
     dispatch({
       type: 'SELECT_SHAPE',
       payload: {
         shapeId,
       }
     });
-  };
+  }, [dispatch]);
 
   const icon = shapeRegistry[shape.type] && shapeRegistry[shape.type].icon;
 
@@ -68,32 +90,30 @@ const ShapeItem = ({ shapeId, allShapes, selectedShapeIds, selected, depth, disp
             })}
           </Svg>
           <Spacer size="small" />
-          <Text style={{ fontWeight: 500, marginTop: -1 }}>{allShapes[shape.id].type}</Text>
+          <Text style={{ fontWeight: 500, marginTop: -1 }}>{shape.type}</Text>
         </View>
       </TouchableWithoutFeedback>
-      <ShapeItemList
-        childIds={shape.childIds}
-        allShapes={allShapes}
-        selectedShapeIds={selectedShapeIds}
-        depth={depth + 1}
-        dispatch={dispatch}
-      />
+      {shape.childIds.length > 0 && (
+        <ShapeItemList
+          childIds={shape.childIds}
+          depth={depth + 1}
+          dispatch={dispatch}
+        />
+      )}
     </View>
   );
-};
+});
 
-const ShapesPanel = ({ allShapes, selectedShapeIds, dispatch }) => {
+const ShapesPanel = ({ allShapes, dispatch }) => {
   console.log('ShapesPanel()');
 
   return (
     <Panel title="Shapes">
       <ShapeItemList
         childIds={allShapes[0].childIds}
-        allShapes={allShapes}
-        selectedShapeIds={selectedShapeIds}
         depth={0}
         dispatch={dispatch}
-        style={{ paddingVertical: 8 }}
+        style={styles.itemList}
       />
     </Panel>
   );

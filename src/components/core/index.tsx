@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
 import Form from './Form';
@@ -71,8 +71,18 @@ const styles = StyleSheet.create({
   }
 });
 
-const List = ({ horizontal, spacerSize = 'none', divider, dividerColor, style, children, ...props }: ListProps) => {
-  const separator = divider ? <Divider color={dividerColor} spacerSize={spacerSize} /> : <Spacer size={spacerSize} />;
+const List = ({
+  horizontal,
+  spacerSize = 'none',
+  divider,
+  dividerColor,
+  style,
+  children,
+  ...props
+}: ListProps) => {
+  const separator = divider
+    ? <Divider color={dividerColor} spacerSize={spacerSize} />
+    : <Spacer size={spacerSize} />;
 
   return (
     <View style={[horizontal && styles.horizontal, style]} {...props}>
@@ -86,21 +96,40 @@ const List = ({ horizontal, spacerSize = 'none', divider, dividerColor, style, c
   );
 };
 
-const Slider = ({ value: defaultValue, onValueChange, onValueCommit, ...props }) => {
+const sliderStyles = {
+  slider: {
+    flex: 1, marginTop: 12.5, marginBottom: 12.5
+  }
+};
+
+type SliderProps = {
+  value: any,
+  onValueChange: Function,
+  onValueCommit: Function,
+};
+
+const Slider = React.memo(({
+  value: defaultValue,
+  onValueChange,
+  onValueCommit,
+  ...props
+}: SliderProps) => {
   const [value, setValue] = useState(defaultValue || 0);
+
+  console.log('Slider()', value);
 
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
 
-  const handleOnChange = event => {
+  const handleOnChange = useCallback(event => {
     setValue(event.target.value / 100);
     onValueChange(event.target.value / 100);
-  };
+  }, [onValueChange]);
 
-  const handleMouseUp = event => {
+  const handleMouseUp = useCallback(event => {
     onValueCommit(value);
-  };
+  }, [value, onValueCommit]);
 
   return (
     <input
@@ -108,13 +137,13 @@ const Slider = ({ value: defaultValue, onValueChange, onValueCommit, ...props })
       min={0}
       value={value * 100}
       tabIndex={-1}
-      style={{ flex: 1, marginTop: 12.5, marginBottom: 12.5 }}
+      style={sliderStyles.slider}
       onChange={handleOnChange}
       onMouseUp={handleMouseUp}
       {...props}
     />
   );
-};
+});
 
 export {
   Spacer,

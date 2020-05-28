@@ -3,7 +3,7 @@
 import React, { useState, useRef, useContext, useMemo, useEffect, useCallback } from 'react';
 
 import shapeRegistry from './ShapeRegistry';
-import { AppContext, ShapeContext } from '../../AppContext';
+import { AppContext, SelectedShapeContext } from '../../AppContext';
 import { State, Shape, Properties } from '../../types';
 
 const useHOFCallback = (fn, args) => {
@@ -42,13 +42,15 @@ const startShouldSetResponder = lastTap => (event: any) => {
   return tap;
 };
 
-const responderGrant = (shapeId, setFirstPosition, onSelectShape) => event => {
+const responderGrant = (shapeId, selected, setFirstPosition, onSelectShape) => event => {
   setFirstPosition({
     x: event.nativeEvent.pageX,
     y: event.nativeEvent.pageY
   });
 
-  onSelectShape(shapeId);
+  if (!selected) {
+    onSelectShape(shapeId);
+  }
 };
 
 const responderMove = (shapeId, position, firstPosition, onShapeUpdate) => event => {
@@ -96,7 +98,7 @@ const _CanvasShape = ({
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
 
   const { eventEmitter } = useContext(AppContext);
-  const { onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
+  const { onShapeUpdate, onPropertyChange } = useContext(SelectedShapeContext);
 
   const lastTap = useRef<number>(Date.now());
 
@@ -109,7 +111,7 @@ const _CanvasShape = ({
   ]);
 
   const handleResponderGrant = useHOFCallback(responderGrant, [
-    shape.id, setFirstPosition, onSelectShape
+    shape.id, selected, setFirstPosition, onSelectShape
   ]);
 
   const handleResponderMove = useHOFCallback(responderMove,

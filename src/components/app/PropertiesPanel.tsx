@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text } from 'react-native-web';
 import expr from 'property-expr';
 
@@ -8,13 +8,7 @@ import { Spacer, Slider, List, Form, NumericInput, Field, PropertyField } from '
 import Panel from '../shared/Panel';
 import Shape from '../../types/Shape';
 import Properties from '../../types/Properties';
-
-type PropertiesPanelProps = {
-  allShapes: any,
-  selectedShapeId: number,
-  dispatch: React.Dispatch<any>,
-  onShapeUpdate: (shapeId: number, shape: Properties) => void,
-};
+import { SelectedShapeContext } from '../../AppContext';
 
 const clone = value => {
   if (Array.isArray(value) || value instanceof Int16Array) {
@@ -31,13 +25,18 @@ const clone = value => {
   return value;
 };
 
+type PropertiesPanelProps = {
+  selectedShape: Shape,
+  dispatch: React.Dispatch<any>,
+};
+
 const PropertiesPanel = ({
-  allShapes,
-  selectedShapeId,
+  selectedShape,
   dispatch,
-  onShapeUpdate
 }: PropertiesPanelProps) => {
-  console.log('PropertiesPanel() - selectedShapeId:', selectedShapeId);
+  console.log('PropertiesPanel() - selectedShapeId:', selectedShape?.id);
+
+  const { onShapeUpdate } = useContext(SelectedShapeContext);
 
   const handleShapeUpdate = (propertyName: string, propertyValue: any) => {
     const index = propertyName.indexOf('.');
@@ -46,14 +45,14 @@ const PropertiesPanel = ({
       const rootPropertyName = propertyName.slice(0, index);
       const branchPropertyNames = propertyName.slice(index);
 
-      let updatedPropertyValue = clone(allShapes[selectedShapeId].properties[rootPropertyName]);
+      let updatedPropertyValue = clone(selectedShape.properties[rootPropertyName]);
       expr.setter(branchPropertyNames)(updatedPropertyValue, propertyValue);
 
-      onShapeUpdate(selectedShapeId, {
+      onShapeUpdate(selectedShape.id, {
         [rootPropertyName]: updatedPropertyValue,
       });
     } else {
-      onShapeUpdate(selectedShapeId, {
+      onShapeUpdate(selectedShape.id, {
         [propertyName]: propertyValue,
       });
     }
@@ -63,7 +62,7 @@ const PropertiesPanel = ({
     dispatch({
       type: 'SET_SHAPE_PROPERTY',
       payload: {
-        shapeId: selectedShapeId,
+        shapeId: selectedShape.id,
         propertyName: name,
         propertyValue: value,
       }
@@ -113,21 +112,33 @@ const PropertiesPanel = ({
   );
 };
 
-const SliderWithInputPropertyField = ({ label, property, max }) => {
+type SliderWithInputPropertyFieldProps = {
+  label?: string,
+  property: string,
+  max: string,
+};
+
+const SliderWithInputPropertyField = React.memo(({
+  label,
+  property,
+  max
+}: SliderWithInputPropertyFieldProps) => {
+  console.log('SliderWithInputPropertyField()');
+
   return (
     <List horizontal spacerSize="small">
       <PropertyField Component={Slider} label={label} property={property} flex max={max} />
       <PropertyField Component={NumericInput} property={property} />
     </List>
   );
-};
+});
 
 type SectionProps = {
   title: string,
   children: React.ReactNode,
 };
 
-const Section = ({ title, children }: SectionProps) => {
+const Section = React.memo(({ title, children }: SectionProps) => {
   return (
     <View style={{ paddingHorizontal: 5, paddingVertical: 5 }}>
       <Text style={{ fontSize: 12, fontWeight: 700 }}>{title}</Text>
@@ -137,6 +148,6 @@ const Section = ({ title, children }: SectionProps) => {
       </List>
     </View>
   );
-};
+});
 
 export default React.memo(PropertiesPanel);

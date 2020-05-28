@@ -9,16 +9,20 @@ const useSelectedShape = (property: string) => {
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
   const { eventEmitter } = useContext(AppContext);
 
-  const handlePositionChange = (shape) => {
+  const handlePositionChange = useCallback((shape) => {
     setSelectedShape(shape);
-  };
+  }, []);
 
   useEffect(() => {
     eventEmitter.addListener(property, handlePositionChange);
-  }, [eventEmitter, property]);
+  }, [eventEmitter, property, handlePositionChange]);
 
   return selectedShape;
 };
+
+//
+//
+//
 
 type InputFieldProps = {
   Component: React.FunctionComponent<any>,
@@ -36,6 +40,8 @@ const PropertyField = ({
   property,
   ...props
 }: InputFieldProps) => {
+  // console.log('PropertyField()');
+
   const index = property.indexOf('.');
   const rootProperty = index >= 0 ? property.slice(0, index) : property;
   const selectedShape = useSelectedShape(rootProperty);

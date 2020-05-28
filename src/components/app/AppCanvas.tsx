@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet } from 'react-native-web';
 import { Svg, G, Rect, Text as SvgText } from 'react-native-svg';
 
@@ -26,57 +26,32 @@ type AppCanvasProps = {
 const AppCanvas = ({ state, dispatch, scale = 1.0 }: AppCanvasProps) => {
   console.log('AppCanvas() - scale:', scale);
 
-  // const handleSetPosition = (shapeId: number, position: { x: number, y: number; }) => {
-  //   if (state.options.snapToGrid) {
-  //     position = {
-  //       x: Math.round((position.x / 10)) * 10,
-  //       y: Math.round(position.y / 10) * 10,
-  //     };
-  //   }
-
-  //   dispatch({
-  //     type: 'SET_SHAPE_PROPERTY',
-  //     payload: {
-  //       shapeId,
-  //       propertyName: 'position',
-  //       propertyValue: position
-  //     }
-  //   });
-  // };
-
-  const handleSelectShape = (shapeId) => {
+  const handleSelectShape = useCallback((shapeId) => {
     dispatch({
       type: 'SELECT_SHAPE',
       payload: {
         shapeId,
       }
     });
-  };
+  }, [dispatch]);
 
   //
 
-  const handleStartShouldSetResponderCapture = event => {
+  const handleStartShouldSetResponderCapture = useCallback(event => {
     console.log('AppCanvas.handleStartShouldSetResponderCapture()');
     event.preventDefault();
 
     return state.currentTool.tool === 'Create';
-  };
+  }, [state.currentTool.tool]);
 
-  // const handleMoveShouldSetResponderCapture = event => {
-  //   console.log('handleMoveShouldSetResponderCapture', state.currentTool);
-  //   // event.preventDefault();
-
-  //   return state.currentTool.tool !== 'GridDraw.Tools.Move';
-  // };
-
-  const handleStartShouldSetResponder = event => {
+  const handleStartShouldSetResponder = useCallback(event => {
     console.log('AppCanvas.handleStartShouldSetResponder()');
-    // event.preventDefault();
+    event.preventDefault();
 
     return state.currentTool.tool === 'Create';
-  };
+  }, [state.currentTool.tool]);
 
-  const handleResponderGrant = (event: any) => {
+  const handleResponderGrant = useCallback((event: any) => {
     console.log('AppCanvas.handleResponderGrant()', state.currentTool);
     const rect = event.currentTarget.getBoundingClientRect();
 
@@ -92,24 +67,20 @@ const AppCanvas = ({ state, dispatch, scale = 1.0 }: AppCanvasProps) => {
         position: { x: locationX, y: locationY }
       }
     });
-  };
+  }, [state.currentTool, dispatch]);
 
-  const svgProps = {
+  const svgProps = useMemo(() => ({
     style: styles.svg,
     onStartShouldSetResponderCapture: handleStartShouldSetResponderCapture,
     onStartShouldSetResponder: handleStartShouldSetResponder,
-    // onMoveShouldSetResponderCapture: handleMoveShouldSetResponderCapture,
     onResponderGrant: handleResponderGrant,
-  };
+  }), [handleStartShouldSetResponderCapture, handleStartShouldSetResponder, handleResponderGrant]);
 
-  const canvasProps = {
-  };
 
   return (
     <Svg {...svgProps}>
       <G
         transform={`${state.options.showRuler ? `translate(30, 30)` : ''} scale(${scale}, ${scale})`}
-        {...canvasProps}
       >
         {state.options.showGrid && (
           <Grid />

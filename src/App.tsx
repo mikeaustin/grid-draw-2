@@ -1,11 +1,11 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 
-import React, { useReducer, useCallback, useMemo, useEffect } from 'react';
+import React, { useReducer, useCallback, useRef, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
 
 import { initialState, stateReducer } from './reducers/allShapesReducer';
 import { State, Shape, Properties } from './types';
-import { AppContext, ShapeContext } from './AppContext';
+import { AppContext, AllShapesContext, SelectedShapeContext } from './AppContext';
 
 import AppCanvas from './components/app/AppCanvas';
 import MainToolbar from './components/app/MainToolbar';
@@ -24,10 +24,25 @@ const styles = StyleSheet.create({
 
 const eventEmitter = new EventEmitter();
 
+const useSelf = (props) => {
+  const self = useRef({ ...props });
+
+  useEffect(() => {
+    self.current = { ...self.current, ...props };
+  }, [props]);
+
+  return self;
+};
+
 function App() {
   console.log('App()');
 
   const [state, dispatch] = useReducer(stateReducer, initialState);
+  const allShapes = useRef({ ...state.allShapes });
+
+  useEffect(() => {
+    allShapes.current = Object.assign(allShapes.current, state.allShapes);
+  }, [state.allShapes]);
 
   const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
     if (state.options.snapToGrid && shapeProperties.position) {
@@ -38,9 +53,9 @@ function App() {
     }
 
     const updatedShape = {
-      ...state.allShapes[shapeId],
+      ...allShapes.current[shapeId],
       properties: {
-        ...state.allShapes[shapeId].properties,
+        ...allShapes.current[shapeId].properties,
         ...shapeProperties,
       }
     };
@@ -48,7 +63,7 @@ function App() {
     Object.keys(shapeProperties).forEach(eventType => {
       eventEmitter.emit(eventType, updatedShape);
     });
-  }, [state.allShapes, state.options]);
+  }, [allShapes, state.options]);
 
   const handlePropertyChange = useCallback((shapeId: number, name: string, value: any) => {
     if (state.options.snapToGrid && name === 'position') {
@@ -74,11 +89,11 @@ function App() {
     eventEmitter: eventEmitter,
   }), [state.currentTool, state.options]);
 
-  const shapeContext = useMemo(() => ({
-    allShapes: state.allShapes,
+  const selectedShapeContext = useMemo(() => ({
+    selectedShapeIds: state.selectedShapeIds,
     onShapeUpdate: handleShapeUpdate,
     onPropertyChange: handlePropertyChange,
-  }), [state.allShapes, handleShapeUpdate, handlePropertyChange]);
+  }), [state.selectedShapeIds, handleShapeUpdate, handlePropertyChange]);
 
   const stateView = useMemo(() => ({ ...state }), [state]);
 
@@ -94,36 +109,35 @@ function App() {
 
   return (
     <AppContext.Provider value={appContext}>
-      <ShapeContext.Provider value={shapeContext}>
-        <View style={styles.app}>
-          <MainToolbar currentTool={state.currentTool} dispatch={dispatch} />
-          <List divider dividerColor="#d0d0d0" style={{ flex: 1, flexDirection: 'row' }}>
-            <ShapesPanel
-              allShapes={state.allShapes}
-              selectedShapeIds={state.selectedShapeIds}
-              dispatch={dispatch}
-            />
-            <List divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
-              <List horizontal divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
-                <AppCanvas state={state} dispatch={dispatch} />
-                {state.options.showSecondCanvas && (
-                  <AppCanvas state={state} dispatch={dispatch} scale={0.5} />
+      <AllShapesContext.Provider value={state.allShapes}>
+        <SelectedShapeContext.Provider value={selectedShapeContext}>
+          <View style={styles.app}>
+            <MainToolbar currentTool={state.currentTool} dispatch={dispatch} />
+            <List divider dividerColor="#d0d0d0" style={{ flex: 1, flexDirection: 'row' }}>
+              <ShapesPanel
+                allShapes={state.allShapes}
+                dispatch={dispatch}
+              />
+              <List divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
+                <List horizontal divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
+                  <AppCanvas state={state} dispatch={dispatch} />
+                  {state.options.showSecondCanvas && (
+                    <AppCanvas state={state} dispatch={dispatch} scale={0.5} />
+                  )}
+                </List>
+                {state.options.showThirdCanvas && (
+                  <AppCanvas state={state} dispatch={dispatch} scale={2.0} />
                 )}
+                <Palette selectedShapeId={state.selectedShapeIds[0]} />
               </List>
-              {state.options.showThirdCanvas && (
-                <AppCanvas state={state} dispatch={dispatch} scale={2.0} />
-              )}
-              <Palette selectedShapeId={state.selectedShapeIds[0]} />
+              <PropertiesPanel
+                selectedShape={state.allShapes[state.selectedShapeIds[0]]}
+                dispatch={dispatch}
+              />
             </List>
-            <PropertiesPanel
-              allShapes={state.allShapes}
-              selectedShapeId={state.selectedShapeIds[0]}
-              dispatch={dispatch}
-              onShapeUpdate={handleShapeUpdate}
-            />
-          </List>
-        </View>
-      </ShapeContext.Provider>
+          </View>
+        </SelectedShapeContext.Provider>
+      </AllShapesContext.Provider>
     </AppContext.Provider>
   );
 }

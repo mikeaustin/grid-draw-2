@@ -1,9 +1,9 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 
-import React, { useContext, useCallback, useMemo } from 'react';
+import React, { useContext, useCallback, useRef, useMemo, useEffect } from 'react';
 import { Svg, Rect } from 'react-native-svg';
 
-import { AppContext, ShapeContext } from '../../AppContext';
+import { AppContext, SelectedShapeContext } from '../../AppContext';
 
 const range = (from, to) => ({
   map(f) {
@@ -13,9 +13,23 @@ const range = (from, to) => ({
 
 const size = 15;
 
-const _Colors = () => {
+const _Colors = ({ height, onColorChange }) => {
+  const handlePressIn = useCallback(event => {
+    const color = event.target.getAttribute('fill').match(/hsl\(([\d.]+), ([\d.]+)%, ([\d.]+)%\)/);
+
+    onColorChange({
+      hue: Number(color[1]),
+      saturation: Number(color[2]),
+      lightness: Number(color[3]),
+    });
+  }, [onColorChange]);
+
+  const eventProps = useMemo(() => ({
+    onPressIn: handlePressIn,
+  }), [handlePressIn]);
+
   return (
-    <>
+    <Svg height={height} {...eventProps}>
       {range(0, 35).map((hue: number) => (
         range(0, 8).map((color: number) => (
           <Rect
@@ -55,31 +69,19 @@ const _Colors = () => {
         height={size * 4.5}
         fill={`hsl(${0}, ${0}%, ${0}%)`}
       />
-    </>
+    </Svg>
   );
 };
 
-const Palette = ({ selectedShapeId }) => {
-  const { onPropertyChange } = useContext(ShapeContext);
+const Palette = (props) => {
+  const { onPropertyChange } = useContext(SelectedShapeContext);
 
-  const handlePressIn = useCallback(event => {
-    const color = event.target.getAttribute('fill').match(/hsl\(([\d.]+), ([\d.]+)%, ([\d.]+)%\)/);
-
-    onPropertyChange(selectedShapeId, 'fill', {
-      hue: Number(color[1]),
-      saturation: Number(color[2]),
-      lightness: Number(color[3]),
-    });
-  }, [selectedShapeId, onPropertyChange]);
-
-  const eventProps = useMemo(() => ({
-    onPressIn: handlePressIn,
-  }), [handlePressIn]);
+  const handleColorChange = useCallback(color => {
+    onPropertyChange(undefined, 'fill', color);
+  }, [onPropertyChange]);
 
   return (
-    <Svg height={size * 9} {...eventProps}>
-      <Colors />
-    </Svg>
+    <Colors height={size * 9} onColorChange={handleColorChange} />
   );
 };
 
