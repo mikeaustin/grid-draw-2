@@ -4,7 +4,7 @@ import React, { useState, useContext, useRef, useCallback } from 'react';
 import { Ellipse, Path } from 'react-native-svg';
 
 import Shape from '../../../types/Shape';
-import AppContext from '../../../AppContext';
+import { AppContext, ShapeContext } from '../../../AppContext';
 import DragHandle from '../../shared/DragHandle';
 
 function rotate(cx, cy, x, y, angle) {
@@ -35,7 +35,7 @@ const RectShape = ({
   },
   ...props
 }: Shape['properties'] & { shapeId: number, selected: boolean; }) => {
-  const { onShapeUpdate, onPropertyChange } = useContext(AppContext);
+  const { onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
   const firstCornerRadius = useRef(0);
 
   const width = 200, height = 200;

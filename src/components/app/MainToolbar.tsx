@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, Text } from 'react-native-web';
+import { AppContext } from '../../AppContext';
 
 import Toolbar from '../shared/Toolbar';
 import { NumericInput, Field, Divider } from '../core';
 
-const MainToolbar = ({ state, currentTool, dispatch }) => {
+const MainToolbar = ({ currentTool, dispatch }) => {
   console.log('MainToolbar() - currentTool:', currentTool);
 
-  const handleButtonPress = (name, value) => {
+  const { options } = useContext(AppContext);
+
+  const handleButtonPress = useCallback((name, value) => {
     dispatch({
       type: name,
       payload: value,
     });
-  };
+  }, [dispatch]);
 
   return (
     <View>
@@ -33,13 +36,13 @@ const MainToolbar = ({ state, currentTool, dispatch }) => {
           <Toolbar.Button icon="background" />
         </Toolbar.Group> */}
         <Toolbar.Group title="Guides" name="TOGGLE_OPTION">
-          <Toolbar.Button icon="mike-ruler.png" value={{ option: 'showRuler' }} selected={state.options.showRuler} />
-          <Toolbar.Button icon="mike-grid.png" value={{ option: 'showGrid' }} selected={state.options.showGrid} />
-          <Toolbar.Button icon="mike-magnet.png" value={{ option: 'snapToGrid' }} selected={state.options.snapToGrid} />
+          <Toolbar.Button icon="mike-ruler.png" value={{ option: 'showRuler' }} selected={options.showRuler} />
+          <Toolbar.Button icon="mike-grid.png" value={{ option: 'showGrid' }} selected={options.showGrid} />
+          <Toolbar.Button icon="mike-magnet.png" value={{ option: 'snapToGrid' }} selected={options.snapToGrid} />
         </Toolbar.Group>
         <Toolbar.Group title="Canvas" name="TOGGLE_OPTION">
-          <Toolbar.Button icon="mike-horizontal.png" value={{ option: 'showSecondCanvas' }} selected={state.options.showSecondCanvas} />
-          <Toolbar.Button icon="mike-vertical.png" value={{ option: 'showThirdCanvas' }} selected={state.options.showThirdCanvas} />
+          <Toolbar.Button icon="mike-horizontal.png" value={{ option: 'showSecondCanvas' }} selected={options.showSecondCanvas} />
+          <Toolbar.Button icon="mike-vertical.png" value={{ option: 'showThirdCanvas' }} selected={options.showThirdCanvas} />
         </Toolbar.Group>
         <Toolbar.Group title="Arange" name="TOGGLE_OPTION" disabled>
           <Toolbar.Button icon="mike-group.png" value={{ option: 'showSecondCanvas' }} />

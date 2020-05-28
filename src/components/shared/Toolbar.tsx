@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native-web';
 
 import { Spacer, Divider, List } from '../core';
@@ -37,7 +37,7 @@ type ToolbarProps = {
   onButtonPress?: Function,
 };
 
-const Toolbar = ({ spacerSize, children, onButtonPress }: ToolbarProps) => {
+const _Toolbar = ({ spacerSize, children, onButtonPress }: ToolbarProps) => {
   return (
     <List horizontal divider spacerSize={spacerSize} style={styles.toolbar}>
       {React.Children.map(children, child => (
@@ -72,7 +72,9 @@ type GroupProps = {
   onButtonPress?: Function,
 };
 
-const Group = ({ title, name, selectedValue, disabled, children, onButtonPress }: GroupProps) => {
+const _Group = ({ title, name, selectedValue, disabled, children, onButtonPress }: GroupProps) => {
+  console.log('Toolbar.Group()');
+
   return (
     <View style={{ alignItems: 'center', paddingHorizontal: 10, xpaddingVertical: 5 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -105,20 +107,20 @@ type ButtonProps = {
   onDispatch?: Function,
 };
 
-const Button = ({ icon, value, selected, disabled, onDispatch }: ButtonProps) => {
+const _Button = ({ icon, value, selected, disabled, onDispatch }: ButtonProps) => {
   const [pressed, setPressed] = useState(false);
 
-  const handlePressIn = () => {
+  const handlePressIn = useCallback(() => {
     !disabled && setPressed(true);
-  };
+  }, [disabled, setPressed]);
 
-  const handlePressOut = () => {
+  const handlePressOut = useCallback(() => {
     !disabled && setPressed(false);
-  };
+  }, [disabled, setPressed]);
 
-  const handlePress = () => {
+  const handlePress = useCallback(() => {
     !disabled && onDispatch && onDispatch(value);
-  };
+  }, [disabled, value, onDispatch]);
 
   const buttonStyle = [
     styles.button,
@@ -139,6 +141,10 @@ const Button = ({ icon, value, selected, disabled, onDispatch }: ButtonProps) =>
     </TouchableWithoutFeedback>
   );
 };
+
+const Toolbar = React.memo(_Toolbar) as any;
+const Group = React.memo(_Group);
+const Button = React.memo(_Button);
 
 Toolbar.Group = Group;
 Toolbar.Button = Button;

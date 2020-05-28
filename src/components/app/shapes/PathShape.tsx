@@ -3,7 +3,7 @@
 import React, { useState, useContext } from 'react';
 import { Path, Circle, Line } from 'react-native-svg';
 
-import AppContext from '../../../AppContext';
+import { AppContext, ShapeContext } from '../../../AppContext';
 import Shape from '../../../types/Shape';
 import DragHandle from '../../shared/DragHandle';
 
@@ -28,7 +28,8 @@ const PathShape = ({
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const [handlePosition, setHandlePosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const [dragIndex, setDragIndex] = useState<number>(-1);
-  const { options, onShapeUpdate, onPropertyChange } = useContext(AppContext);
+  const { options } = useContext(AppContext);
+  const { onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
 
   const handleDragStart = (position, index) => {
     setDragIndex(index);

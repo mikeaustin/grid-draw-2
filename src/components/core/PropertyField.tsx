@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useCallback, useMemo } from 're
 import expr from 'property-expr';
 
 import { Field } from '.';
-import AppContext from '../../AppContext';
+import { AppContext } from '../../AppContext';
 import FormContext from './FormContext';
 
 const useSelectedShape = (property: string) => {

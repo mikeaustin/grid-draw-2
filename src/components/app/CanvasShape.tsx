@@ -3,7 +3,7 @@
 import React, { useState, useRef, useContext, useMemo, useEffect, useCallback } from 'react';
 
 import shapeRegistry from './ShapeRegistry';
-import AppContext from '../../AppContext';
+import { AppContext, ShapeContext } from '../../AppContext';
 import { State, Shape, Properties } from '../../types';
 
 const useHOFCallback = (fn, args) => {
@@ -61,6 +61,10 @@ const responderMove = (shapeId, position, firstPosition, onShapeUpdate) => event
 };
 
 const responseRelease = (shapeId, position, firstPosition, onPropertyChange) => event => {
+  if (event.nativeEvent.pageX - firstPosition.x === 0 && event.nativeEvent.pageY - firstPosition.y === 0) {
+    return;
+  }
+
   console.log('----------');
 
   let newPosition = {
@@ -91,7 +95,8 @@ const _CanvasShape = ({
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const [selectedShape, setSelectedShape] = useState<any | null>(null);
 
-  const { eventEmitter, onShapeUpdate, onPropertyChange } = useContext(AppContext);
+  const { eventEmitter } = useContext(AppContext);
+  const { onShapeUpdate, onPropertyChange } = useContext(ShapeContext);
 
   const lastTap = useRef<number>(Date.now());
 

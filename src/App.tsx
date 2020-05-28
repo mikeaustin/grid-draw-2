@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native-web';
 
 import { initialState, stateReducer } from './reducers/allShapesReducer';
 import { State, Shape, Properties } from './types';
-import AppContext from './AppContext';
+import { AppContext, ShapeContext } from './AppContext';
 
 import AppCanvas from './components/app/AppCanvas';
 import MainToolbar from './components/app/MainToolbar';
@@ -69,13 +69,16 @@ function App() {
   }, [state.options.snapToGrid, dispatch]);
 
   const appContext = useMemo(() => ({
-    allShapes: state.allShapes,
     currentTool: state.currentTool,
     options: state.options,
     eventEmitter: eventEmitter,
+  }), [state.currentTool, state.options]);
+
+  const shapeContext = useMemo(() => ({
+    allShapes: state.allShapes,
     onShapeUpdate: handleShapeUpdate,
     onPropertyChange: handlePropertyChange,
-  }), [state.allShapes, state.currentTool, state.options, handleShapeUpdate, handlePropertyChange]);
+  }), [state.allShapes, handleShapeUpdate, handlePropertyChange]);
 
   const stateView = useMemo(() => ({ ...state }), [state]);
 
@@ -91,34 +94,36 @@ function App() {
 
   return (
     <AppContext.Provider value={appContext}>
-      <View style={styles.app}>
-        <MainToolbar currentTool={state.currentTool} state={state} dispatch={dispatch} />
-        <List divider dividerColor="#d0d0d0" style={{ flex: 1, flexDirection: 'row' }}>
-          <ShapesPanel
-            allShapes={state.allShapes}
-            selectedShapeIds={state.selectedShapeIds}
-            dispatch={dispatch}
-          />
-          <List divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
-            <List horizontal divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
-              <AppCanvas state={state} dispatch={dispatch} />
-              {state.options.showSecondCanvas && (
-                <AppCanvas state={state} dispatch={dispatch} scale={0.5} />
+      <ShapeContext.Provider value={shapeContext}>
+        <View style={styles.app}>
+          <MainToolbar currentTool={state.currentTool} dispatch={dispatch} />
+          <List divider dividerColor="#d0d0d0" style={{ flex: 1, flexDirection: 'row' }}>
+            <ShapesPanel
+              allShapes={state.allShapes}
+              selectedShapeIds={state.selectedShapeIds}
+              dispatch={dispatch}
+            />
+            <List divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
+              <List horizontal divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
+                <AppCanvas state={state} dispatch={dispatch} />
+                {state.options.showSecondCanvas && (
+                  <AppCanvas state={state} dispatch={dispatch} scale={0.5} />
+                )}
+              </List>
+              {state.options.showThirdCanvas && (
+                <AppCanvas state={state} dispatch={dispatch} scale={2.0} />
               )}
+              <Palette selectedShapeId={state.selectedShapeIds[0]} />
             </List>
-            {state.options.showThirdCanvas && (
-              <AppCanvas state={state} dispatch={dispatch} scale={2.0} />
-            )}
-            <Palette selectedShapeId={state.selectedShapeIds[0]} />
+            <PropertiesPanel
+              allShapes={state.allShapes}
+              selectedShapeId={state.selectedShapeIds[0]}
+              dispatch={dispatch}
+              onShapeUpdate={handleShapeUpdate}
+            />
           </List>
-          <PropertiesPanel
-            allShapes={state.allShapes}
-            selectedShapeId={state.selectedShapeIds[0]}
-            dispatch={dispatch}
-            onShapeUpdate={handleShapeUpdate}
-          />
-        </List>
-      </View >
+        </View>
+      </ShapeContext.Provider>
     </AppContext.Provider>
   );
 }
