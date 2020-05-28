@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/no-unused-vars: "off" */
 
-import React, { useContext } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { View, Text } from 'react-native-web';
 import expr from 'property-expr';
 
@@ -38,7 +38,7 @@ const PropertiesPanel = ({
 
   const { onShapeUpdate } = useContext(SelectedShapeContext);
 
-  const handleShapeUpdate = (propertyName: string, propertyValue: any) => {
+  const handleShapeUpdate = useCallback((propertyName: string, propertyValue: any) => {
     const index = propertyName.indexOf('.');
 
     if (index >= 0) {
@@ -56,7 +56,7 @@ const PropertiesPanel = ({
         [propertyName]: propertyValue,
       });
     }
-  };
+  }, [selectedShape && selectedShape.id, selectedShape && selectedShape.properties, onShapeUpdate]);
 
   const handlePropertyChange = (name: string, value: any) => {
     dispatch({
