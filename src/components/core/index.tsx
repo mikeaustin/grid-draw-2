@@ -116,7 +116,7 @@ const Slider = React.memo(({
 }: SliderProps) => {
   const [value, setValue] = useState(defaultValue || 0);
 
-  console.log('Slider()', value);
+  // console.log('Slider()', value);
 
   useEffect(() => {
     setValue(defaultValue);

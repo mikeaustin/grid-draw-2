@@ -26,43 +26,29 @@ const clone = value => {
 };
 
 type PropertiesPanelProps = {
-  selectedShape: Shape,
+  selectedShapeId: number,
   dispatch: React.Dispatch<any>,
 };
 
 const PropertiesPanel = ({
-  selectedShape,
+  selectedShapeId,
   dispatch,
 }: PropertiesPanelProps) => {
-  console.log('PropertiesPanel() - selectedShapeId:', selectedShape?.id);
+  console.log('PropertiesPanel() - selectedShapeId:', selectedShapeId);
 
   const { onShapeUpdate } = useContext(SelectedShapeContext);
 
   const handleShapeUpdate = useCallback((propertyName: string, propertyValue: any) => {
-    const index = propertyName.indexOf('.');
-
-    if (index >= 0) {
-      const rootPropertyName = propertyName.slice(0, index);
-      const branchPropertyNames = propertyName.slice(index);
-
-      let updatedPropertyValue = clone(selectedShape.properties[rootPropertyName]);
-      expr.setter(branchPropertyNames)(updatedPropertyValue, propertyValue);
-
-      onShapeUpdate(selectedShape.id, {
-        [rootPropertyName]: updatedPropertyValue,
-      });
-    } else {
-      onShapeUpdate(selectedShape.id, {
-        [propertyName]: propertyValue,
-      });
-    }
-  }, [selectedShape && selectedShape.id, selectedShape && selectedShape.properties, onShapeUpdate]);
+    onShapeUpdate(selectedShapeId, {
+      [propertyName]: propertyValue,
+    });
+  }, [selectedShapeId, onShapeUpdate]);
 
   const handlePropertyChange = (name: string, value: any) => {
     dispatch({
       type: 'SET_SHAPE_PROPERTY',
       payload: {
-        shapeId: selectedShape.id,
+        shapeId: selectedShapeId,
         propertyName: name,
         propertyValue: value,
       }

@@ -2,6 +2,7 @@
 
 import React, { useReducer, useCallback, useRef, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
+import expr from 'property-expr';
 
 import { initialState, stateReducer } from './reducers/allShapesReducer';
 import { State, Shape, Properties } from './types';
@@ -15,6 +16,21 @@ import Palette from './components/shared/Palette';
 import { EventEmitter } from 'events';
 
 import { List } from './components/core';
+
+const clone = value => {
+  if (Array.isArray(value) || value instanceof Int16Array) {
+    return value.map(item => clone(item));
+  }
+
+  if (typeof value === 'object') {
+    return Object.entries(value).reduce((acc, [key, value]) => ({
+      ...acc,
+      [key]: clone(value)
+    }), {});
+  }
+
+  return value;
+};
 
 const styles = StyleSheet.create({
   app: {
@@ -34,6 +50,51 @@ const useSelf = (props) => {
   return self;
 };
 
+const useBetterCallback = (callback, values) => {
+  const self = useRef({
+    values: values,
+    handler: (...args) => {
+      return callback(...args, self.current.values);
+    }
+  });
+
+  self.current.values = values;
+
+  return self.current.handler;
+};
+
+const updateShape = (state, shapeId, properties) => {
+  const selectedShape = state.allShapes[state.selectedShapeIds[0]];
+
+  return ({
+    ...state.allShapes[shapeId],
+    properties: {
+      ...state.allShapes[shapeId].properties,
+      ...Object.entries(properties).reduce((acc, [propertyName, propertyValue]) => {
+        const index = propertyName.indexOf('.');
+
+        if (index >= 0) {
+          const rootPropertyName = propertyName.slice(0, index);
+          const branchPropertyNames = propertyName.slice(index);
+
+          let updatedPropertyValue = clone(selectedShape.properties[rootPropertyName]);
+          expr.setter(branchPropertyNames)(updatedPropertyValue, propertyValue);
+
+          return {
+            ...acc,
+            [rootPropertyName]: updatedPropertyValue
+          };
+        }
+
+        return {
+          ...acc,
+          [propertyName]: propertyValue
+        };
+      }, {}),
+    }
+  });
+};
+
 function App() {
   console.log('App()');
 
@@ -44,7 +105,7 @@ function App() {
     allShapes.current = Object.assign(allShapes.current, state.allShapes);
   }, [state.allShapes]);
 
-  const handleShapeUpdate = useCallback((shapeId: number, shapeProperties: Properties) => {
+  const handleShapeUpdate = useBetterCallback((shapeId: number, shapeProperties: Properties, [state]) => {
     if (state.options.snapToGrid && shapeProperties.position) {
       shapeProperties.position = {
         x: Math.round((shapeProperties.position.x / 10)) * 10,
@@ -52,18 +113,12 @@ function App() {
       };
     }
 
-    const updatedShape = {
-      ...allShapes.current[shapeId],
-      properties: {
-        ...allShapes.current[shapeId].properties,
-        ...shapeProperties,
-      }
-    };
+    const updatedShape = updateShape(state, shapeId, shapeProperties);
 
-    Object.keys(shapeProperties).forEach(eventType => {
+    Object.keys(updatedShape.properties).forEach(eventType => {
       eventEmitter.emit(eventType, updatedShape);
     });
-  }, [allShapes, state.options]);
+  }, [state]);
 
   const handlePropertyChange = useCallback((shapeId: number, name: string, value: any) => {
     if (state.options.snapToGrid && name === 'position') {
@@ -131,7 +186,7 @@ function App() {
                 <Palette selectedShapeId={state.selectedShapeIds[0]} />
               </List>
               <PropertiesPanel
-                selectedShape={state.allShapes[state.selectedShapeIds[0]]}
+                selectedShapeId={state.selectedShapeIds[0]}
                 dispatch={dispatch}
               />
             </List>
