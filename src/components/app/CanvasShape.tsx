@@ -5,77 +5,8 @@ import React, { useState, useRef, useContext, useMemo, useEffect, useCallback } 
 import shapeRegistry from './ShapeRegistry';
 import { AppContext, SelectedShapeContext } from '../../AppContext';
 import { State, Shape, Properties } from '../../types';
-
-const useHOFCallback = (fn, args) => {
-  const resultRef = useRef<Function>();
-  const argsRef = useRef<any[]>();
-
-  if (argsRef.current) {
-    for (let i = 0; i < args.length; i++) {
-      if (args[i] !== argsRef.current[i]) {
-        resultRef.current = fn(...args);
-        argsRef.current = args;
-
-        break;
-      }
-    }
-  } else {
-    resultRef.current = fn(...args);
-    argsRef.current = args;
-  }
-
-  return resultRef.current;
-
-  // return useMemo(() => fn(...args), args);
-};
-
-const positionChange = setSelectedShape => (shape: Shape) => {
-  setSelectedShape(shape);
-};
-
-const startShouldSetResponder = lastTap => (event: any) => {
-  event.preventDefault();
-
-  const tap = !(Date.now() - lastTap.current < 300);
-  lastTap.current = Date.now();
-
-  return tap;
-};
-
-const responderGrant = (shapeId, selected, setFirstPosition, onSelectShape) => event => {
-  setFirstPosition({
-    x: event.nativeEvent.pageX,
-    y: event.nativeEvent.pageY
-  });
-
-  if (!selected) {
-    onSelectShape(shapeId);
-  }
-};
-
-const responderMove = (shapeId, position, firstPosition, onShapeUpdate) => event => {
-  onShapeUpdate(shapeId, {
-    position: {
-      x: position.x + event.nativeEvent.pageX - firstPosition.x,
-      y: position.y + event.nativeEvent.pageY - firstPosition.y,
-    }
-  });
-};
-
-const responseRelease = (shapeId, position, firstPosition, onPropertyChange) => event => {
-  if (event.nativeEvent.pageX - firstPosition.x === 0 && event.nativeEvent.pageY - firstPosition.y === 0) {
-    return;
-  }
-
-  console.log('----------');
-
-  let newPosition = {
-    x: position.x + (event.nativeEvent.pageX - firstPosition.x),
-    y: position.y + (event.nativeEvent.pageY - firstPosition.y),
-  };
-
-  onPropertyChange(shapeId, 'position', newPosition);
-};
+import { useEvent, useSelf } from '../../utilities/hooks';
+import CanvasShapeShape from './CanvasShapeShape';
 
 type CanvasShapeProps = {
   shape: Shape,
@@ -85,57 +16,57 @@ type CanvasShapeProps = {
   onSelectShape: (shapeId: number) => void,
 };
 
-const _CanvasShape = ({
-  shape,
-  selected,
-  allShapes,
-  selectedShapeIds,
-  onSelectShape,
-}: CanvasShapeProps) => {
-  // console.log('CanvasShape()', shape.id);
+const CanvasShape = React.memo((props: CanvasShapeProps) => {
+  console.log('CanvasShape()', props.shape.id);
+
+  const self = useSelf(props);
 
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
-  const [selectedShape, setSelectedShape] = useState<any | null>(null);
-
-  const { eventEmitter } = useContext(AppContext);
   const { onShapeUpdate, onPropertyChange } = useContext(SelectedShapeContext);
 
   const lastTap = useRef<number>(Date.now());
 
-  const handlePositionChange = useHOFCallback(positionChange, [
-    setSelectedShape
-  ]);
+  const handleStartShouldSetResponder = useCallback((event: any) => {
+    event.preventDefault();
 
-  const handleStartShouldSetResponder = useHOFCallback(startShouldSetResponder, [
-    lastTap
-  ]);
+    const tap = !(Date.now() - lastTap.current < 300);
+    lastTap.current = Date.now();
 
-  const handleResponderGrant = useHOFCallback(responderGrant, [
-    shape.id, selected, setFirstPosition, onSelectShape
-  ]);
+    return tap;
+  }, []);
 
-  const handleResponderMove = useHOFCallback(responderMove,
-    [shape.id, shape.properties.position, firstPosition, onShapeUpdate]
-  );
+  const handleResponderGrant = useCallback(event => {
+    setFirstPosition({
+      x: event.nativeEvent.pageX,
+      y: event.nativeEvent.pageY
+    });
 
-  const handleResponseRelease = useHOFCallback(responseRelease, [
-    shape.id, shape.properties.position, firstPosition, onPropertyChange
-  ]);
-
-  useEffect(() => {
-    if (selected) {
-      Object.keys(shape.properties).forEach(propertyName => {
-        eventEmitter.removeListener(propertyName, handlePositionChange);
-        eventEmitter.addListener(propertyName, handlePositionChange);
-      });
-    } else {
-      setSelectedShape(null);
-
-      Object.keys(shape.properties).forEach(propertyName => (
-        eventEmitter.removeListener(propertyName, handlePositionChange)
-      ));
+    if (!self.selected) {
+      self.onSelectShape(self.shape.id);
     }
-  }, [selected, shape.properties, eventEmitter, handlePositionChange]);
+  }, [self]);
+
+  const handleResponderMove = useCallback(event => {
+    onShapeUpdate(self.shape.id, {
+      position: {
+        x: self.shape.properties.position.x + event.nativeEvent.pageX - firstPosition.x,
+        y: self.shape.properties.position.y + event.nativeEvent.pageY - firstPosition.y,
+      }
+    });
+  }, [self, firstPosition, onShapeUpdate]);
+
+  const handleResponseRelease = useCallback(event => {
+    if (event.nativeEvent.pageX - firstPosition.x === 0 && event.nativeEvent.pageY - firstPosition.y === 0) {
+      return;
+    }
+
+    let newPosition = {
+      x: self.shape.properties.position.x + (event.nativeEvent.pageX - firstPosition.x),
+      y: self.shape.properties.position.y + (event.nativeEvent.pageY - firstPosition.y),
+    };
+
+    onPropertyChange(self.shape.id, 'position', newPosition);
+  }, [self, firstPosition, onPropertyChange]);
 
   const shapeEventProps = {
     onStartShouldSetResponder: handleStartShouldSetResponder,
@@ -145,50 +76,57 @@ const _CanvasShape = ({
     onResponderRelease: handleResponseRelease,
   };
 
-  const Component = shapeRegistry[shape.type].render;
+  const Component = shapeRegistry[self.shape.type].render;
 
   return (
-    <Component
-      properties={selectedShape ? selectedShape.properties : shape.properties}
-      stroke={selected ? 'hsl(210, 90%, 55%)' : 'black'}
-      strokeWidth={selected ? 3 : 3}
-      shapeId={shape.id}
-      selected={selected}
+    <CanvasShapeShape
+      Component={Component}
+      shape={props.shape}
+      selected={props.selected}
       {...shapeEventProps}
     >
       <CanvasShapeList
-        allShapes={allShapes}
-        childIds={shape.childIds}
-        selectedShapeIds={selectedShapeIds}
-        onSelectShape={onSelectShape}
+        allShapes={props.allShapes}
+        childIds={props.shape.childIds}
+        selectedShapeIds={props.selectedShapeIds}
+        onSelectShape={props.onSelectShape}
       />
-    </Component>
+    </CanvasShapeShape>
   );
+});
+
+type CanvasShapeListProps = {
+  allShapes: State['allShapes'],
+  childIds: number[],
+  selectedShapeIds: number[],
+  onSelectShape: (shapeId: number) => void,
 };
 
-const _CanvasShapeList = ({ allShapes, childIds, selectedShapeIds, onSelectShape }) => {
+const CanvasShapeList = React.memo(({ allShapes, childIds, selectedShapeIds, onSelectShape }: CanvasShapeListProps) => {
   return (
-    childIds.map(childId => {
-      // console.log('shape.childIds.map()', childId);
+    <>
+      {childIds.map(childId => {
+        // console.log('shape.childIds.map()', childId);
 
-      const shape = allShapes[childId];
-      const selected = selectedShapeIds.includes(childId);
+        const shape = allShapes[childId];
+        const selected = selectedShapeIds.includes(childId);
 
-      return (
-        <CanvasShape
-          key={childId}
-          shape={shape}
-          selected={selected}
-          allShapes={allShapes}
-          selectedShapeIds={selectedShapeIds}
-          onSelectShape={onSelectShape}
-        />
-      );
-    })
+        return (
+          <CanvasShape
+            key={childId}
+            shape={shape}
+            selected={selected}
+            allShapes={allShapes}
+            selectedShapeIds={selectedShapeIds}
+            onSelectShape={onSelectShape}
+          />
+        );
+      })}
+    </>
   );
-};
+});
 
-const CanvasShape = React.memo(_CanvasShape);
-const CanvasShapeList = React.memo(_CanvasShapeList);
+// const CanvasShape = React.memo(_CanvasShape);
+// const CanvasShapeList = React.memo(_CanvasShapeList);
 
 export default CanvasShape;

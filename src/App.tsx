@@ -7,6 +7,7 @@ import expr from 'property-expr';
 import { initialState, stateReducer } from './reducers/allShapesReducer';
 import { State, Shape, Properties } from './types';
 import { AppContext, AllShapesContext, SelectedShapeContext } from './AppContext';
+import { useEvent } from './utilities/hooks';
 
 import AppCanvas from './components/app/AppCanvas';
 import MainToolbar from './components/app/MainToolbar';
@@ -40,30 +41,7 @@ const styles = StyleSheet.create({
 
 const eventEmitter = new EventEmitter();
 
-const useSelf = (props) => {
-  const self = useRef({ ...props });
-
-  useEffect(() => {
-    self.current = { ...self.current, ...props };
-  }, [props]);
-
-  return self;
-};
-
-const useBetterCallback = (callback, values) => {
-  const self = useRef({
-    values: values,
-    handler: (...args) => {
-      return callback(...args, self.current.values);
-    }
-  });
-
-  self.current.values = values;
-
-  return self.current.handler;
-};
-
-const updateShape = (state, shapeId, properties) => {
+const updateShapeProperties = (state, shapeId, properties) => {
   const selectedShape = state.allShapes[state.selectedShapeIds[0]];
 
   return ({
@@ -105,7 +83,9 @@ function App() {
     allShapes.current = Object.assign(allShapes.current, state.allShapes);
   }, [state.allShapes]);
 
-  const handleShapeUpdate = useBetterCallback((shapeId: number, shapeProperties: Properties, [state]) => {
+  const handleShapeUpdate = useEvent((shapeId: number, shapeProperties: Properties, [state]) => {
+    // console.log('handleShapeUpdate()');
+
     if (state.options.snapToGrid && shapeProperties.position) {
       shapeProperties.position = {
         x: Math.round((shapeProperties.position.x / 10)) * 10,
@@ -113,7 +93,7 @@ function App() {
       };
     }
 
-    const updatedShape = updateShape(state, shapeId, shapeProperties);
+    const updatedShape = updateShapeProperties(state, shapeId, shapeProperties);
 
     Object.keys(updatedShape.properties).forEach(eventType => {
       eventEmitter.emit(eventType, updatedShape);
