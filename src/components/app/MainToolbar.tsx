@@ -70,7 +70,7 @@ const MainToolbar = ({ currentTool, dispatch }) => {
           </Toolbar.Group>
         )}
       </Toolbar>
-      <Divider color="#d0d0d0" />
+      <Divider color="#d8d8d8" />
     </View>
   );
 };

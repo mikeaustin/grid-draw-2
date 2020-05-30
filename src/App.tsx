@@ -148,13 +148,13 @@ function App() {
         <SelectedShapeContext.Provider value={selectedShapeContext}>
           <View style={styles.app}>
             <MainToolbar currentTool={state.currentTool} dispatch={dispatch} />
-            <List divider dividerColor="#d0d0d0" style={{ flex: 1, flexDirection: 'row' }}>
+            <List divider dividerColor="#d8d8d8" style={{ flex: 1, flexDirection: 'row' }}>
               <ShapesPanel
                 allShapes={state.allShapes}
                 dispatch={dispatch}
               />
-              <List divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
-                <List horizontal divider dividerColor="#d0d0d0" style={{ flex: 1 }}>
+              <List divider dividerColor="#d8d8d8" style={{ flex: 1 }}>
+                <List horizontal divider dividerColor="#d8d8d8" style={{ flex: 1 }}>
                   <AppCanvas state={state} dispatch={dispatch} />
                   {state.options.showSecondCanvas && (
                     <AppCanvas state={state} dispatch={dispatch} scale={0.5} />

@@ -32,43 +32,43 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
 
   if (vertical) {
     return (
-      <G transform={vertical ? 'translate(30, 0) rotate(90)' : ''}>
-        <Rect x={30} y={0} width={10000} height={30} {...rectProps} />
+      <G transform={vertical ? 'translate(31, 0) rotate(90)' : ''}>
+        <Rect x={30} y={0} width={10000} height={31} {...rectProps} />
         {Array.from({ length: 101 }, (_, index) => (
           <React.Fragment key={index}>
             <Line
               x1={(index * 10) * scale + 30.5}
-              y1={30 - lineEndForIndex(index)}
+              y1={31 - lineEndForIndex(index)}
               x2={(index * 10) * scale + 30.5}
               y2={0}
-              stroke="hsl(0, 0%, 80%)"
+              stroke="#d0d0d0"
             />
             {index % 10 === 0 && (
-              <Text x={(index * 10) * scale + 35} y={30 - 12 + 7} {...textProps}>{index * 10}</Text>
+              <Text x={(index * 10) * scale + 35} y={31 - 12 + 7} {...textProps}>{index * 10}</Text>
             )}
           </React.Fragment>
         ))}
-        <Line
+        {/* <Line
           x1={30}
           y1={-0.5}
           x2={10030}
           y2={-0.5}
           stroke="#e0e0e0"
-        />
+        /> */}
       </G>
     );
   }
 
   return (
     <G>
-      <Rect x={30} y={0} width={10000} height={30} {...rectProps} />
+      <Rect x={30} y={0} width={10000} height={31} {...rectProps} />
       {Array.from({ length: 101 }, (_, index) => (
         <React.Fragment key={index}>
           <Line
             x1={(index * 10) * scale + 30.5}
             y1={lineEndForIndex(index)}
             x2={(index * 10) * scale + 30.5}
-            y2={30}
+            y2={31}
             stroke="hsl(0, 0%, 80%)"
           />
           {index % 10 === 0 && (
@@ -76,13 +76,13 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
           )}
         </React.Fragment>
       ))}
-      <Line
+      {/* <Line
         x1={30}
         y1={30.5}
         x2={10030}
         y2={30.5}
         stroke="#e8e8e8"
-      />
+      /> */}
     </G>
   );
 };
