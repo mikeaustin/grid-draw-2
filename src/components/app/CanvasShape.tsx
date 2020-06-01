@@ -17,7 +17,7 @@ type CanvasShapeProps = {
 };
 
 const CanvasShape = React.memo((props: CanvasShapeProps) => {
-  console.log('CanvasShape()', props.shape.id);
+  // console.log('CanvasShape()', props.shape.id);
 
   const self = useSelf(props);
 
