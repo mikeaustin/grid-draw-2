@@ -19,7 +19,7 @@ type CanvasShapeProps = {
 const CanvasShape = React.memo((props: CanvasShapeProps) => {
   // console.log('CanvasShape()', props.shape.id);
 
-  const self = useSelf(props);
+  // const self = useSelf(props);
 
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const { onShapeUpdate, onPropertyChange } = useContext(SelectedShapeContext);
@@ -35,38 +35,38 @@ const CanvasShape = React.memo((props: CanvasShapeProps) => {
     return tap;
   }, []);
 
-  const handleResponderGrant = useCallback(event => {
+  const handleResponderGrant = useEvent((event, [shapeId, selected, onShapeUpdate]) => {
     setFirstPosition({
       x: event.nativeEvent.pageX,
       y: event.nativeEvent.pageY
     });
 
-    if (!self.selected) {
-      self.onSelectShape(self.shape.id);
+    if (!props.selected) {
+      props.onSelectShape(shapeId);
     }
-  }, [self]);
+  }, [props.shape.id, props.selected, onShapeUpdate]);
 
-  const handleResponderMove = useCallback(event => {
-    onShapeUpdate(self.shape.id, {
+  const handleResponderMove = useEvent((event, [shapeId, position, firstPosition, onShapeUpdate]) => {
+    onShapeUpdate(shapeId, {
       position: {
-        x: self.shape.properties.position.x + event.nativeEvent.pageX - firstPosition.x,
-        y: self.shape.properties.position.y + event.nativeEvent.pageY - firstPosition.y,
+        x: position.x + event.nativeEvent.pageX - firstPosition.x,
+        y: position.y + event.nativeEvent.pageY - firstPosition.y,
       }
     });
-  }, [self, firstPosition, onShapeUpdate]);
+  }, [props.shape.id, props.shape.properties.position, firstPosition, onShapeUpdate]);
 
-  const handleResponseRelease = useCallback(event => {
+  const handleResponseRelease = useEvent((event, [shapeId, position, firstPosition, onPropertyChange]) => {
     if (event.nativeEvent.pageX - firstPosition.x === 0 && event.nativeEvent.pageY - firstPosition.y === 0) {
       return;
     }
 
     let newPosition = {
-      x: self.shape.properties.position.x + (event.nativeEvent.pageX - firstPosition.x),
-      y: self.shape.properties.position.y + (event.nativeEvent.pageY - firstPosition.y),
+      x: position.x + (event.nativeEvent.pageX - firstPosition.x),
+      y: position.y + (event.nativeEvent.pageY - firstPosition.y),
     };
 
-    onPropertyChange(self.shape.id, 'position', newPosition);
-  }, [self, firstPosition, onPropertyChange]);
+    onPropertyChange(shapeId, 'position', newPosition);
+  }, [props.shape.id, props.shape.properties.position, firstPosition, onPropertyChange]);
 
   const shapeEventProps = {
     onStartShouldSetResponder: handleStartShouldSetResponder,
@@ -76,7 +76,7 @@ const CanvasShape = React.memo((props: CanvasShapeProps) => {
     onResponderRelease: handleResponseRelease,
   };
 
-  const Component = shapeRegistry[self.shape.type].render;
+  const Component = shapeRegistry[props.shape.type].render;
 
   return (
     <CanvasShapeShape
@@ -125,8 +125,5 @@ const CanvasShapeList = React.memo(({ allShapes, childIds, selectedShapeIds, onS
     </>
   );
 });
-
-// const CanvasShape = React.memo(_CanvasShape);
-// const CanvasShapeList = React.memo(_CanvasShapeList);
 
 export default CanvasShape;
