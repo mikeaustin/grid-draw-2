@@ -16,10 +16,14 @@ type CanvasShapeProps = {
   onSelectShape: (shapeId: number) => void,
 };
 
-const CanvasShape = React.memo((props: CanvasShapeProps) => {
+const CanvasShape = React.memo(({
+  shape,
+  selected,
+  allShapes,
+  selectedShapeIds,
+  onSelectShape,
+}: CanvasShapeProps) => {
   // console.log('CanvasShape()', props.shape.id);
-
-  // const self = useSelf(props);
 
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
   const { onShapeUpdate, onPropertyChange } = useContext(SelectedShapeContext);
@@ -41,10 +45,10 @@ const CanvasShape = React.memo((props: CanvasShapeProps) => {
       y: event.nativeEvent.pageY
     });
 
-    if (!props.selected) {
-      props.onSelectShape(shapeId);
+    if (!selected) {
+      onSelectShape(shapeId);
     }
-  }, [props.shape.id, props.selected, onShapeUpdate]);
+  }, [shape.id, selected, onShapeUpdate]);
 
   const handleResponderMove = useEvent((event, [shapeId, position, firstPosition, onShapeUpdate]) => {
     onShapeUpdate(shapeId, {
@@ -53,7 +57,7 @@ const CanvasShape = React.memo((props: CanvasShapeProps) => {
         y: position.y + event.nativeEvent.pageY - firstPosition.y,
       }
     });
-  }, [props.shape.id, props.shape.properties.position, firstPosition, onShapeUpdate]);
+  }, [shape.id, shape.properties.position, firstPosition, onShapeUpdate]);
 
   const handleResponseRelease = useEvent((event, [shapeId, position, firstPosition, onPropertyChange]) => {
     if (event.nativeEvent.pageX - firstPosition.x === 0 && event.nativeEvent.pageY - firstPosition.y === 0) {
@@ -66,7 +70,7 @@ const CanvasShape = React.memo((props: CanvasShapeProps) => {
     };
 
     onPropertyChange(shapeId, 'position', newPosition);
-  }, [props.shape.id, props.shape.properties.position, firstPosition, onPropertyChange]);
+  }, [shape.id, shape.properties.position, firstPosition, onPropertyChange]);
 
   const shapeEventProps = {
     onStartShouldSetResponder: handleStartShouldSetResponder,
@@ -76,20 +80,20 @@ const CanvasShape = React.memo((props: CanvasShapeProps) => {
     onResponderRelease: handleResponseRelease,
   };
 
-  const Component = shapeRegistry[props.shape.type].render;
+  const Component = shapeRegistry[shape.type].render;
 
   return (
     <CanvasShapeShape
       Component={Component}
-      shape={props.shape}
-      selected={props.selected}
+      shape={shape}
+      selected={selected}
       {...shapeEventProps}
     >
       <CanvasShapeList
-        allShapes={props.allShapes}
-        childIds={props.shape.childIds}
-        selectedShapeIds={props.selectedShapeIds}
-        onSelectShape={props.onSelectShape}
+        allShapes={allShapes}
+        childIds={shape.childIds}
+        selectedShapeIds={selectedShapeIds}
+        onSelectShape={onSelectShape}
       />
     </CanvasShapeShape>
   );
@@ -102,7 +106,12 @@ type CanvasShapeListProps = {
   onSelectShape: (shapeId: number) => void,
 };
 
-const CanvasShapeList = React.memo(({ allShapes, childIds, selectedShapeIds, onSelectShape }: CanvasShapeListProps) => {
+const CanvasShapeList = React.memo(({
+  allShapes,
+  childIds,
+  selectedShapeIds,
+  onSelectShape
+}: CanvasShapeListProps) => {
   return (
     <>
       {childIds.map(childId => {
