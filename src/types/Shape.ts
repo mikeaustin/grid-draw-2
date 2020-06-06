@@ -2,6 +2,7 @@ type Shape = {
   id: number,
   type: string,
   childIds: number[],
+  parentId: number,
   properties: {
     [property: string]: any;
   };

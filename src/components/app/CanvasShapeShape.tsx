@@ -30,6 +30,12 @@ const CanvasShapeShape = ({ Component, shape, selected, ...props }) => {
         eventEmitter.removeListener(propertyName, handlePositionChange)
       ));
     }
+
+    return () => {
+      Object.keys(shape.properties).forEach(propertyName => {
+        eventEmitter.removeListener(propertyName, handlePositionChange);
+      });
+    };
   }, [selected, shape.properties, eventEmitter, handlePositionChange]);
 
   return (

@@ -2,6 +2,7 @@
 
 import React, { useReducer, useCallback, useRef, useMemo, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native-web';
+import { GlobalHotKeys } from "react-hotkeys";
 import expr from 'property-expr';
 
 import { initialState, stateReducer } from './reducers/allShapesReducer';
@@ -73,15 +74,15 @@ const updateShapeProperties = (state, shapeId, properties) => {
   });
 };
 
+const keyMap = {
+  SNAP_LEFT: "command+left",
+  DELETE_SHAPE: ["del", "backspace"]
+};
+
 function App() {
   console.log('App()');
 
   const [state, dispatch] = useReducer(stateReducer, initialState);
-  const allShapes = useRef({ ...state.allShapes });
-
-  useEffect(() => {
-    allShapes.current = Object.assign(allShapes.current, state.allShapes);
-  }, [state.allShapes]);
 
   const handleShapeUpdate = useEvent((shapeId: number, shapeProperties: Properties, [state]) => {
     // console.log('handleShapeUpdate()');
@@ -148,6 +149,13 @@ function App() {
     <AppContext.Provider value={appContext}>
       <AllShapesContext.Provider value={state.allShapes}>
         <SelectedShapeContext.Provider value={selectedShapeContext}>
+          <GlobalHotKeys
+            key={Math.random()}
+            keyMap={keyMap}
+            handlers={{
+              DELETE_SHAPE: () => dispatch({ type: 'DELETE_SHAPE', payload: { shapeId: state.selectedShapeIds[0] } })
+            }}
+          />
           <View style={styles.app}>
             <MainToolbar currentTool={state.currentTool} dispatch={dispatch} />
             <List divider dividerColor="#d8d8d8" style={{ flex: 1, flexDirection: 'row' }}>

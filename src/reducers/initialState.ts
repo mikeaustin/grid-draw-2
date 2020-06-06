@@ -20,6 +20,7 @@ const initialState: State = {
       id: 0,
       type: 'GridDraw.Shape.Group',
       childIds: [1, 2, 3, 6],
+      parentId: -1,
       properties: {
         position: {
           x: 0,
@@ -39,6 +40,7 @@ const initialState: State = {
       id: 1,
       type: 'GridDraw.Shape.Rect',
       childIds: [],
+      parentId: 0,
       properties: {
         position: {
           x: 100,
@@ -58,6 +60,7 @@ const initialState: State = {
       id: 2,
       type: 'GridDraw.Shape.Ellipse',
       childIds: [],
+      parentId: 0,
       properties: {
         position: {
           x: 400,
@@ -77,6 +80,7 @@ const initialState: State = {
       id: 3,
       type: 'GridDraw.Shape.Group',
       childIds: [4, 5],
+      parentId: 0,
       properties: {
         position: {
           x: 600,
@@ -96,6 +100,7 @@ const initialState: State = {
       id: 4,
       type: 'GridDraw.Shape.Ellipse',
       childIds: [],
+      parentId: 3,
       properties: {
         position: {
           x: 0,
@@ -115,6 +120,7 @@ const initialState: State = {
       id: 5,
       type: 'GridDraw.Shape.Ellipse',
       childIds: [],
+      parentId: 3,
       properties: {
         position: {
           x: 0,
@@ -134,6 +140,7 @@ const initialState: State = {
       id: 6,
       type: 'GridDraw.Shape.Path',
       childIds: [],
+      parentId: 0,
       properties: {
         position: {
           x: 100,

@@ -66,6 +66,7 @@ const addShape: AddShapeFunc = (allShapes, type, shapeId, position) => {
       id: shapeId,
       type: type,
       childIds: [],
+      parentId: 0,
       properties: {
         position: position,
         fill: {
@@ -99,6 +100,22 @@ const stateReducer = (state: State, action: Action): State => {
         ...state,
         nextShapeId: state.nextShapeId + 1,
         allShapes: addShape(state.allShapes, payload.type, state.nextShapeId, position),
+      };
+    }
+    case 'DELETE_SHAPE': {
+      const { shapeId } = payload;
+      const parentShapeId = state.allShapes[shapeId].parentId;
+
+      return {
+        ...state,
+        allShapes: {
+          ...state.allShapes,
+          [parentShapeId]: {
+            ...state.allShapes[parentShapeId],
+            childIds: state.allShapes[parentShapeId].childIds.filter(childShapeId => childShapeId !== shapeId),
+          }
+        },
+        selectedShapeIds: [],
       };
     }
     case 'SELECT_TOOL':
