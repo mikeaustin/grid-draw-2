@@ -40,7 +40,7 @@ const PathShape = ({
     });
   };
 
-  const handleDragMove = (position, index) => {
+  const handleDragMove = (position, delta, index) => {
     setHandlePosition({
       x: firstPosition.x + position.x,
       y: firstPosition.y + position.y
@@ -54,9 +54,22 @@ const PathShape = ({
       bezierNodes[dragIndex + 1] = Math.round(bezierNodes[dragIndex + 1] / 10) * 10;
     }
 
-    if (dragIndex === bezierNodes.length - 2) {
-      bezierNodes[0] = bezierNodes[dragIndex + 0];
-      bezierNodes[1] = bezierNodes[dragIndex + 1];
+    if (dragIndex % 3 === 0) {
+      bezierNodes[dragIndex + 2 + 0] = bezierNodes[dragIndex + 2 + 0] + delta.x;
+      bezierNodes[dragIndex + 2 + 1] = bezierNodes[dragIndex + 2 + 1] + delta.y;
+
+      if (dragIndex === 0) {
+        bezierNodes[bezierNodes.length - 2 - 2 + 0] = bezierNodes[bezierNodes.length - 2 - 2 + 0] + delta.x;
+        bezierNodes[bezierNodes.length - 2 - 2 + 1] = bezierNodes[bezierNodes.length - 2 - 2 + 1] + delta.y;
+      } else {
+        bezierNodes[dragIndex - 2 + 0] = bezierNodes[dragIndex - 2 + 0] + delta.x;
+        bezierNodes[dragIndex - 2 + 1] = bezierNodes[dragIndex - 2 + 1] + delta.y;
+      }
+    }
+
+    if (dragIndex === 0) {
+      bezierNodes[bezierNodes.length - 2 + 0] = bezierNodes[dragIndex + 0];
+      bezierNodes[bezierNodes.length - 2 + 1] = bezierNodes[dragIndex + 1];
     }
 
     onShapeUpdate(shapeId, {
@@ -91,7 +104,7 @@ const PathShape = ({
   }
 
   const handles: JSX.Element[] = [];
-  for (let index = 0; index < bezierNodes.length - 1; index += 2) {
+  for (let index = 0; index < bezierNodes.length - 3; index += 2) {
     const nodeX = bezierNodes[index], nodeY = bezierNodes[index + 1];
 
     handles.push(

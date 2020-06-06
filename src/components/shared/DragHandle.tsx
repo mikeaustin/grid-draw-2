@@ -21,11 +21,17 @@ const DragHandle = ({
   onDragEnd,
 }: DragHandleProps) => {
   const [firstPosition, setFirstPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
+  const [lastPosition, setLastPosition] = useState<{ x: number, y: number; }>({ x: 0, y: 0 });
 
   const handleStartShouldSetResponder = () => true;
 
   const handleResponderGrant = (event) => {
     setFirstPosition({
+      x: event.nativeEvent.pageX,
+      y: event.nativeEvent.pageY
+    });
+
+    setLastPosition({
       x: event.nativeEvent.pageX,
       y: event.nativeEvent.pageY
     });
@@ -40,7 +46,15 @@ const DragHandle = ({
     onDragMove && onDragMove({
       x: event.nativeEvent.pageX - firstPosition.x,
       y: event.nativeEvent.pageY - firstPosition.y,
+    }, {
+      x: event.nativeEvent.pageX - lastPosition.x,
+      y: event.nativeEvent.pageY - lastPosition.y,
     }, index);
+
+    setLastPosition({
+      x: event.nativeEvent.pageX,
+      y: event.nativeEvent.pageY
+    });
   };
 
   const handleResponderRelease = (event) => {
