@@ -7,7 +7,7 @@ const rectProps = {
 
 const textProps = {
   style: {
-    fontSize: 10
+    fontSize: 10,
   }
 };
 
@@ -48,13 +48,6 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
             )}
           </React.Fragment>
         ))}
-        {/* <Line
-          x1={30}
-          y1={-0.5}
-          x2={10030}
-          y2={-0.5}
-          stroke="#e0e0e0"
-        /> */}
       </G>
     );
   }
@@ -76,13 +69,6 @@ const Ruler = ({ vertical, scale = 1.0 }: RulerProps) => {
           )}
         </React.Fragment>
       ))}
-      {/* <Line
-        x1={30}
-        y1={30.5}
-        x2={10030}
-        y2={30.5}
-        stroke="#e8e8e8"
-      /> */}
     </G>
   );
 };

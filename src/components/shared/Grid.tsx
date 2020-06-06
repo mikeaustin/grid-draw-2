@@ -12,7 +12,7 @@ const Grid = () => {
             <Line
               x1={-0.5}
               y1={index * 50 - 0.0}
-              x2={'100%'}
+              x2={10000}
               y2={index * 50 - 0.0}
               stroke="hsl(0, 0%, 50%)"
               strokeDasharray={'1 9'}
@@ -23,7 +23,7 @@ const Grid = () => {
               x1={index * 50 - 0.0}
               y1={-0.5}
               x2={index * 50 - 0.0}
-              y2={'100%'}
+              y2={10000}
               stroke="hsl(0, 0%, 50%)"
               strokeDasharray={'1 9'}
             />
