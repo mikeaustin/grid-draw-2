@@ -55,6 +55,11 @@ const MainToolbar = ({ currentTool, dispatch }) => {
           <Toolbar.Button icon="mike-combine-intersection.png" value={{ option: 'showThirdCanvas' }} />
           <Toolbar.Button icon="mike-combine-division.png" value={{ option: 'showThirdCanvas' }} />
         </Toolbar.Group>
+        <Toolbar.Group title="Align" name="TOGGLE_OPTION" disabled>
+          <Toolbar.Button icon="mike-align-left.png" value={{ option: 'showSecondCanvas' }} />
+          <Toolbar.Button icon="mike-align-center.png" value={{ option: 'showThirdCanvas' }} />
+          <Toolbar.Button icon="mike-align-right.png" value={{ option: 'showThirdCanvas' }} />
+        </Toolbar.Group>
       </Toolbar>
       <Divider color="#d8d8d8" />
       <Toolbar>
