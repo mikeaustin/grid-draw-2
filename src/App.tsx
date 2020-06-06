@@ -96,7 +96,9 @@ function App() {
     const updatedShape = updateShapeProperties(state, shapeId, shapeProperties);
 
     Object.keys(shapeProperties).forEach(eventType => {
-      eventEmitter.emit(eventType, updatedShape);
+      const rootProperty = eventType.split('.')[0];
+
+      eventEmitter.emit(rootProperty, updatedShape);
     });
   }, [state]);
 
