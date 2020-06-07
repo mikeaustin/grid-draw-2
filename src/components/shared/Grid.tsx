@@ -14,7 +14,7 @@ const Grid = () => {
               y1={index * 50 - 0.0}
               x2={10000}
               y2={index * 50 - 0.0}
-              stroke="hsl(0, 0%, 50%)"
+              stroke={index % 2 === 0 ? 'hsl(0, 0%, 50%)' : 'hsl(0, 0%, 75%)'}
               strokeDasharray={'1 9'}
             />
           )}
@@ -24,7 +24,7 @@ const Grid = () => {
               y1={-0.5}
               x2={index * 50 - 0.0}
               y2={10000}
-              stroke="hsl(0, 0%, 50%)"
+              stroke={index % 2 === 0 ? 'hsl(0, 0%, 50%)' : 'hsl(0, 0%, 75%)'}
               strokeDasharray={'1 9'}
             />
           )}
