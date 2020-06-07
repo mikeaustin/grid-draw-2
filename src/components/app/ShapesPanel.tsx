@@ -53,7 +53,7 @@ type ShapeItemProps = {
 };
 
 const ShapeItem = React.memo(({ shape, selected, depth, dispatch }: ShapeItemProps) => {
-  console.log('ShapeItem()');
+  console.log(`ShapeItem() – shapeId: ${shape.id}`);
 
   const handleSelectShape = useCallback((shapeId) => {
     dispatch({
