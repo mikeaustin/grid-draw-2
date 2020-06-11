@@ -6,6 +6,20 @@ import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-n
 import { Spacer, Divider, List } from '../core';
 import { Size } from '../../types';
 
+const equals = (a, b) => {
+  if (a === b) {
+    return true;
+  }
+
+  if (typeof a === 'object' && typeof b === 'object') {
+    return Object.keys(a).every((key) => (
+      a[key] === b[key]
+    ));
+  }
+
+  return false;
+};
+
 const styles = StyleSheet.create({
   button: {
     padding: 5,
@@ -30,74 +44,6 @@ const styles = StyleSheet.create({
     minHeight: 40,
   }
 });
-
-type ToolbarProps = {
-  spacerSize?: Size,
-  children: React.ReactNode,
-  onButtonPress?: Function,
-};
-
-const _Toolbar = ({ spacerSize, children, onButtonPress }: ToolbarProps) => {
-  return (
-    <List horizontal divider spacerSize={spacerSize} style={styles.toolbar}>
-      {React.Children.map(children, child => (
-        React.isValidElement(child) && React.cloneElement(child, {
-          onButtonPress,
-        })
-      ))}
-    </List>
-  );
-};
-
-const equals = (a, b) => {
-  if (a === b) {
-    return true;
-  }
-
-  if (typeof a === 'object' && typeof b === 'object') {
-    return Object.keys(a).every((key) => (
-      a[key] === b[key]
-    ));
-  }
-
-  return false;
-};
-
-type GroupProps = {
-  title?: string,
-  name?: string,
-  selectedValue?: any,
-  disabled?: boolean,
-  children: React.ReactNode,
-  onButtonPress?: Function,
-};
-
-const _Group = ({ title, name, selectedValue, disabled, children, onButtonPress }: GroupProps) => {
-  console.log('Toolbar.Group()');
-
-  return (
-    <View style={{ alignItems: 'center', paddingHorizontal: 10, xpaddingVertical: 5 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        {React.Children.map(children, (child, index) => (
-          <>
-            {index > 0 && <Spacer size="xsmall" />}
-            {React.isValidElement(child) && React.cloneElement(child, {
-              selected: child.props.selected || (selectedValue && equals(child.props.value, selectedValue)),
-              disabled: disabled,
-              onDispatch: value => onButtonPress && onButtonPress(name, value)
-            })}
-          </>
-        ))}
-      </View>
-      {title && (
-        <>
-          <Spacer size="xsmall" />
-          <Text style={{ fontSize: 12 }}>{title}</Text>
-        </>
-      )}
-    </View>
-  );
-};
 
 type ButtonProps = {
   icon: string,
@@ -142,7 +88,72 @@ const _Button = ({ icon, value, selected, disabled, onDispatch }: ButtonProps) =
   );
 };
 
-const Toolbar = React.memo(_Toolbar) as any;
+type GroupProps = {
+  title?: string,
+  name?: string,
+  selectedValue?: any,
+  disabled?: boolean,
+  children: React.ReactNode,
+  onButtonPress?: Function,
+};
+
+const _Group = ({ title, name, selectedValue, disabled, children, onButtonPress }: GroupProps) => {
+  console.log('Toolbar.Group()');
+
+  return (
+    <View style={{ alignItems: 'center', paddingHorizontal: 10, xpaddingVertical: 5 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        {React.Children.map(children, (child, index) => (
+          <>
+            {index > 0 && <Spacer size="xsmall" />}
+            {React.isValidElement(child) && React.cloneElement(child, {
+              selected: child.props.selected || (selectedValue && equals(child.props.value, selectedValue)),
+              disabled: disabled,
+              onDispatch: value => onButtonPress && onButtonPress(name, value)
+            })}
+          </>
+        ))}
+      </View>
+      {title && (
+        <>
+          <Spacer size="xsmall" />
+          <Text style={{ fontSize: 12 }}>{title}</Text>
+        </>
+      )}
+    </View>
+  );
+};
+
+type ToolbarProps = {
+  spacerSize?: Size,
+  children: React.ReactNode,
+  onButtonPress?: Function,
+};
+
+const _Toolbar: React.FC<ToolbarProps> & { Group: any, Button: any; } = ({
+  spacerSize, children, onButtonPress
+}: ToolbarProps) => {
+  return (
+    <List horizontal divider spacerSize={spacerSize} style={styles.toolbar}>
+      {React.Children.map(children, child => (
+        React.isValidElement(child) && React.cloneElement(child, {
+          onButtonPress,
+        })
+      ))}
+    </List>
+  );
+};
+
+_Toolbar.Group = _Group;
+_Toolbar.Button = _Button;
+
+type MemoToolbar =
+  React.NamedExoticComponent<ToolbarProps> & {
+    Group: React.NamedExoticComponent<GroupProps>,
+    Button: React.NamedExoticComponent<ButtonProps>;
+  };
+
+const Toolbar = React.memo(_Toolbar) as MemoToolbar;
 const Group = React.memo(_Group);
 const Button = React.memo(_Button);
 
