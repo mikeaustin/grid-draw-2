@@ -53,7 +53,7 @@ type ButtonProps = {
   onDispatch?: Function,
 };
 
-const _Button = ({ icon, value, selected, disabled, onDispatch }: ButtonProps) => {
+const Button = React.memo(({ icon, value, selected, disabled, onDispatch }: ButtonProps) => {
   const [pressed, setPressed] = useState(false);
 
   const handlePressIn = useCallback(() => {
@@ -86,7 +86,7 @@ const _Button = ({ icon, value, selected, disabled, onDispatch }: ButtonProps) =
       </View>
     </TouchableWithoutFeedback>
   );
-};
+});
 
 type GroupProps = {
   title?: string,
@@ -97,7 +97,7 @@ type GroupProps = {
   onButtonPress?: Function,
 };
 
-const _Group = ({ title, name, selectedValue, disabled, children, onButtonPress }: GroupProps) => {
+const Group = React.memo(({ title, name, selectedValue, disabled, children, onButtonPress }: GroupProps) => {
   console.log('Toolbar.Group()');
 
   return (
@@ -122,7 +122,7 @@ const _Group = ({ title, name, selectedValue, disabled, children, onButtonPress 
       )}
     </View>
   );
-};
+});
 
 type ToolbarProps = {
   spacerSize?: Size,
@@ -130,9 +130,9 @@ type ToolbarProps = {
   onButtonPress?: Function,
 };
 
-const _Toolbar: React.FC<ToolbarProps> & { Group: any, Button: any; } = ({
+const _Toolbar: React.FC<ToolbarProps> = ({
   spacerSize, children, onButtonPress
-}: ToolbarProps) => {
+}) => {
   return (
     <List horizontal divider spacerSize={spacerSize} style={styles.toolbar}>
       {React.Children.map(children, child => (
@@ -144,9 +144,6 @@ const _Toolbar: React.FC<ToolbarProps> & { Group: any, Button: any; } = ({
   );
 };
 
-_Toolbar.Group = _Group;
-_Toolbar.Button = _Button;
-
 type MemoToolbar =
   React.NamedExoticComponent<ToolbarProps> & {
     Group: React.NamedExoticComponent<GroupProps>,
@@ -154,8 +151,6 @@ type MemoToolbar =
   };
 
 const Toolbar = React.memo(_Toolbar) as MemoToolbar;
-const Group = React.memo(_Group);
-const Button = React.memo(_Button);
 
 Toolbar.Group = Group;
 Toolbar.Button = Button;
