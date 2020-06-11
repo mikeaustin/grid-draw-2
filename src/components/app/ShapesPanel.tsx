@@ -53,9 +53,11 @@ type ShapeItemProps = {
 };
 
 const ShapeItem = React.memo(({ shape, selected, depth, dispatch }: ShapeItemProps) => {
-  console.log('ShapeItem()');
+  console.log(`ShapeItem() – shapeId: ${shape.id}`);
 
-  const handleSelectShape = useCallback((shapeId) => {
+  const handleSelectShape = useCallback((shapeId, event) => {
+    event.preventDefault();
+
     dispatch({
       type: 'SELECT_SHAPE',
       payload: {
@@ -68,7 +70,7 @@ const ShapeItem = React.memo(({ shape, selected, depth, dispatch }: ShapeItemPro
 
   return (
     <View>
-      <TouchableWithoutFeedback key={shape.id} onPressIn={() => handleSelectShape(shape.id)}>
+      <TouchableWithoutFeedback key={shape.id} onPressIn={(event) => handleSelectShape(shape.id, event)}>
         <View
           style={{
             flexDirection: 'row',

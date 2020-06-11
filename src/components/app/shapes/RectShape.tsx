@@ -41,16 +41,21 @@ const RectShape = ({
   const width = 200, height = 200;
   const halfWidth = width / 2, halfHeight = height / 2;
 
-  const handlePosition = {
+  const cornerRadiusDragHandlePosition = {
     x: x + halfWidth,
     y: y + cornerRadius,
   };
 
-  const handleDragStart = useCallback((position) => {
+  const rotationDagHandlePosition = {
+    x: x + halfWidth,
+    y: y - 50,
+  };
+
+  const handleCornerRadiusDragHandleStart = useCallback((position) => {
     firstCornerRadius.current = cornerRadius;
   }, [firstCornerRadius, cornerRadius]);
 
-  const handleDragMove = useCallback((position) => {
+  const handleCornerRadiusDragHandleMove = useCallback((position) => {
     const [_, handleY] = rotate(0, 0, position.x, position.y, angle);
 
     const newCornerRadius = firstCornerRadius.current + handleY;
@@ -60,12 +65,34 @@ const RectShape = ({
     });
   }, [shapeId, angle, halfHeight, onShapeUpdate]);
 
-  const handleDragEnd = (position) => {
+  const handleCornerRadiusDragHandleEnd = (position) => {
     const [_, handleY] = rotate(0, 0, position.x, position.y, angle);
 
     const newCornerRadius = firstCornerRadius.current + handleY;
 
     onPropertyChange(shapeId, 'cornerRadius', Math.max(Math.min(newCornerRadius, halfHeight), 0));
+  };
+
+  const handleRotationDargHandleStart = useCallback((position) => {
+    firstCornerRadius.current = angle;
+  }, [firstCornerRadius, angle]);
+
+  const handleRotationDragHandleMove = useCallback((position) => {
+    const [handleX, handleY] = rotate(0, 0, position.x, position.y, firstCornerRadius.current);
+
+    const newAngle = Math.atan2(handleY - 150, handleX) * (180 / Math.PI) + 90 + firstCornerRadius.current;
+
+    onShapeUpdate(shapeId, {
+      angle: newAngle,
+    });
+  }, [shapeId, onShapeUpdate]);
+
+  const handleRotationDragHandleEnd = (position) => {
+    const [handleX, handleY] = rotate(0, 0, position.x, position.y, firstCornerRadius.current);
+
+    const newAngle = Math.atan2(handleY - 150, handleX) * (180 / Math.PI) + 90 + firstCornerRadius.current;
+
+    onPropertyChange(shapeId, 'angle', newAngle);
   };
 
   return (
@@ -89,13 +116,22 @@ const RectShape = ({
         {...props}
       />
       {selected && (
-        <DragHandle
-          position={handlePosition}
-          transform={`rotate(${angle} ${x + halfWidth} ${y + halfHeight})`}
-          onDragStart={handleDragStart}
-          onDragMove={handleDragMove}
-          onDragEnd={handleDragEnd}
-        />
+        <>
+          <DragHandle
+            position={cornerRadiusDragHandlePosition}
+            transform={`rotate(${angle} ${x + halfWidth} ${y + halfHeight})`}
+            onDragStart={handleCornerRadiusDragHandleStart}
+            onDragMove={handleCornerRadiusDragHandleMove}
+            onDragEnd={handleCornerRadiusDragHandleEnd}
+          />
+          <DragHandle
+            position={rotationDagHandlePosition}
+            transform={`rotate(${angle} ${x + halfWidth} ${y + halfHeight})`}
+            onDragStart={handleRotationDargHandleStart}
+            onDragMove={handleRotationDragHandleMove}
+            onDragEnd={handleRotationDragHandleEnd}
+          />
+        </>
       )}
     </>
   );
