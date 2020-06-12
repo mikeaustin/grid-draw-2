@@ -104,12 +104,16 @@ const sliderStyles = {
 
 type SliderProps = {
   value: any,
+  max?: string,
+  scale?: number,
   onValueChange: Function,
   onValueCommit: Function,
 };
 
 const Slider = React.memo(({
   value: defaultValue,
+  max,
+  scale = 1,
   onValueChange,
   onValueCommit,
   ...props
@@ -123,7 +127,7 @@ const Slider = React.memo(({
   }, [defaultValue]);
 
   const handleOnChange = useCallback(event => {
-    setValue(event.target.value / 100);
+    // setValue(event.target.value / 100);
     onValueChange(event.target.value / 100);
   }, [onValueChange]);
 
@@ -135,6 +139,8 @@ const Slider = React.memo(({
     <input
       type="range"
       min={0}
+      max={max}
+      step={100 / scale}
       value={value * 100}
       tabIndex={-1}
       style={sliderStyles.slider}

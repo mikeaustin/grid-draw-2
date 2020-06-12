@@ -5,39 +5,38 @@ import { View, Text } from 'react-native-web';
 
 import { Spacer, NumericInput } from '../core';
 
-type FieldProps = {
-  Component: React.FunctionComponent<any>,
-  label?: string,
-  value?: any,
-  property?: string,
-  editable?: boolean,
-  flex?: boolean,
-  onValueChange?: Function,
-  onValueCommit?: Function,
-  onBlur?: Function,
-  max?: string,
+type LabelProps = {
+  label: string,
 };
 
-const _Label = ({ label }) => {
+const Label = React.memo(({ label }: LabelProps) => {
   return (
     <>
       <Text>{label}</Text>
       <Spacer size="xsmall" />
     </>
   );
+});
+
+type FieldProps = {
+  Component: React.FunctionComponent<any>,
+  label?: string,
+  value?: any,
+  property?: string,
+  flex?: boolean,
+  units?: string,
+  [prop: string]: any,
 };
 
-const Field = ({ Component, label, value, property, flex, ...props }: FieldProps) => {
+const Field = React.memo(({ Component, label, value, units, property, flex, ...props }: FieldProps) => {
   // console.log('Field()', value);
 
   return (
     <View style={[{ flexDirection: 'row', alignItems: 'center' }, flex && { flex: 1 }]}>
       {label && <Label label={label} />}
-      <Component value={value} {...props} />
+      <Component value={value} {...props} units={units} />
     </View>
   );
-};
+});
 
-const Label = React.memo(_Label);
-
-export default React.memo(Field);
+export default Field;

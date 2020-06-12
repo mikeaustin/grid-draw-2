@@ -74,20 +74,20 @@ const PropertiesPanel = ({
           </Section>
           <Section title="Opacity">
             <List horizontal spacerSize="small">
-              <PropertyField Component={Slider} property="opacity" flex />
-              <PropertyField Component={NumericInput} property="opacity" />
+              <PropertyField Component={Slider} property="opacity" max="100" scale={100} flex />
+              <PropertyField Component={NumericInput} property="opacity" units="%" scale={100} />
             </List>
           </Section>
           <Section title="Rotation">
             <List horizontal spacerSize="small">
               <PropertyField Component={Slider} property="angle" max="36000" flex />
-              <PropertyField Component={NumericInput} property="angle" />
+              <PropertyField Component={NumericInput} property="angle" units="°d" />
             </List>
           </Section>
           <Section title="Fill">
-            <SliderWithInputPropertyField label="H" property="fill.hue" max="36000" />
-            <SliderWithInputPropertyField label="S" property="fill.saturation" max="10000" />
-            <SliderWithInputPropertyField label="L" property="fill.lightness" max="10000" />
+            <SliderWithInputPropertyField label="H" property="fill.hue" units="°d" max="36000" />
+            <SliderWithInputPropertyField label="S" property="fill.saturation" units="%" max="10000" />
+            <SliderWithInputPropertyField label="L" property="fill.lightness" units="%" max="10000" />
           </Section>
           <Section title="Corner Radius">
             <SliderWithInputPropertyField label={undefined} property="cornerRadius" max="10000" />
@@ -101,20 +101,20 @@ const PropertiesPanel = ({
 type SliderWithInputPropertyFieldProps = {
   label?: string,
   property: string,
-  max: string,
+  [prop: string]: any,
 };
 
 const SliderWithInputPropertyField = React.memo(({
   label,
   property,
-  max
+  ...props
 }: SliderWithInputPropertyFieldProps) => {
   console.log('SliderWithInputPropertyField()');
 
   return (
     <List horizontal spacerSize="small">
-      <PropertyField Component={Slider} label={label} property={property} flex max={max} />
-      <PropertyField Component={NumericInput} property={property} />
+      <PropertyField Component={Slider} label={label} property={property} flex {...props} />
+      <PropertyField Component={NumericInput} property={property} {...props} />
     </List>
   );
 });

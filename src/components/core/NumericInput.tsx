@@ -16,31 +16,41 @@ const styles = StyleSheet.create({
   },
   input: {
     outlineWidth: 0,
-    width: 40,
+    width: 35,
     marginRight: 3,
     marginTop: -1,
     textAlign: 'right'
+  },
+  units: {
+    width: 15,
   }
 });
 
-const _Units = ({ label }) => {
-  return (
-    <Text>px</Text>
-  );
+type UnitsProps = {
+  label: string,
+  [prop: string]: any,
 };
 
+const Units = React.memo(({ label, ...props }: UnitsProps) => {
+  return (
+    <Text {...props}>{label}</Text>
+  );
+});
+
 type NumericInputProps = {
-  value: number,
+  value?: number,
+  units?: string,
+  scale?: number,
   onValueChange?: (value: any) => void,
   onValueCommit?: (value: any) => void,
 };
 
-const NumericInput = ({ value, onValueChange, onValueCommit, ...props }: NumericInputProps) => {
+const NumericInput = ({ value, scale = 1.0, units = 'px', onValueChange, onValueCommit, ...props }: NumericInputProps) => {
   const [internalValue, setInternalValue] = useState(value);
 
   useEffect(() => {
-    setInternalValue(value);
-  }, [value]);
+    setInternalValue(value ? Math.round(value * scale) : 0);
+  }, [value, scale]);
 
   const handleChangeText = useCallback((value) => {
     setInternalValue(value);
@@ -48,9 +58,9 @@ const NumericInput = ({ value, onValueChange, onValueCommit, ...props }: Numeric
 
   const handleBlur = useCallback(() => {
     if (onValueCommit) {
-      onValueCommit(internalValue);
+      onValueCommit(internalValue ? internalValue / scale : 0);
     }
-  }, [internalValue, onValueCommit]);
+  }, [internalValue, scale, onValueCommit]);
 
   return (
     <View style={styles.numericInput}>
@@ -62,11 +72,9 @@ const NumericInput = ({ value, onValueChange, onValueCommit, ...props }: Numeric
         onBlur={handleBlur}
         {...props}
       />
-      <Units label="px" />
+      <Units label={units} style={styles.units} />
     </View>
   );
 };
-
-const Units = React.memo(_Units);
 
 export default NumericInput;

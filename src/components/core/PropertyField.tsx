@@ -28,13 +28,10 @@ type InputFieldProps = {
   Component: React.FunctionComponent<any>,
   label?: string,
   property: string,
-  value?: any,
-  editable?: boolean,
-  max?: string,
-  flex?: boolean,
+  [prop: string]: any,
 };
 
-const PropertyField = ({
+const PropertyField = React.memo(({
   Component,
   label,
   property,
@@ -69,6 +66,6 @@ const PropertyField = ({
       {...props}
     />
   );
-};
+});
 
-export default React.memo(PropertyField);
+export default PropertyField;
