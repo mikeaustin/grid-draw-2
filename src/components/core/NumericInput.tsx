@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
   },
   input: {
     outlineWidth: 0,
-    width: 35,
-    marginRight: 3,
+    width: 40,
+    marginRight: 2,
     marginTop: -1,
     textAlign: 'right'
   },
   units: {
-    width: 15,
+    width: 16,
   }
 });
 
