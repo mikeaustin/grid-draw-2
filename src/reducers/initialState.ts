@@ -19,7 +19,7 @@ const initialState: State = {
     0: {
       id: 0,
       type: 'GridDraw.Shape.Group',
-      childIds: [1, 2, 3, 6],
+      childIds: [1, 2, 3, 6, 7],
       parentId: -1,
       properties: {
         position: {
@@ -161,6 +161,23 @@ const initialState: State = {
           250, 100, 100, -100,
           0, 0,
         ]),
+      }
+    },
+    7: {
+      id: 7,
+      type: 'GridDraw.Shape.Text',
+      childIds: [],
+      parentId: 0,
+      properties: {
+        position: {
+          x: 400,
+          y: 300,
+        },
+        fill: {
+          hue: 0,
+          saturation: 100,
+          lightness: 0,
+        }
       }
     }
   }

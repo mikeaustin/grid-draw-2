@@ -9,6 +9,7 @@ import EllipseShape from './shapes/EllipseShape';
 import RectShape from './shapes/RectShape';
 import PathShape from './shapes/PathShape';
 import GroupShape from './shapes/GroupShape';
+import TextShape from './shapes/TextShape';
 
 const shapeRegistry = {
   'GridDraw.Shape.Ellipse': {
@@ -92,6 +93,10 @@ const shapeRegistry = {
       );
     },
     render: GroupShape,
+  },
+  'GridDraw.Shape.Text': {
+    icon: () => null,
+    render: TextShape,
   }
 };
 
