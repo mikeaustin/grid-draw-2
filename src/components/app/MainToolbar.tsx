@@ -28,6 +28,7 @@ const MainToolbar = ({ currentTool, dispatch }) => {
           <Toolbar.Button icon="mike-square.png" value={{ tool: 'Create', type: 'GridDraw.Shape.Rect' }} />
           <Toolbar.Button icon="mike-circle.png" value={{ tool: 'Create', type: 'GridDraw.Shape.Ellipse' }} />
           <Toolbar.Button icon="mike-shape-path.png" value={{ tool: 'Create', type: 'GridDraw.Shape.Path' }} />
+          <Toolbar.Button icon="mike-shape-text.png" value={{ tool: 'Create', type: 'GridDraw.Shape.Text' }} />
           {/* <Toolbar.Button icon="001-star" />
           <Toolbar.Button icon="007-pen-tool" /> */}
         </Toolbar.Group>

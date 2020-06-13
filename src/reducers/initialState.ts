@@ -171,13 +171,15 @@ const initialState: State = {
       properties: {
         position: {
           x: 400,
-          y: 300,
+          y: 500,
         },
         fill: {
           hue: 0,
           saturation: 100,
           lightness: 0,
-        }
+        },
+        opacity: 1.0,
+        angle: 0,
       }
     }
   }

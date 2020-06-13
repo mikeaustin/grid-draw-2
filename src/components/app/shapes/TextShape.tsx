@@ -7,7 +7,7 @@ import Shape from '../../../types/Shape';
 
 const textProps = {
   style: {
-    fontSize: 24,
+    fontSize: 48,
     cursor: 'default',
   }
 };
@@ -31,12 +31,14 @@ const TextShape = ({
   return (
     <Text
       x={x}
-      y={y + 18}
+      y={y + 35}
       fill={`hsl(${hue}, ${saturation}%, ${lightness}%)`}
       opacity={opacity}
       {...textProps}
       {...props}
-    >Hello, World.</Text>
+    >
+      Hello, World.
+    </Text>
   );
 };
 
