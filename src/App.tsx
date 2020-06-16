@@ -14,7 +14,7 @@ import AppCanvas from './components/app/AppCanvas';
 import MainToolbar from './components/app/MainToolbar';
 import ShapesPanel from './components/app/ShapesPanel';
 import PropertiesPanel from './components/app/PropertiesPanel';
-import Palette from './components/shared/Palette';
+import ColorPalette from './components/shared/ColorPalette';
 import { EventEmitter } from 'events';
 
 import { List } from './components/core';
@@ -177,7 +177,7 @@ function App() {
                 {state.options.showThirdCanvas && (
                   <AppCanvas state={state} dispatch={dispatch} scale={2.0} />
                 )}
-                <Palette selectedShapeId={state.selectedShapeIds[0]} />
+                <ColorPalette />
               </List>
               <PropertiesPanel
                 selectedShapeId={state.selectedShapeIds[0]}
